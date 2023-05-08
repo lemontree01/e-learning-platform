@@ -44,7 +44,15 @@ module.exports = [
           use: [
             "style-loader",
             "css-loader",
-            "sass-loader",
+            {
+              loader: 'sass-loader',
+              options: {
+                sassOptions: {
+                  data: '@import url("./src/app.scss");',
+                includePaths:[__dirname, 'src']
+                }
+              },
+            },
           ],
         },
         {
@@ -53,10 +61,18 @@ module.exports = [
           use: ["style-loader", "css-loader"],
         },
         {
-          test: /\.(png|svg)$/i,
+          test: /\.(png|svg|jpg)$/i,
           type: "asset/resource",
         },
       ],
+    },
+    devServer: {
+      historyApiFallback: true,
+      static: {
+        directory: path.join(__dirname, "/"),
+      },
+      port: 8081,
+      open: true,
     },
   },
 ];
