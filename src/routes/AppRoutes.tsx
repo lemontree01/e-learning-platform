@@ -9,6 +9,22 @@ import CoursesPage from "../pages/CoursesPage";
 import TeachersPage from "../pages/TeachersPage";
 import ContactsPage from "../pages/ContactsPage";
 import { useAppSelector } from "../state";
+import ProfilePage from "../pages/ProfilePage";
+
+const AuthorizedRoutes: { path: string; element: () => React.JSX.Element }[] = [
+  {
+    path: "home",
+    element: HomePage,
+  },
+  {
+    path: "about",
+    element: AboutPage,
+  },
+  { path: "courses", element: CoursesPage },
+  { path: "teachers", element: TeachersPage },
+  { path: "contacts", element: ContactsPage },
+  { path: "profile", element: ProfilePage }
+];
 
 const AppRoutes = () => {
   const color = useAppSelector((state) => state.theme.color);
@@ -17,16 +33,15 @@ const AppRoutes = () => {
   } else {
     document.body.classList.remove("dark");
   }
+
   return (
     <>
       <Header />
       <Sidebar />
       <Routes>
-        <Route path={"home"} element={<HomePage />} />
-        <Route path={"about"} element={<AboutPage />} />
-        <Route path={"courses"} element={<CoursesPage />} />
-        <Route path={"teachers"} element={<TeachersPage />} />
-        <Route path={"contacts"} element={<ContactsPage />} />
+        {AuthorizedRoutes.map(({ path, element }) => (
+          <Route key={path} path={path} element={<>{element()}</>}></Route>
+        ))}
         <Route path={"*"} element={<Navigate to={"/home"} />} />
       </Routes>
       <Footer />

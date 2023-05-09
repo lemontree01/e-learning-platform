@@ -310,8 +310,10 @@ section {
 
 
 .side-bar .navbar a {
-  display: block;
+  display: flex;
+  flex-direction: row;
   padding: 2rem;
+  align-items: center;
   font-size: 2rem;
 }
 
@@ -319,6 +321,8 @@ section {
   margin-right: 1.5rem;
   color: var(--main-color);
   transition: 0.2s linear;
+  width: 25px;
+  text-align: center;
 }
 
 .side-bar .navbar a span {
