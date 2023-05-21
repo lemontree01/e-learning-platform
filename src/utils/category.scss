@@ -1,0 +1,29 @@
+.category {
+  background-color: var(--light-bg);
+  color: var(--black);
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  span {
+    color: var(--light-color);
+  }
+  cursor: pointer;
+  *:not(span) {
+    font-size: 20px !important;
+    color: var(--black) !important;
+  }
+  &:hover {
+    background-color: var(--black);
+    span {
+      color: var(--white);
+    }
+    *:not(span) {
+      color: var(--white) !important;
+    }
+  }
+}

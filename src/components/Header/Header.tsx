@@ -4,6 +4,11 @@ import Img from "../../assets/images/pic-1.jpg";
 import { useAppDispatch, useAppSelector } from "../../state";
 import { toggleColor, toggleSidebar } from "../../state/features/themeSlice";
 import { Link } from "react-router-dom";
+import SearchIcon from '@mui/icons-material/Search';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -29,22 +34,21 @@ const Header = () => {
             placeholder="search courses..."
             maxLength={100}
           />
-          <button type="submit" className="fas fa-search"></button>
+          <button type="submit"><SearchIcon className={"icon-mui"}/></button>
         </form>
 
         <div className="icons">
-          <div onClick={() => dispatch(toggleSidebar())} id="menu-btn" className="fas fa-bars"></div>
-          <div id="search-btn" className="fas fa-search"></div>
+          <div onClick={() => dispatch(toggleSidebar())} id="menu-btn"><MenuIcon className={"icon-mui"}/></div>
+          {/* <div id="search-btn" className="fas fa-search"></div> */}
           <div
             onClick={toggleIsUserShown}
             id="user-btn"
-            className="fas fa-user"
-          ></div>
+            
+          ><PersonIcon className={"icon-mui"}/></div>
           <div
             onClick={() => dispatch(toggleColor())}
             id="toggle-btn"
-            className={`fas ${color === "dark" ? "fa-sun" : "fa-moon"}`}
-          ></div>
+          >{color === "dark" ? <LightModeIcon className={"icon-mui"}/> : <DarkModeIcon className={"icon-mui"}/>}</div>
         </div>
 
         <div className={`profile ${isUserShown && "active"}`}>
