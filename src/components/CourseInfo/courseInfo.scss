@@ -1,0 +1,152 @@
+$color_1: var(--black);
+$color_2: var(--light-color);
+$color_3: var(--white);
+$color_4: #fff;
+$color_5: var(--main-color);
+$background-color_1: var(--white);
+$background-color_2: var(--light-bg);
+$background-color_3: var(--black);
+$background-color_4: rgba(0, 0, 0, 0.3);
+
+.playlist-details {
+	.row {
+		display: flex;
+		align-items: flex-end;
+		gap: 3rem;
+		flex-wrap: wrap;
+		background-color: $background-color_1;
+		padding: 2rem;
+		.column {
+			flex: 1 1 40rem;
+			.save-playlist {
+				margin-bottom: 1.5rem;
+				button {
+					border-radius: 0.5rem;
+					background-color: $background-color_2;
+					padding: 1rem 1.5rem;
+					cursor: pointer;
+					i {
+						font-size: 2rem;
+						color: $color_1;
+						margin-right: 0.8rem;
+					}
+					span {
+						font-size: 1.8rem;
+						color: $color_2;
+					}
+					&:hover {
+						background-color: $background-color_3;
+						i {
+							color: $color_3;
+						}
+						span {
+							color: $color_3;
+						}
+					}
+				}
+			}
+			.thumb {
+				position: relative;
+				span {
+					font-size: 1.8rem;
+					color: $color_4;
+					background-color: $background-color_4;
+					border-radius: 0.5rem;
+					position: absolute;
+					top: 1rem;
+					left: 1rem;
+					padding: 0.5rem 1.5rem;
+				}
+				img {
+					height: 30rem;
+					width: 100%;
+					object-fit: cover;
+					border-radius: 0.5rem;
+				}
+			}
+			.tutor {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+				margin-bottom: 2rem;
+				img {
+					height: 7rem;
+					width: 7rem;
+					border-radius: 50%;
+					object-fit: cover;
+				}
+				h3 {
+					font-size: 2rem;
+					color: $color_1;
+					margin-bottom: 0.2rem;
+				}
+				span {
+					font-size: 1.5rem;
+					color: $color_2;
+				}
+			}
+			.details {
+				h3 {
+					font-size: 2rem;
+					color: $color_1;
+					text-transform: capitalize;
+				}
+				p {
+					padding: 1rem 0;
+					line-height: 2;
+					font-size: 1.8rem;
+					color: $color_2;
+				}
+			}
+		}
+	}
+}
+.playlist-videos {
+	.box-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+		gap: 1.5rem;
+		justify-content: center;
+		align-items: flex-start;
+		.box {
+			background-color: $background-color_1;
+			border-radius: 0.5rem;
+			padding: 2rem;
+			position: relative;
+			i {
+				position: absolute;
+				top: 2rem;
+				left: 2rem;
+				right: 2rem;
+				height: 20rem;
+				border-radius: 0.5rem;
+				background-color: $background-color_4;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 5rem;
+				color: $color_4;
+				display: none;
+			}
+			&:hover {
+				i {
+					display: flex;
+				}
+				h3 {
+					color: $color_5;
+				}
+			}
+			img {
+				width: 100%;
+				height: 20rem;
+				object-fit: cover;
+				border-radius: 0.5rem;
+			}
+			h3 {
+				margin-top: 1.5rem;
+				font-size: 1.8rem;
+				color: $color_1;
+			}
+		}
+	}
+}

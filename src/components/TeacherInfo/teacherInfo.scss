@@ -1,0 +1,46 @@
+.teacher-profile .details {
+  text-align: center;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  padding: 2rem;
+
+  .tutor {
+    img {
+      height: 10rem;
+      width: 10rem;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 2rem;
+      color: var(--black);
+    }
+
+    span {
+      color: var(--light-color);
+      font-size: 1.7rem;
+    }
+  }
+
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+
+    p {
+      flex: 1 1 20rem;
+      border-radius: 0.5rem;
+      background-color: var(--light-bg);
+      padding: 1.2rem 2rem;
+      font-size: 1.8rem;
+      color: var(--light-color);
+
+      span {
+        color: var(--main-color);
+      }
+    }
+  }
+}

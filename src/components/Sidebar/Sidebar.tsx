@@ -3,6 +3,7 @@ import Avatar from "../../assets/images/pic-1.jpg";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../state";
 import { toggleSidebar } from "../../state/features/themeSlice";
+import "./sidebar.scss"
 
 const Sidebar = () => {
   const isSideBarShown = useAppSelector((state) => state.theme.isSideBarShown);

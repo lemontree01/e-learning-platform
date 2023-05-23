@@ -10,6 +10,9 @@ import TeachersPage from "../pages/TeachersPage";
 import ContactsPage from "../pages/ContactsPage";
 import { useAppSelector } from "../state";
 import ProfilePage from "../pages/ProfilePage";
+import CoursePage from "../pages/CoursePage";
+import LessonPage from "../pages/LessonPage";
+import TeacherPage from "../pages/TeacherPage";
 
 const AuthorizedRoutes: { path: string; element: () => React.JSX.Element }[] = [
   {
@@ -23,7 +26,7 @@ const AuthorizedRoutes: { path: string; element: () => React.JSX.Element }[] = [
   { path: "courses", element: CoursesPage },
   { path: "teachers", element: TeachersPage },
   { path: "contacts", element: ContactsPage },
-  { path: "profile", element: ProfilePage }
+  { path: "profile", element: ProfilePage },
 ];
 
 const AppRoutes = () => {
@@ -42,6 +45,9 @@ const AppRoutes = () => {
         {AuthorizedRoutes.map(({ path, element }) => (
           <Route key={path} path={path} element={<>{element()}</>}></Route>
         ))}
+        <Route path={"/course/:id"} element={<CoursePage/>}/>
+        <Route path={"/course/:id/:lessonId"} element={<LessonPage/>}/>
+        <Route path={"/teachers/:id"} element={<TeacherPage/>}/>
         <Route path={"*"} element={<Navigate to={"/home"} />} />
       </Routes>
       <Footer />

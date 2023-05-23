@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-// const Dotenv = require("dotenv-webpack");
+const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 
 module.exports = {
@@ -16,9 +16,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../public/index.html"),
     }),
-    // new Dotenv({
-    //   systemvars: true,
-    // }),
+    new Dotenv({
+      systemvars: true,
+    }),
     // new webpack.LoaderOptionsPlugin({
     //   options: {
     //     sassResources: [path.resolve(__dirname, "../src/styles/color.scss")],
@@ -52,15 +52,14 @@ module.exports = {
           "style-loader",
           "css-loader",
           "sass-loader",
-          // {
-          //   loader: "sass-resources-loader",
-          //   // options: {
-          //   //   resources: [
-          //   //     path.resolve(__dirname, "../src/styles/colors.scss"),
-          //   //     path.resolve(__dirname, "../src/styles/sizes.scss"),
-          //   //   ],
-          //   // },
-          // },
+          {
+            loader: "sass-resources-loader",
+            options: {
+              resources: [
+                path.resolve(__dirname, "../src/styles/config.scss"),
+              ],
+            },
+          },
         ],
       },
       {

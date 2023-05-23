@@ -1,0 +1,45 @@
+.home-grid {
+  .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 27.5rem);
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-start;
+
+    .box {
+      background-color: var(--white);
+      border-radius: 0.5rem;
+      padding: 2rem;
+
+      .title {
+        font-size: 2rem;
+        color: var(--black);
+        text-transform: capitalize;
+      }
+
+      .categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+    }
+
+    .tutor {
+      padding: 1rem 0;
+      font-size: 1.8rem;
+      color: var(--light-color);
+      line-height: 2;
+    }
+
+    .likes {
+      color: var(--light-color);
+      font-size: 1.7rem;
+      margin-top: 1.5rem;
+
+      span {
+        color: var(--main-color);
+      }
+    }
+  }
+}

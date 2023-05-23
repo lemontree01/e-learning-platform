@@ -9,6 +9,7 @@ import PaletteIcon from "@mui/icons-material/Palette";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
+import "./quickOptions.scss"
 
 const QuickOptions = () => {
   const { likes, comments, playlists } = useAppSelector((state) => state.user);
@@ -34,7 +35,7 @@ const QuickOptions = () => {
 
         <div className="box">
           <h3 className="title">top categories</h3>
-          <div className="flex">
+          <div className="categories">
             <Category name="development" icon={<CodeOffRoundedIcon />} />
             <Category name="business" icon={<AutoGraphRoundedIcon />} />
             <Category name="design" icon={<PaletteIcon />} />
@@ -46,8 +47,7 @@ const QuickOptions = () => {
 
         <div className="box">
           <h3 className="title">popular topics</h3>
-
-          <div className="flex">
+          <div className="categories">
             <Category name="HTML" icon={<i className="fab fa-html5"></i>} />
             <Category name="CSS" icon={<i className="fab fa-css3"></i>} />
             <Category name="javascript" icon={<i className="fab fa-js"></i>} />

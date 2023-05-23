@@ -1,0 +1,158 @@
+:root {
+  --main-color: #AD8B73;
+  --red: #e74c3c;
+  --orange: #f39c12;
+  --light-color: #888;
+  --light-bg: #eee;
+  --black: #2c3e50;
+  --white: #fff;
+  --border: 0.1rem solid rgba(0, 0, 0, 0.2);
+}
+
+body.dark {
+  --light-color: #aaa;
+  --light-bg: #333;
+  --black: #fff;
+  --white: #222;
+  --border: 0.1rem solid rgba(255, 255, 255, 0.2);
+}
+
+.heading {
+  font-size: 2.5rem;
+  color: var(--black);
+  margin-bottom: 2.5rem;
+  border-bottom: var(--border);
+  padding-bottom: 1.5rem;
+  text-transform: capitalize;
+}
+
+.inline-btn,
+.inline-option-btn,
+.inline-delete-btn,
+.btn,
+.delete-btn,
+.option-btn {
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  text-transform: capitalize;
+  padding: 1rem 3rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.btn,
+.delete-btn,
+.option-btn {
+  display: block;
+  width: 100%;
+}
+
+.inline-btn,
+.inline-option-btn,
+.inline-delete-btn {
+  display: inline-block;
+}
+
+.btn,
+.inline-btn {
+  background-color: var(--main-color);
+}
+
+.option-btn,
+.inline-option-btn {
+  background-color: var(--orange);
+}
+
+.delete-btn,
+.inline-delete-btn {
+  background-color: var(--red);
+}
+
+.inline-btn:hover,
+.inline-option-btn:hover,
+.inline-delete-btn:hover,
+.btn:hover,
+.delete-btn:hover,
+.option-btn:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.flex-btn {
+  display: flex;
+  gap: 1rem;
+}
+
+.heading {
+  font-size: 2.5rem;
+  color: var(--black);
+  margin-bottom: 2.5rem;
+  border-bottom: var(--border);
+  padding-bottom: 1.5rem;
+  text-transform: capitalize;
+}
+
+.inline-btn,
+.inline-option-btn,
+.inline-delete-btn,
+.btn,
+.delete-btn,
+.option-btn {
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  text-transform: capitalize;
+  padding: 1rem 3rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.btn,
+.delete-btn,
+.option-btn {
+  display: block;
+  width: 100%;
+}
+
+.inline-btn,
+.inline-option-btn,
+.inline-delete-btn {
+  display: inline-block;
+}
+
+.btn,
+.inline-btn {
+  background-color: var(--main-color);
+}
+
+.option-btn,
+.inline-option-btn {
+  background-color: var(--orange);
+}
+
+.delete-btn,
+.inline-delete-btn {
+  background-color: var(--red);
+}
+
+.inline-btn:hover,
+.inline-option-btn:hover,
+.inline-delete-btn:hover,
+.btn:hover,
+.delete-btn:hover,
+.option-btn:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.flex-btn {
+  display: flex;
+  gap: 1rem;
+}
+
+#search-btn {
+  display: none;
+}

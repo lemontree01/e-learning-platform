@@ -1,0 +1,109 @@
+.watch-video .video-container {
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  padding: 2rem;
+
+  .video {
+    position: relative;
+    margin-bottom: 1.5rem;
+
+    video {
+      border-radius: 0.5rem;
+      width: 100%;
+      object-fit: contain;
+      background-color: #000;
+    }
+  }
+
+  .title {
+    font-size: 2rem;
+    color: var(--black);
+  }
+
+  .info {
+    display: flex;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: var(--border);
+    padding-bottom: 1.5rem;
+    gap: 2.5rem;
+    align-items: center;
+
+    p {
+      font-size: 1.6rem;
+
+      span {
+        color: var(--light-color);
+      }
+    }
+
+    i {
+      margin-right: 1rem;
+      color: var(--main-color);
+    }
+  }
+
+  .tutor {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+
+    img {
+      border-radius: 50%;
+      height: 5rem;
+      width: 5rem;
+      object-fit: cover;
+    }
+
+    h3 {
+      font-size: 2rem;
+      color: var(--black);
+      margin-bottom: 0.2rem;
+    }
+
+    span {
+      font-size: 1.5rem;
+      color: var(--light-color);
+    }
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+
+    button {
+      border-radius: 0.5rem;
+      padding: 1rem 1.5rem;
+      font-size: 1.8rem;
+      cursor: pointer;
+      background-color: var(--light-bg);
+
+      i {
+        margin-right: 1rem;
+        color: var(--black);
+      }
+
+      span {
+        color: var(--light-color);
+      }
+
+      &:hover {
+        background-color: var(--black);
+
+        i, span {
+          color: var(--white);
+        }
+      }
+    }
+  }
+
+  .description {
+    line-height: 1.5;
+    font-size: 1.7rem;
+    color: var(--light-color);
+    margin-top: 2rem;
+  }
+}

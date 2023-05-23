@@ -1,0 +1,85 @@
+.comments {
+  .add-comment {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 3rem;
+
+    h3 {
+      font-size: 2rem;
+      color: var(--black);
+      margin-bottom: 1rem;
+    }
+
+    textarea {
+      height: 20rem;
+      resize: none;
+      background-color: var(--light-bg);
+      border-radius: 0.5rem;
+      border: var(--border);
+      padding: 1.4rem;
+      font-size: 1.8rem;
+      color: var(--black);
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+  }
+
+  .box-container {
+    display: grid;
+    gap: 2.5rem;
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 0.5rem;
+
+    .box {
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        img {
+          height: 5rem;
+          width: 5rem;
+          border-radius: 50%;
+        }
+
+        h3 {
+          font-size: 2rem;
+          color: var(--black);
+          margin-bottom: 0.2rem;
+        }
+
+        span {
+          font-size: 1.5rem;
+          color: var(--light-color);
+        }
+      }
+
+      .comment-box {
+        border-radius: 0.5rem;
+        background-color: var(--light-bg);
+        padding: 1rem 1.5rem;
+        white-space: pre-line;
+        margin: 0.5rem 0;
+        font-size: 1.8rem;
+        color: var(--black);
+        line-height: 1.5;
+        position: relative;
+        z-index: 0;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: -1rem;
+          left: 1.5rem;
+          background-color: var(--light-bg);
+          height: 1.2rem;
+          width: 2rem;
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+      }
+    }
+  }
+}

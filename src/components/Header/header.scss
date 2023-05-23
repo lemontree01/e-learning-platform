@@ -1,0 +1,129 @@
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+  z-index: 1000;
+  border-bottom: var(--border);
+
+  section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding: 1.5rem 2rem;
+
+    .logo {
+      font-size: 2.5rem;
+      color: var(--black);
+    }
+
+    .search-form {
+      width: 50rem;
+      border-radius: 0.5rem;
+      background-color: var(--light-bg);
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+
+      input {
+        margin: 1.5rem 0;
+        width: 100%;
+        font-size: 1.8rem;
+        color: var(--black);
+        background: none;
+        max-height: 100%;
+      }
+
+      button {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        background: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--black);
+      }
+
+      button:hover {
+        color: var(--main-color);
+      }
+    }
+
+    .icons {
+      display: flex;
+      flex-direction: row;
+
+      div {
+        font-size: 2rem;
+        color: var(--black);
+        background-color: var(--light-bg);
+        border-radius: 0.5rem;
+        height: 4.5rem;
+        width: 4.5rem;
+        line-height: 4.5rem;
+        cursor: pointer;
+        text-align: center;
+        margin-left: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      div:hover {
+        background-color: var(--black);
+        color: var(--white);
+      }
+    }
+
+    .profile {
+      position: absolute;
+      top: 120%;
+      right: 2rem;
+      background-color: var(--white);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      overflow: hidden;
+      transform-origin: top right;
+      transform: scale(0);
+      transition: 0.2s linear;
+      width: 30rem;
+
+      .image {
+        height: 10rem;
+        width: 10rem;
+        border-radius: 50%;
+        object-fit: contain;
+        margin-bottom: 1rem;
+      }
+
+      .name {
+        font-size: 2rem;
+        color: var(--black);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .role {
+        font-size: 1.8rem;
+        color: var(--light-color);
+      }
+    }
+
+    .active {
+      transform: scale(1);
+    }
+  }
+}
+
+.icon-mui {
+  font-size: 2.5rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
