@@ -9,7 +9,7 @@ type Theme = {
 
 const initialThemeState: Theme = {
   color: "light",
-  isSideBarShown: false
+  isSideBarShown: true
 };
 
 const themeSlice = createSlice({

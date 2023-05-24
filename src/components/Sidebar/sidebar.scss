@@ -87,8 +87,9 @@
       margin-right: 2.5rem;
     }
   }
-  
-  .active {
+
+  &.active {
     left: -30rem;
   }
 }
+

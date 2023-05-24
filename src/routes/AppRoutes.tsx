@@ -13,6 +13,7 @@ import ProfilePage from "../pages/ProfilePage";
 import CoursePage from "../pages/CoursePage";
 import LessonPage from "../pages/LessonPage";
 import TeacherPage from "../pages/TeacherPage";
+import AuthPage from "../pages/AuthPage";
 
 const AuthorizedRoutes: { path: string; element: () => React.JSX.Element }[] = [
   {
@@ -27,6 +28,8 @@ const AuthorizedRoutes: { path: string; element: () => React.JSX.Element }[] = [
   { path: "teachers", element: TeachersPage },
   { path: "contacts", element: ContactsPage },
   { path: "profile", element: ProfilePage },
+  { path: "login", element: AuthPage},
+  { path: "register", element: AuthPage}
 ];
 
 const AppRoutes = () => {

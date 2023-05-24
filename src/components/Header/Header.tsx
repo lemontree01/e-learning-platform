@@ -68,12 +68,12 @@ const Header = () => {
             view profile
           </Link>
           <div className="flex-btn">
-            <a href="login.html" className="option-btn">
+            <Link to="login" className="option-btn">
               login
-            </a>
-            <a href="register.html" className="option-btn">
+            </Link>
+            <Link to="register" className="option-btn">
               register
-            </a>
+            </Link>
           </div>
         </div>
       </section>

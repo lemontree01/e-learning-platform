@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import themeSlice from "./features/themeSlice";
 import userSlice from "./features/userSlice";
+import coursesSlice from "./features/coursesSlice";
 
 export const store = configureStore({
   reducer: {
     theme: themeSlice,
-    user: userSlice
+    user: userSlice,
+    courses: coursesSlice
   },
 });
 

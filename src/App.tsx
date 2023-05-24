@@ -6,13 +6,14 @@ import { Provider } from "react-redux";
 import { store } from "./state";
 
 const App = () => {
-  
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </Provider>
+    // <React.StrictMode>
+      <Provider store={store}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </Provider>
+    // </React.StrictMode>
   );
 };
 

@@ -19,11 +19,6 @@ module.exports = {
     new Dotenv({
       systemvars: true,
     }),
-    // new webpack.LoaderOptionsPlugin({
-    //   options: {
-    //     sassResources: [path.resolve(__dirname, "../src/styles/color.scss")],
-    //   },
-    // }),
   ],
   module: {
     rules: [
