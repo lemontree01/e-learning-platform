@@ -1,15 +1,16 @@
-import React from 'react'
-import CourseInfo from '../components/CourseInfo/CourseInfo'
-import { useLocation, useParams } from 'react-router'
+import React, { useEffect } from "react";
+import CourseInfo from "../components/CourseInfo/CourseInfo";
+import { useLocation, useParams } from "react-router";
 
 const CoursePage = () => {
-  const params = useLocation()
-  console.log(params)
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   return (
     <>
-      <CourseInfo/>
+      <CourseInfo />
     </>
-  )
-}
+  );
+};
 
-export default CoursePage
+export default CoursePage;

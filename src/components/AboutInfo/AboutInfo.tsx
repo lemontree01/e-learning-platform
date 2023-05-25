@@ -1,25 +1,24 @@
 import React from "react";
 import "./aboutInfo.scss"
+import Background from "../../assets/images/about.png"
+import { Link } from "react-router-dom";
 
 const AboutInfo = () => {
   return (
     <section className="about">
       <div className="row">
         <div className="image">
-          <img src="images/about-img.svg" alt="" />
+          <img src={Background} alt="" />
         </div>
 
         <div className="content">
           <h3>why choose us?</h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut dolorum
-            quasi illo? Distinctio expedita commodi, nemo a quam error
-            repellendus sint, fugiat quis numquam eum eveniet sequi aspernatur
-            quaerat tenetur.
+          Discover the power of E-learning platform, your ultimate destination for programming and web development education. Unleash your coding potential with expert instructors, interactive lessons, and a supportive community. Start your journey today!
           </p>
-          <a href="courses.html" className="inline-btn">
+          <Link to="../courses" className="inline-btn">
             our courses
-          </a>
+          </Link>
         </div>
       </div>
 

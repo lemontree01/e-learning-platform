@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./header.scss";
 import Img from "../../assets/images/pic-1.jpg";
 import { useAppDispatch, useAppSelector } from "../../state";
@@ -9,16 +9,39 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import { debounce } from "../../utils/debounce";
+import { searchCourses, setIsSearched } from "../../state/features/coursesSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const color = useAppSelector((state) => state.theme.color);
 
   const [isUserShown, setIsUserShown] = useState(false);
+  const [query, setQuery] = useState("");
+  const debounceTimerRef = useRef<string | number | NodeJS.Timeout | undefined>(
+    undefined
+  );
+
   const { username, role } = useAppSelector((state) => state.user);
 
   const toggleIsUserShown = () => {
     setIsUserShown((prev) => !prev);
+  };
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    setQuery(e.target.value);
+    if(e.target.value) {
+      dispatch(setIsSearched(true))
+    } else {
+      dispatch(setIsSearched(false))
+    }
+    clearTimeout(debounceTimerRef.current);
+
+    debounceTimerRef.current = setTimeout(() => {
+      console.log("Dassad");
+      dispatch(searchCourses({query: e.target.value}))
+    }, 500);
   };
 
   return (
@@ -27,15 +50,17 @@ const Header = () => {
         <Link to="/home" className="logo">
           E-learning platform
         </Link>
-        <form action="search.html" method="post" className="search-form">
+        <form action="search.html" className="search-form">
           <input
             type="text"
             name="search_box"
             required
             placeholder="search courses..."
-            maxLength={100}
+            maxLength={25}
+            value={query}
+            onChange={onInputChange}
           />
-          <button type="submit">
+          <button>
             <SearchIcon className={"icon-mui"} />
           </button>
         </form>

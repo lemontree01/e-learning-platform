@@ -7,8 +7,10 @@ type Theme = {
   isSideBarShown: boolean 
 };
 
+const initialColor = localStorage.getItem("theme") as AppColor
+
 const initialThemeState: Theme = {
-  color: "light",
+  color: initialColor ?? "light",
   isSideBarShown: true
 };
 
@@ -21,6 +23,7 @@ const themeSlice = createSlice({
     },
     toggleColor(state) {
       state.color = state.color === "light" ? "dark" : "light"
+      localStorage.setItem("theme", state.color)
     },
     toggleSidebar(state) {
       state.isSideBarShown = !state.isSideBarShown
