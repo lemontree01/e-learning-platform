@@ -1,6 +1,7 @@
 import React from "react";
 import "./teachers.scss"
 import { Link } from "react-router-dom";
+import avatars from "../../utils/avatars";
 
 const Teachers = () => {
   return (
@@ -34,7 +35,7 @@ const Teachers = () => {
 
         <div className="box">
           <div className="tutor">
-            <img src="images/pic-2.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
               <h3>john deo</h3>
               <span>developer</span>
@@ -56,7 +57,7 @@ const Teachers = () => {
 
         <div className="box">
           <div className="tutor">
-            <img src="images/pic-3.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
               <h3>john deo</h3>
               <span>developer</span>
@@ -78,7 +79,7 @@ const Teachers = () => {
 
         <div className="box">
           <div className="tutor">
-            <img src="images/pic-4.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
               <h3>john deo</h3>
               <span>developer</span>
@@ -100,7 +101,7 @@ const Teachers = () => {
 
         <div className="box">
           <div className="tutor">
-            <img src="images/pic-5.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
               <h3>john deo</h3>
               <span>developer</span>
@@ -122,7 +123,7 @@ const Teachers = () => {
 
         <div className="box">
           <div className="tutor">
-            <img src="images/pic-6.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
               <h3>john deo</h3>
               <span>developer</span>
@@ -144,7 +145,7 @@ const Teachers = () => {
 
         <div className="box">
           <div className="tutor">
-            <img src="images/pic-7.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
               <h3>john deo</h3>
               <span>developer</span>
@@ -166,7 +167,7 @@ const Teachers = () => {
 
         <div className="box">
           <div className="tutor">
-            <img src="images/pic-8.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
               <h3>john deo</h3>
               <span>developer</span>

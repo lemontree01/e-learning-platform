@@ -10,6 +10,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
 import "./quickOptions.scss";
+import { Link } from "react-router-dom";
 
 const QuickOptions = () => {
   const { likes, comments, playlists } = useAppSelector((state) => state.user);
@@ -74,9 +75,9 @@ const QuickOptions = () => {
               <p className="tutor">
                 Want to become a tutor? Click the button below
               </p>
-              <a href="teachers.html" className="inline-btn">
+              <Link to="" className="inline-btn">
                 get started
-              </a>
+              </Link>
             </div>
           </div>
         </section>

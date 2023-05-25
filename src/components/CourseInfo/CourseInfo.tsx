@@ -4,7 +4,7 @@ import "./courseInfo.scss";
 import { useAppSelector } from "../../state";
 import { Course } from "../../state/features/coursesSlice";
 import { Skeleton } from "@mui/material";
-import LessonLoading from "../ui/LessonLoading/LessonLoading";
+import avatars from "../../utils/avatars";
 
 const CourseInfo = () => {
   const location = useLocation();
@@ -21,17 +21,17 @@ const CourseInfo = () => {
 
         <div className="row">
           <div className="column">
-            <form action="" method="post" className="save-playlist">
-              <button type="submit">
+            <div className="save-playlist">
+              <button>
                 <i className="far fa-bookmark"></i> <span>save course</span>
               </button>
-            </form>
+            </div>
 
             <div className="thumb">
               {isLoading && <Skeleton width={"100%"} height={"30rem"} />}
               <img
                 onLoad={() => setIsLoading(false)}
-                src={`${process.env.SERVER_URL}/course-${course.id}.png`}
+                src={`${process.env.SERVER_URL}/course-${course.id}.jpg`}
                 alt=""
                 style={{ visibility: isLoading ? "hidden" : "visible" }}
               />
@@ -40,10 +40,10 @@ const CourseInfo = () => {
           </div>
           <div className="column">
             <div className="tutor">
-              <img src="images/pic-2.jpg" alt="" />
+              <img src={avatars[course.id % 9]} alt="" />
               <div>
                 <h3>{course.author}</h3>
-                <span>21-10-2022</span>
+                <span>{course.date}</span>
               </div>
             </div>
 
@@ -54,25 +54,27 @@ const CourseInfo = () => {
                 minus reiciendis, error sunt veritatis exercitationem deserunt
                 velit doloribus itaque voluptate.
               </p>
-              <a href="teacher_profile.html" className="inline-btn">
-                view profile
-              </a>
+              <Link to="/home" className="inline-btn">
+                Back
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       <section className="playlist-videos">
-        <h1 className="heading">playlist videos</h1>
+        <h1 className="heading">Course lessons</h1>
 
         <div className="box-container">
-          <LessonLoading />
           {Array(course.numberOfLessons)
             .fill(1)
             .map((_, num: number) => (
               <Link key={num} className="box" to={`/course/${courseId}/${num}`}>
                 <i className="fas fa-play"></i>
-                <img src="images/post-1-1.png" alt="" />
+                <img
+                  src={`${process.env.SERVER_URL}/course-${course.id}.jpg`}
+                  alt=""
+                />
                 <h3>
                   {course.name} (part {num + 1})
                 </h3>

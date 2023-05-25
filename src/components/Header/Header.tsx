@@ -3,14 +3,16 @@ import "./header.scss";
 import Img from "../../assets/images/pic-1.jpg";
 import { useAppDispatch, useAppSelector } from "../../state";
 import { toggleColor, toggleSidebar } from "../../state/features/themeSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { debounce } from "../../utils/debounce";
-import { searchCourses, setIsSearched } from "../../state/features/coursesSlice";
+import {
+  searchCourses,
+  setIsSearched,
+} from "../../state/features/coursesSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +24,8 @@ const Header = () => {
     undefined
   );
 
+  const navigate = useNavigate();
+
   const { username, role } = useAppSelector((state) => state.user);
 
   const toggleIsUserShown = () => {
@@ -29,18 +33,17 @@ const Header = () => {
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
     setQuery(e.target.value);
-    if(e.target.value) {
-      dispatch(setIsSearched(true))
+    if (e.target.value) {
+      dispatch(setIsSearched(true));
     } else {
-      dispatch(setIsSearched(false))
+      dispatch(setIsSearched(false));
     }
     clearTimeout(debounceTimerRef.current);
 
     debounceTimerRef.current = setTimeout(() => {
       console.log("Dassad");
-      dispatch(searchCourses({query: e.target.value}))
+      dispatch(searchCourses({ query: e.target.value }));
     }, 500);
   };
 
@@ -50,7 +53,7 @@ const Header = () => {
         <Link to="/home" className="logo">
           E-learning platform
         </Link>
-        <form action="search.html" className="search-form">
+        <div className="search-form">
           <input
             type="text"
             name="search_box"
@@ -60,10 +63,10 @@ const Header = () => {
             value={query}
             onChange={onInputChange}
           />
-          <button>
+          <button onClick={() => navigate("/home")}>
             <SearchIcon className={"icon-mui"} />
           </button>
-        </form>
+        </div>
 
         <div className="icons">
           <div onClick={() => dispatch(toggleSidebar())} id="menu-btn">

@@ -1,10 +1,11 @@
 import React from "react";
 import "./lessonComments.scss"
+import avatars from "../../utils/avatars";
 
 const LessonComments = () => {
   return (
     <section className="comments">
-      <h1 className="heading">5 comments</h1>
+      <h1 className="heading">2 comments</h1>
 
       <form action="" className="add-comment">
         <h3>add comments</h3>
@@ -17,7 +18,6 @@ const LessonComments = () => {
           rows={10}
         ></textarea>
         <input
-          type="submit"
           value="add comment"
           className="inline-btn"
           name="add_comment"
@@ -29,9 +29,9 @@ const LessonComments = () => {
       <div className="box-container">
         <div className="box">
           <div className="user">
-            <img src="images/pic-1.jpg" alt="" />
+          <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
-              <h3>shaikh anas</h3>
+              <h3>Guest</h3>
               <span>22-10-2022</span>
             </div>
           </div>
@@ -42,76 +42,29 @@ const LessonComments = () => {
               value="edit comment"
               name="edit_comment"
               className="inline-option-btn"
+              disabled
             />
             <input
               type="submit"
               value="delete comment"
               name="delete_comment"
               className="inline-delete-btn"
+              disabled
             />
           </form>
         </div>
 
         <div className="box">
           <div className="user">
-            <img src="images/pic-2.jpg" alt="" />
+            <img src={avatars[Math.random() * 9 | 0]} alt="" />
             <div>
-              <h3>john deo</h3>
+              <h3>Alan Brown</h3>
               <span>22-10-2022</span>
             </div>
           </div>
           <div className="comment-box">awesome tutorial! keep going!</div>
         </div>
 
-        <div className="box">
-          <div className="user">
-            <img src="images/pic-3.jpg" alt="" />
-            <div>
-              <h3>john deo</h3>
-              <span>22-10-2022</span>
-            </div>
-          </div>
-          <div className="comment-box">
-            amazing way of teaching! thank you so much!
-          </div>
-        </div>
-
-        <div className="box">
-          <div className="user">
-            <img src="images/pic-4.jpg" alt="" />
-            <div>
-              <h3>john deo</h3>
-              <span>22-10-2022</span>
-            </div>
-          </div>
-          <div className="comment-box">loved it, thanks for the tutorial!</div>
-        </div>
-
-        <div className="box">
-          <div className="user">
-            <img src="images/pic-5.jpg" alt="" />
-            <div>
-              <h3>john deo</h3>
-              <span>22-10-2022</span>
-            </div>
-          </div>
-          <div className="comment-box">
-            this is what I have been looking for! thank you so much!
-          </div>
-        </div>
-
-        <div className="box">
-          <div className="user">
-            <img src="images/pic-2.jpg" alt="" />
-            <div>
-              <h3>john deo</h3>
-              <span>22-10-2022</span>
-            </div>
-          </div>
-          <div className="comment-box">
-            thanks for the tutorial! how to download source code file?
-          </div>
-        </div>
       </div>
     </section>
   );

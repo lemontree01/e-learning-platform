@@ -1,12 +1,13 @@
 import React from "react";
 import "./contactInfo.scss"
+import contactImg from "../../assets/images/contact-img.svg"
 
 const ContactInfo = () => {
   return (
     <section className="contact">
       <div className="row">
         <div className="image">
-          <img src="images/contact-img.svg" alt="" />
+          <img src={contactImg} alt="" />
         </div>
 
         <form action="" method="post">
@@ -60,15 +61,19 @@ const ContactInfo = () => {
         <div className="box">
           <i className="fas fa-envelope"></i>
           <h3>email address</h3>
-          <a href="mailto:shaikhanas@gmail.com">shaikhanas@gmail.come</a>
-          <a href="mailto:anasbhai@gmail.com">anasbhai@gmail.come</a>
+          <a href="">mailmail@gmail.come</a>
+          <a href="">mailmail@gmail.come</a>
         </div>
 
         <div className="box">
           <i className="fas fa-map-marker-alt"></i>
           <h3>office address</h3>
           <a href="#">
-            flat no. 1, a-1 building, jogeshwari, mumbai, india - 400104
+          Street: 2158 Elm Avenue
+City: Springfield
+State: Illinois
+Postal Code: 62701
+Country: United States
           </a>
         </div>
       </div>

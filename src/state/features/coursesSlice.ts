@@ -86,6 +86,11 @@ const coursesSlice = createSlice({
         state.status = "error";
       })
       .addCase(
+        searchCourses.pending, (state: CoursesState) => {
+          state.status = "loading"
+        }
+      )
+      .addCase(
         searchCourses.fulfilled,
         (state: CoursesState, action: PayloadAction<Course[]>) => {
           state.status = "ok";
