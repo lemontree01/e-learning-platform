@@ -35,7 +35,7 @@ const LessonComments = () => {
               <span>22-10-2022</span>
             </div>
           </div>
-          <div className="comment-box">this is a comment form shaikh anas</div>
+          <div className="comment-box">this is a comment form a user</div>
           <form action="" className="flex-btn">
             <input
               type="submit"
