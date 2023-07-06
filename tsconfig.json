@@ -1,25 +1,23 @@
 {
   "compilerOptions": {
-    "allowUnreachableCode": true,
-    "exactOptionalPropertyTypes": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "outDir": "./dist/",
     "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "alwaysStrict": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "jsx": "react",
-    "esModuleInterop": true,
+    "module": "ESNext",
+    "target": "es5",
+    "jsx": "react-jsx",
     "allowJs": true,
-    "checkJs": true,
-    "isolatedModules": false,
-    "typeRoots": ["node_modules/@types", "src/declarations/index.d.ts"]
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+        "~/*": ["./src/*"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
   },
-  "include": ["src/**/**/*"],
-  "exclude": ["node_modules"]
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+
 }

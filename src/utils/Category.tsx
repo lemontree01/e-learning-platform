@@ -1,19 +1,24 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import "./category.scss"
+import React from 'react';
+import './category.scss';
+import {
+  Button
+} from '~/shared/ui/Button';
 
 interface CategoryProps {
-  name: string,
-  icon: React.ReactNode
+  name: string;
+  icon: React.ReactNode;
 }
 
-const Category: React.FC<CategoryProps> = ({name, icon}) => {
+const Category: React.FC<CategoryProps> = ({ name, icon, }) => {
   return (
-    <div className='category'>
-      {icon}
-      <span>{name}</span>
-    </div>
-  )
-}
+    // <div className='category'>
+    //   {icon}
+    //   <span>{name}</span>
+    // </div>
+    <Button variant={'outlined'} icon={icon}>
+      {name}
+    </Button>
+  );
+};
 
-export default Category
+export default Category;

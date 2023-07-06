@@ -1,0 +1,48 @@
+.box {
+  width: 370px;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+  padding: 2rem;
+  max-width: 370px;
+}
+
+.box-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.not-found {
+  font-size: 20px;
+  color: var(--black);
+}
+
+.tutor {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.thumb {
+  position: relative;
+  img {
+    min-width: 100%;
+    max-width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+  span {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 1.5rem;
+  }
+}

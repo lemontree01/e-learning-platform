@@ -1,6 +1,6 @@
-import React from "react";
-import "./contactInfo.scss"
-import contactImg from "../../assets/images/contact-img.svg"
+import React from 'react';
+import './contactInfo.scss';
+import contactImg from '~/shared/assets/avatars/images/contact-img.svg';
 
 const ContactInfo = () => {
   return (

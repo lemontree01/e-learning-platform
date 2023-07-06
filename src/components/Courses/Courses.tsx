@@ -1,6 +1,8 @@
-import React from "react";
-import "./courses.scss"
-import { Link } from "react-router-dom";
+import React from 'react';
+import './courses.scss';
+import {
+  Link
+} from 'react-router-dom';
 
 const Courses = () => {
   return (

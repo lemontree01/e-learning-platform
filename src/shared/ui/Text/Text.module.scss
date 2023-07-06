@@ -1,0 +1,36 @@
+.xl {
+  font-size: 2.5rem;
+  color: var(--black);
+  // margin-bottom: 2.5rem;
+  // border-bottom: var(--border);
+  // padding-bottom: 1.5rem;
+  // text-transform: capitalize;
+}
+
+.l {
+  font-size: 2rem;
+}
+
+.m {
+  font-size: 1.7rem;
+}
+
+.s {
+  font-size: 1.3rem;
+}
+
+.primary {
+  color: var(--black);
+}
+
+.light {
+  color: var(--light-color);
+}
+
+.accent {
+  color: var(--main-color);
+}
+
+.bold {
+  font-weight: bold;
+}

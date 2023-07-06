@@ -1,0 +1,27 @@
+.link {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  align-items: center;
+  font-size: 2rem;
+
+  i {
+    margin-right: 1.5rem;
+    color: var(--main-color);
+    transition: 0.2s linear;
+    width: 25px;
+    text-align: center;
+  }
+
+  span {
+    color: var(--light-color);
+  }
+}
+
+.link:hover {
+  background-color: var(--light-bg);
+}
+
+.link:hover i {
+  margin-right: 2.5rem;
+}

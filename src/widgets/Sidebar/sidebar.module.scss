@@ -1,0 +1,84 @@
+
+
+.side-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30rem;
+  background-color: var(--white);
+  height: 100vh;
+  border-right: var(--border);
+  z-index: 1200;
+
+  #close-btn {
+    text-align: right;
+    padding: 2rem;
+    display: none;
+
+    i {
+      text-align: right;
+      font-size: 2.5rem;
+      background: var(--red);
+      border-radius: 0.5rem;
+      color: var(--white);
+      cursor: pointer;
+      height: 4.5rem;
+      width: 4.5rem;
+      line-height: 4.5rem;
+      text-align: center;
+    }
+
+    i:hover {
+      background-color: var(--black);
+    }
+  }
+
+  .profile {
+    padding: 3rem 2rem;
+    text-align: center;
+
+    .image {
+      height: 10rem;
+      width: 10rem;
+      border-radius: 50%;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+
+    .name {
+      font-size: 2rem;
+      color: var(--black);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .role {
+      font-size: 1.8rem;
+      color: var(--light-color);
+    }
+  }
+
+  &.active {
+    left: -30rem;
+  }
+}
+
+// body {
+//   padding-left: 0;
+// }
+
+// .side-bar {
+//   left: -30rem;
+//   transition: 0.2s linear;
+// }
+
+// .side-bar #close-btn {
+//   display: block;
+// }
+
+// // .side-bar:not(.active) {
+// //   left: 0;
+// //   box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.8);
+// //   border-right: 0;
+// // }

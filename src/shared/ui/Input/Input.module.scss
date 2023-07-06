@@ -1,0 +1,20 @@
+.input {
+  width: 50rem;
+  border-radius: 0.5rem;
+  background-color: var(--light-bg);
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+
+  input {
+    margin: 1.5rem 0;
+    width: 100%;
+    font-size: 1.8rem;
+    color: var(--black);
+    background: none;
+    max-height: 100%;
+  }
+}
