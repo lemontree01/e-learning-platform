@@ -7,7 +7,7 @@
   <p align="center">
     Образовательная платформа
     <br />
-    <a href="https://lemontree01-e-learning-platform.netlify.app/"><strong>Открыть деплой»</strong></a>
+    <a href="https://lemontree01-e-learning-platform.netlify.app/"><strong>Открыть сайт</strong></a>
     <br />
   </p>
 </div>
