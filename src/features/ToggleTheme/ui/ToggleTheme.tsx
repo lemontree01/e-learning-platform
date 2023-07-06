@@ -2,7 +2,7 @@ import { IconButton } from '~/shared/ui/IconButton';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { getThemeColor, themeActions } from '~/entities/Theme';
-import { useAppDispatch } from '~/state';
+import { useAppDispatch } from '~/shared/state';
 import { Color } from '~/shared/types/Color';
 import { useSelector } from 'react-redux';
 

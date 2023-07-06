@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import AppService from '../../api/service';
+import AppService from '~/app/api/service';
 
 export interface Course {
   author: string;

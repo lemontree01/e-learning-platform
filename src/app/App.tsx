@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRouter } from './providers/Router';
-import Footer from '~/components/Footer/Footer';
+import Footer from '~/shared/components/Footer/Footer';
 import Sidebar from '~/widgets/Sidebar/Sidebar';
 import { Header } from '~/widgets/Header';
 import './styles/app.scss';

@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import Avatar from '~/shared/assets/avatars/images/pic-1.jpg';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../state';
-import { toggleSidebar } from '../../state/features/themeSlice';
+import { useAppDispatch, useAppSelector } from '~/shared/state';
+import { toggleSidebar } from '~/shared/state/features/themeSlice';
 import styles from './sidebar.module.scss';
 import { useSelector } from 'react-redux';
 import { getIsSidebarShown } from '~/entities/Theme';

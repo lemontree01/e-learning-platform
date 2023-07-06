@@ -1,5 +1,4 @@
-import React from 'react';
-import ContactInfo from '../../../components/ContactInfo/ContactInfo';
+import ContactInfo from '~/shared/components/ContactInfo/ContactInfo';
 
 const ContactsPage = () => {
   return (

@@ -1,7 +1,7 @@
 import {
   useEffect
 } from 'react';
-import CourseInfo from '../../../components/CourseInfo/CourseInfo';
+import CourseInfo from '~/shared/components/CourseInfo/CourseInfo';
 
 const CoursePage = () => {
   useEffect(() => {

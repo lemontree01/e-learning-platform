@@ -2,7 +2,7 @@ import { IconButton } from '~/shared/ui/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector } from 'react-redux';
 import { getIsSidebarShown, themeActions } from '~/entities/Theme';
-import { useAppDispatch } from '~/state';
+import { useAppDispatch } from '~/shared/state';
 
 export const ToggleSidebar = () => {
   const isSidebarShown = useSelector(getIsSidebarShown);

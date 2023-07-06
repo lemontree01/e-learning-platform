@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getIsUserShown, themeActions } from '~/entities/Theme';
-import { useAppDispatch } from '~/state';
+import { useAppDispatch } from '~/shared/state';
 import styles from './Profile.module.scss';
 import Img from '~/shared/assets/avatars/images/pic-1.jpg';
 

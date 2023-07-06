@@ -1,16 +1,16 @@
-import React from 'react'
-import { useAppSelector } from '../../state'
-import "./userProfile.scss"
+import React from 'react';
+import { useAppSelector } from '~/shared/state';
+import './userProfile.scss';
 
 const UserProfile = () => {
-  const {username, role} = useAppSelector(state => state.user)
+  const { username, role, } = useAppSelector(state => state.user);
   return (
     <section className="user-profile">
     <h1 className="heading">your profile</h1>
 
     <div className="info">
       <div className="user">
-        <img src={""} alt="" />
+        <img src={''} alt="" />
         <h3>{username}</h3>
         <p>{role}</p>
         <a href="update.html" className="inline-btn">
@@ -60,7 +60,7 @@ const UserProfile = () => {
       </div>
     </div>
   </section>
-  )
-}
+  );
+};
 
-export default UserProfile
+export default UserProfile;

@@ -6,7 +6,7 @@ import {
 } from '~/shared/api/instance';
 import {
   type Course
-} from '../state/features/coursesSlice';
+} from '~/shared/state/features/coursesSlice';
 
 export default class AppService {
   static async getCourses (
