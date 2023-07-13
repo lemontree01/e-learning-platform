@@ -19,8 +19,8 @@ export const courseSlice = createSlice({
   name: 'courses',
   initialState,
   reducers: {
-    setCurrentCourse (state, action: PayloadAction<number>) {
-      state.currentCourse = state.courses[action.payload];
+    setCurrentCourse (state, action: PayloadAction<Course>) {
+      state.currentCourse = action.payload;
     },
     setIsSearched (state, action: PayloadAction<boolean>) {
       state.isSearched = action.payload;
@@ -63,9 +63,12 @@ export const courseSlice = createSlice({
         fetchCoursesByQuery.fulfilled,
         (state: CourseSchema, action: PayloadAction<Course[]>) => {
           state.status = Response.OK;
-          state.searchedCourses = action.payload;
+          state.courses = action.payload;
         }
-      );
+      )
+      .addCase(fetchCoursesByQuery.rejected, (state: CourseSchema) => {
+        state.status = Response.ERROR;
+      });
   },
 });
 

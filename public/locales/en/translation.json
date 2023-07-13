@@ -29,5 +29,9 @@
   "view likes": "view likes",
   "server error": "Server error",
   "loading": "Loading...",
-  "our-courses": "Our courses"
+  "our-courses": "Our courses",
+  "update profile": "update profile",
+  "view profile": "view profile",
+  "login": "login",
+  "register": "register"
 }

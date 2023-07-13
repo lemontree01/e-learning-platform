@@ -1,5 +1,4 @@
-import React from 'react';
-import Teachers from '../../../widgets/Teachers/Teachers';
+import Teachers from '~/widgets/Teachers/Teachers';
 
 const TeachersPage = () => {
   return (

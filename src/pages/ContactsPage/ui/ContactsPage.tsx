@@ -1,4 +1,4 @@
-import ContactInfo from '~/shared/components/ContactInfo/ContactInfo';
+import ContactInfo from '~/widgets/ContactInfo/ContactInfo';
 
 const ContactsPage = () => {
   return (

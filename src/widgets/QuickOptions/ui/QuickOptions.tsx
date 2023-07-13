@@ -1,5 +1,5 @@
 import { Button as InlineButton } from '~/shared/ui/Button/Button';
-import Category from '../../../shared/utils/Category';
+import Category from '~/shared/ui/Category/Category';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
 import AutoGraphRoundedIcon from '@mui/icons-material/AutoGraphRounded';
 import PaletteIcon from '@mui/icons-material/Palette';

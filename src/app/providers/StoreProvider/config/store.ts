@@ -3,6 +3,7 @@ import { type ThunkExtraArg, type StateSchema } from './StateSchema';
 import { courseReducer } from '~/entities/Course';
 import { $api } from '~/shared/api/instance';
 import { themeReducer } from '~/entities/Theme';
+import { useDispatch } from 'react-redux';
 
 export const createReduxStore = (
   initialState?: StateSchema
@@ -29,3 +30,4 @@ export const createReduxStore = (
 };
 
 export type AppDispatch = ReturnType<typeof createReduxStore>['dispatch'];
+export const useAppDispatch = () => useDispatch<AppDispatch>();

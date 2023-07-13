@@ -1,17 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import Avatar from '~/shared/assets/avatars/images/pic-1.jpg';
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '~/shared/state';
-import { toggleSidebar } from '~/shared/state/features/themeSlice';
 import styles from './sidebar.module.scss';
 import { useSelector } from 'react-redux';
-import { getIsSidebarShown } from '~/entities/Theme';
+import { getIsSidebarShown, themeActions } from '~/entities/Theme';
 import { Text } from '~/shared/ui/Text';
 import { Navbar } from '../Navbar';
+import { useAppDispatch } from '~/app/providers/StoreProvider';
 
 const Sidebar = () => {
-  const username = 'dasd';
-  const role = 'dads';
   const dispatch = useAppDispatch();
   const isSideBarShown = useSelector(getIsSidebarShown);
   const body = document.body;
@@ -30,7 +27,7 @@ const Sidebar = () => {
         id={styles['close-btn']}
         onClick={() => {
           if (isSideBarShown) {
-            dispatch(toggleSidebar());
+            dispatch(themeActions.setIsSidebarShown(false));
           }
         }}
       >
@@ -38,7 +35,7 @@ const Sidebar = () => {
       </div>
 
       <div className={styles.profile}>
-        <img src={Avatar} className="image" alt="" />
+        <img src={Avatar} className={styles.image} alt="" />
         <Text size="l" bold>{t('hello')}</Text>
         <Text size="m" variant="light">{t('non-authorized')}</Text>
         <Link to="profile" className="btn">

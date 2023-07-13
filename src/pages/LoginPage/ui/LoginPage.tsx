@@ -1,4 +1,4 @@
-import Login from '~/shared/components/Login/Login';
+import Login from '~/widgets/Login/Login';
 
 const HomePage = () => {
   return (

@@ -21,19 +21,6 @@ const Teachers = () => {
   return (
     <section className="teachers">
       <h1 className="heading">{t('our-teachers')}</h1>
-      <form action="" method="post" className="search-tutor">
-        <input
-          type="text"
-          name="search_box"
-          placeholder={t('placeholder')}
-          required
-        />
-        <button
-          type="submit"
-          className="fas fa-search"
-          name="search_tutor"
-        ></button>
-      </form>
 
       <div className="box-container">
         <div className="box offer">

@@ -1,7 +1,6 @@
-import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRouter } from './providers/Router';
-import Footer from '~/shared/components/Footer/Footer';
+import Footer from '~/widgets/Footer/Footer';
 import Sidebar from '~/widgets/Sidebar/Sidebar';
 import { Header } from '~/widgets/Header';
 import './styles/app.scss';
@@ -11,7 +10,6 @@ import '~/shared/config/i18n';
 
 export const App = () => {
   return (
-  // <React.StrictMode>
       <ErrorBoundary>
         <StoreProvider>
           <BrowserRouter>
@@ -22,6 +20,5 @@ export const App = () => {
           </BrowserRouter>
         </StoreProvider>
       </ErrorBoundary>
-  // </React.StrictMode>
   );
 };

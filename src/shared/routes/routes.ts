@@ -24,19 +24,19 @@ export const getRouteLesson = (lessonId: string) => `/lesson/${lessonId}`;
 export const getRouteAllTeachers = () => '/teachers';
 export const getRouteTeacher = (teacherId: string) => `/teachers/${teacherId}`;
 export const getContacts = () => '/contacts';
-export const getAny = () => '*'
+export const getAny = () => '*';
 
-export const AppRouteByPathPattern: Record<string, AppRoutes> = {
-  [getRouteHome()]: AppRoutes.HOME,
-  [getRouteProfile()]: AppRoutes.PROFILE,
-  [getRouteLogin()]: AppRoutes.LOGIN,
-  [getRouteRegister()]: AppRoutes.REGISTER,
-  [getRouteAbout()]: AppRoutes.ABOUT,
-  [getRouteAllCourses()]: AppRoutes.COURSES,
-  [getRouteCourse(':id')]: AppRoutes.COURSE,
-  [getRouteLesson(':id')]: AppRoutes.LESSON,
-  [getRouteAllTeachers()]: AppRoutes.TEACHERS,
-  [getRouteTeacher(':id')]: AppRoutes.TEACHER,
-  [getContacts()]: AppRoutes.CONTACTS,
-  [getAny()]: AppRoutes.ANY,
-};
+// export const AppRouteByPathPattern: Record<string, AppRoutes> = {
+//   [getRouteHome()]: AppRoutes.HOME,
+//   [getRouteProfile()]: AppRoutes.PROFILE,
+//   [getRouteLogin()]: AppRoutes.LOGIN,
+//   [getRouteRegister()]: AppRoutes.REGISTER,
+//   [getRouteAbout()]: AppRoutes.ABOUT,
+//   [getRouteAllCourses()]: AppRoutes.COURSES,
+//   [getRouteCourse(':id')]: AppRoutes.COURSE,
+//   [getRouteLesson(':id')]: AppRoutes.LESSON,
+//   [getRouteAllTeachers()]: AppRoutes.TEACHERS,
+//   [getRouteTeacher(':id')]: AppRoutes.TEACHER,
+//   [getContacts()]: AppRoutes.CONTACTS,
+//   [getAny()]: AppRoutes.ANY,
+// };

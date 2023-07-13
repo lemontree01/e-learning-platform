@@ -1,5 +1,5 @@
-import AboutInfo from '~/widgets/AboutInfo/AboutInfo';
-import Reviews from '~/widgets/Reviews/Reviews';
+import { AboutInfo } from '~/widgets/AboutInfo';
+import { Reviews } from '~/widgets/Reviews';
 
 const AboutPage = () => {
   return (

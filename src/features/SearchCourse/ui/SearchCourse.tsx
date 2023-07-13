@@ -6,12 +6,23 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Button } from '~/shared/ui/Button';
 import styles from './SearchCourse.module.scss';
 import { useTranslation } from 'react-i18next';
+import { fetchCoursesByQuery }
+  from '~/entities/Course/model/services/fetchCoursesByQuery';
+import { useAppDispatch } from '~/app/providers/StoreProvider';
 
 export const SearchCourse = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
+  const dispatch = useAppDispatch();
 
-  const { t, } = useTranslation();
+  const { t, i18n, } = useTranslation();
+
+  const lang = i18n.language as 'rus' | 'eng';
+
+  const clickHandler = () => {
+    dispatch(fetchCoursesByQuery({ query, lang, }));
+    navigate('/courses');
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -27,13 +38,11 @@ export const SearchCourse = () => {
         }}
         addonRight={
           <Button
-            variant="clear"
-            onClick={() => {
-              navigate('/home');
-            }}
-          >
-            <Icon icon={<SearchIcon />} />
-          </Button>
+          variant="clear"
+          onClick={clickHandler}
+        >
+          <Icon icon={<SearchIcon />} />
+        </Button>
         }
       />
     </div>

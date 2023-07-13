@@ -1,4 +1,4 @@
-import Register from '~/shared/components/Register/Register';
+import Register from '~/widgets/Register/Register';
 
 const RegisterPage = () => {
   return (

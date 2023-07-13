@@ -1,18 +1,22 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { type Course, getCourses, getStatus } from '~/entities/Course';
+import {
+  type Course,
+  getCourses,
+  getStatus,
+  courseActions
+} from '~/entities/Course';
 import { fetchCourses } from '~/entities/Course/model/services/fetchCourses';
 import { avatars } from '~/shared/assets/avatars';
 import { Response } from '~/shared/types/Response';
 import { Avatar } from '~/shared/ui/Avatar';
-import { useAppDispatch } from '~/shared/state';
-import { setCurrentCourse } from '~/shared/state/features/coursesSlice';
 import styles from './CoursesPreview.module.scss';
 import { useTranslation } from 'react-i18next';
 import { Text } from '~/shared/ui/Text';
 import { Divider } from '~/shared/ui/Divider';
 import CourseLoading from '~/shared/ui/CourseLoading/CourseLoading';
+import { useAppDispatch } from '~/app/providers/StoreProvider';
 
 export const CoursesPreview = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +33,8 @@ export const CoursesPreview = () => {
     <Text size="xl" bold>{t('our-courses')}</Text>
     <Divider />
     <div className={styles['box-container']}>
-    {status === Response.ERROR && <div>{t('server error')}</div>}
+    {status === Response.ERROR &&
+    <Text size='l' bold={true} variant='accent'>{t('server error')}</Text>}
     {status === Response.LOADING && [...Array(6)].map((_, index) => (
               <div className={styles.box} key={index}><CourseLoading /></div>
     ))}
@@ -54,8 +59,9 @@ export const CoursesPreview = () => {
                 <Text size='m' bold>{course.name}</Text>
                 <Link
                   to={'../course/' + course.id}
-                  onClick={() => dispatch(setCurrentCourse(course.id))}
-                  className="inline-btn"
+                  onClick={() =>
+                    dispatch(courseActions.setCurrentCourse(course))}
+                  className={`${styles.link} inline-btn`}
                 >
                   view playlist
                 </Link>

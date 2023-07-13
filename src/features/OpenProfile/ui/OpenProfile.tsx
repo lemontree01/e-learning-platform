@@ -1,8 +1,8 @@
 import { IconButton } from '~/shared/ui/IconButton';
 import PersonIcon from '@mui/icons-material/Person';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '~/shared/state';
 import { getIsUserShown, themeActions } from '~/entities/Theme';
+import { useAppDispatch } from '~/app/providers/StoreProvider';
 
 export const OpenProfile = () => {
   const isUserShown = useSelector(getIsUserShown);

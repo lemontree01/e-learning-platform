@@ -1,12 +1,8 @@
 import {
   type AxiosResponse
 } from 'axios';
-import {
-  $api
-} from '~/shared/api/instance';
-import {
-  type Course
-} from '~/shared/state/features/coursesSlice';
+import { type Course } from '~/entities/Course';
+import { $api } from '~/shared/api/instance';
 
 export default class AppService {
   static async getCourses (

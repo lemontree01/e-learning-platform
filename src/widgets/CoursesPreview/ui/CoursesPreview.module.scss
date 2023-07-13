@@ -3,7 +3,14 @@
   border-radius: 0.5rem;
   background-color: var(--white);
   padding: 2rem;
-  max-width: 370px;
+  width: 370px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  margin-top: auto;
 }
 
 .box-container {

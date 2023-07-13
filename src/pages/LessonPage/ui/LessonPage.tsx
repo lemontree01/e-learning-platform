@@ -1,5 +1,5 @@
-import Lesson from '~/shared/components/Lesson/Lesson';
-import LessonComments from '~/shared/components/LessonComments/LessonComments';
+import Lesson from '~/widgets/Lesson/Lesson';
+import LessonComments from '~/widgets/LessonComments/LessonComments';
 
 const LessonPage = () => {
   return (

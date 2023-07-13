@@ -29,5 +29,9 @@
   "view likes": "показать лайки",
   "server error": "Ошибка сервера",
   "loading": "Загрузка...",
-  "our-courses": "Наши курсы"
+  "our-courses": "Наши курсы",
+  "update profile": "Обновить профиль",
+  "view profile": "Показать профиль",
+  "login": "войти",
+  "register": "рег."
 }
