@@ -50,7 +50,8 @@ export const CoursesPreview = () => {
                 <div className={styles.thumb}>
                   <img
                     src={
-                      process.env.SERVER_URL + '/course-' + course.id + '.jpg'
+                      (process.env.SERVER_URL ??
+    'https://sleepy-jay-bracelet.cyclic.app') + '/course-' + course.id + '.jpg'
                     }
                     alt=""
                   />

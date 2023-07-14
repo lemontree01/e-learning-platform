@@ -34,7 +34,8 @@ const CourseInfo = () => {
               {isLoading && <Skeleton width={'100%'} height={'30rem'} />}
               <img
                 onLoad={() => { setIsLoading(false); }}
-                src={`${process.env.SERVER_URL}/course-${course.id}.jpg`}
+                src={`${process.env.SERVER_URL ??
+        'https://sleepy-jay-bracelet.cyclic.app'}/course-${course.id}.jpg`}
                 alt=""
                 style={{ visibility: isLoading ? 'hidden' : 'visible', }}
               />
@@ -75,7 +76,8 @@ const CourseInfo = () => {
               <Link key={num} className="box" to={`/lesson/${num}`}>
                 <i className="fas fa-play"></i>
                 <img
-                  src={`${process.env.SERVER_URL}/course-${course.id}.jpg`}
+                  src={`${process.env.SERVER_URL ??
+            'https://sleepy-jay-bracelet.cyclic.app'}/course-${course.id}.jpg`}
                   alt=""
                 />
                 <h3>
