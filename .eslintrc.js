@@ -27,7 +27,7 @@ module.exports = {
         extensions: [".js", ".jsx", ".tsx"],
       },
     ],
-    "max-len": ["error", { "code": 80 }],
+    "max-len": ["warn", { "code": 100 }],
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "no-unused-vars": "warn",

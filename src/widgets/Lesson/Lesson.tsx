@@ -26,11 +26,11 @@ const Lesson = () => {
           </p>
           <p className="date">
             <i className="fas fa-heart"></i>
-            <span>{(currentCourse?.id % 10) + 30} likes</span>
+            <span>{(currentCourse?.id ?? 0 % 10) + 30} likes</span>
           </p>
         </div>
         <div className="tutor">
-          <img src={avatars[currentCourse?.id % 9]} alt="" />
+          <img src={avatars[currentCourse?.id ?? 0 % 9]} alt="" />
           <div>
             <h3>{currentCourse?.author}</h3>
             <span>developer</span>

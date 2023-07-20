@@ -12,8 +12,8 @@ const TeacherInfo = () => {
     <h1 className="heading">{t('profile details')}</h1>
     <div className="details">
       <div className="tutor">
-        <img src={avatars[+id]} alt="" />
-        <h3>{names[+id]}</h3>
+        <img src={avatars[+(id ?? 0)]} alt="" />
+        <h3>{names[+(id ?? 0)]}</h3>
         <span>{t('developer')}</span>
       </div>
       <div className="flex">

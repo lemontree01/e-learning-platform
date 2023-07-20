@@ -12,7 +12,7 @@ const CourseInfo = () => {
   const dispatch = useAppDispatch();
 
   const course: Course = useSelector(getCurrentCourse) ??
-  JSON.parse(localStorage.getItem('current-course'));
+  JSON.parse(localStorage.getItem('current-course') ?? '');
 
   useEffect(() => {
     localStorage.setItem('current-course', JSON.stringify(course));

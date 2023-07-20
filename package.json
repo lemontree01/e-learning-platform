@@ -87,6 +87,7 @@
     "build:dev": "webpack --config ./webpack/webpack.config.ts --env mode=development",
     "build:prod": "webpack --config ./webpack/webpack.config.ts --env mode=production",
     "lint:ts": "eslint \"**/*.{ts,tsx}\" --fix",
-    "lint:scss": "stylelint \"**/*.scss\" --fix"
+    "lint:scss": "stylelint \"**/*.scss\" --fix",
+    "unit": "jest --config ./test/jest/jest.config.ts"
   }
 }
