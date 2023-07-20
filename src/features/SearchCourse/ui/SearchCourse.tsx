@@ -30,7 +30,7 @@ export const SearchCourse = () => {
         type="text"
         name="search_box"
         required
-        placeholder={t('search-placeholder')}
+        placeholder={t('search-placeholder') ?? ''}
         maxLength={25}
         value={query}
         onChange={(value: string) => {

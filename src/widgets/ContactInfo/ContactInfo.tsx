@@ -18,21 +18,21 @@ const ContactInfo = () => {
           <Text bold size='l'>{t('get in touch')}</Text>
           <input
             type="text"
-            placeholder={t('enter your name')}
+            placeholder={t('enter your name') ?? ''}
             name="name"
             required
             className={styles.box}
           />
           <input
             type="email"
-            placeholder={t('enter your email')}
+            placeholder={t('enter your email') ?? ''}
             name="email"
             required
             className={styles.box}
           />
           <input
             type="number"
-            placeholder={t('enter your number')}
+            placeholder={t('enter your number') ?? ''}
             name="number"
             required
             className={styles.box}
@@ -40,7 +40,7 @@ const ContactInfo = () => {
           <textarea
             name="msg"
             className={styles.box}
-            placeholder={t('enter your message')}
+            placeholder={t('enter your message') ?? ''}
             required
             cols={30}
             rows={10}
