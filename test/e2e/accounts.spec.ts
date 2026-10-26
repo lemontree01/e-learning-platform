@@ -1,10 +1,60 @@
 import { expect, test } from '@playwright/test';
 
+for (const expired of [false, true]) {
+  test(`guest navigation has a clean console${expired ? ' with an expired session' : ''}`, async ({
+    page, context, baseURL,
+  }) => {
+    if (expired) {
+      await context.addCookies([{
+        name: 'learning_session', value: 'a'.repeat(64), url: baseURL ?? 'http://localhost:3000',
+      }]);
+    }
+    const messages: string[] = [];
+    const failures: string[] = [];
+    page.on('console', message => {
+      if (['error', 'warning'].includes(message.type())) messages.push(message.text());
+    });
+    page.on('pageerror', error => messages.push(error.message));
+    page.on('requestfailed', request => {
+      // Full navigations cancel background Next.js prefetches without a console error.
+      const error = request.failure()?.errorText ?? 'Network request failed';
+      if (error !== 'net::ERR_ABORTED') {
+        failures.push(`${error} ${new URL(request.url()).pathname}`);
+      }
+    });
+    page.on('response', response => {
+      if (response.status() >= 400) {
+        failures.push(`${response.status()} ${new URL(response.url()).pathname}`);
+      }
+    });
+    for (const path of ['/home', '/courses', '/login', '/register', '/profile']) {
+      const session = page.waitForResponse(response =>
+        new URL(response.url()).pathname === '/api/auth/session');
+      await page.goto(path);
+      const response = await session;
+      expect(response.status()).toBe(200);
+      expect(await response.json()).toEqual({ user: null, });
+      await page.waitForLoadState('networkidle');
+    }
+    await page.reload();
+    const heading = page.getByRole('heading', { name: 'Sign in to view your account.', });
+    await expect(heading).toBeVisible();
+    // Session discovery is optional; the protected endpoint still rejects guests.
+    expect((await page.request.get('/api/auth/me')).status()).toBe(401);
+    expect(messages).toEqual([]);
+    expect(failures).toEqual([]);
+  });
+}
+
 test('a learner can register, reload their profile, sign out and sign back in', async ({ page, }) => {
   const email = `learner-${Date.now()}@example.test`;
   const password = 'local-test-password-123';
   const errors: string[] = [];
+  const consoleMessages: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => {
+    if (['error', 'warning'].includes(message.type())) consoleMessages.push(message.text());
+  });
   await page.goto('/register');
   await page.getByLabel('Name', { exact: true, }).fill('New Learner');
   await page.getByLabel('Email', { exact: true, }).fill(email);
@@ -17,11 +67,15 @@ test('a learner can register, reload their profile, sign out and sign back in', 
   await page.getByRole('button', { name: 'Create account', exact: true, }).click();
   await expect(page).toHaveURL(/\/profile$/);
   await expect(page.getByText(email, { exact: true, })).toBeVisible();
+  const restored = page.waitForResponse(response =>
+    new URL(response.url()).pathname === '/api/auth/session');
   await page.reload();
+  expect((await restored).status()).toBe(200);
   await expect(page.getByRole('heading', { name: 'New Learner', exact: true, })).toBeVisible();
   await page.getByRole('button', { name: 'Sign out', exact: true, }).click();
   await expect(page.getByRole('heading', { name: 'Sign in to view your account.', })).toBeVisible();
   await page.getByRole('link', { name: 'Sign in', exact: true, }).last().click();
+  expect(consoleMessages).toEqual([]);
   await page.getByLabel('Email', { exact: true, }).fill(email);
   await page.getByLabel('Password', { exact: true, }).fill('incorrect-password');
   await page.getByRole('button', { name: 'Sign in', exact: true, }).click();

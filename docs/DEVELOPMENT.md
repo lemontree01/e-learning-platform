@@ -34,6 +34,8 @@ Open http://localhost:3000. The API defaults to http://localhost:3001.
 
 To use a different API origin, copy `.env.example` to `.env`, update `SERVER_URL` (without `/api`), and restart/rebuild the frontend. Next.js proxies `/api/*` and course thumbnail requests to that origin; browser requests stay on the frontend origin. Vercel builds require a public HTTPS `SERVER_URL` and reject missing values, localhost, credentials, and extra paths. Never add database credentials to the frontend.
 
+The frontend handles `GET /api/auth/session` before the general API rewrite. It returns `200 { user: null }` for guests and expired/revoked sessions, or `200 { user: { id, name, email } }` for a valid session. This optional lookup keeps ordinary signed-out page loads free of failed HTTP requests. Responses are private and never cached; only the HttpOnly session cookie is forwarded to the configured backend. Upstream failures remain `502` errors with a generic message. Protected `/api/auth/me` and authentication operations retain the backend's status codes. This change needs only a frontend deployment.
+
 Both projects use npm and committed `package-lock.json` files. Lifecycle scripts are disabled in `.npmrc`; the current dependencies do not need them to run the app. Development access is bound to loopback. On Windows, use `npm.cmd` if PowerShell blocks `npm.ps1`.
 
 ## Checks and production build

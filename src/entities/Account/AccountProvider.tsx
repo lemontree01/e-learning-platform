@@ -26,12 +26,12 @@ export function AccountProvider ({ children, }: { children: ReactNode }) {
     setLoading(true);
     setError(false);
     try {
-      const response = await $api.get<{ user: User }>('/auth/me');
+      const response = await $api.get<{ user: User | null }>('/auth/session');
       if (version === stateVersion.current) setUser(response.data.user);
     } catch (cause) {
       if (version !== stateVersion.current) return;
       setUser(null);
-      if (!isAxiosError(cause) || cause.response?.status !== 401) setError(true);
+      setError(true);
     } finally {
       if (version === stateVersion.current) setLoading(false);
     }
