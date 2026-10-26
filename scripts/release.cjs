@@ -4,13 +4,33 @@ const org = process.env.VERCEL_ORG_ID;
 const project = process.env.VERCEL_PROJECT_ID;
 function required(key) { if (!process.env[key]) throw new Error('Missing '+key); return process.env[key]; }
 async function api(host, route, token, method = 'GET') {
-  const r = await fetch(host+route, { method, headers: { Authorization: 'Bearer '+required(token), 'User-Agent': 'learning-platform-release', Accept: 'application/json', 'Content-Type': 'application/json' }, ...(method === 'POST' ? {body:'{}'} : {}), signal: AbortSignal.timeout(30000) });
-  if (!r.ok) {
-    const error = new Error('Release API request failed: HTTP '+r.status);
-    error.status = r.status; throw error;
+  const authorization = 'Bearer '+required(token);
+  const endpoint = new URL(host+route);
+  const label = method+' '+endpoint.host+endpoint.pathname;
+  // Only reads are safe to repeat. Ambiguous writes are reconciled by aliasOperation.
+  const attempts = method === 'GET' ? 3 : 1;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      const r = await fetch(host+route, { method, headers: { Authorization: authorization, 'User-Agent': 'learning-platform-release', Accept: 'application/json', 'Content-Type': 'application/json' }, ...(method === 'POST' ? {body:'{}'} : {}), signal: AbortSignal.timeout(30000) });
+      if (!r.ok) {
+        await r.body?.cancel().catch(() => {});
+        const error = new Error('HTTP '+r.status);
+        error.status = r.status; throw error;
+      }
+      const body = await r.text();
+      return body ? JSON.parse(body) : null;
+    } catch (cause) {
+      const code = cause.cause?.code || cause.code;
+      const networkCode = ['ETIMEDOUT','ECONNRESET','ENOTFOUND','EAI_AGAIN','ECONNREFUSED','UND_ERR_CONNECT_TIMEOUT','UND_ERR_SOCKET'].includes(code) ? code : 'network failure';
+      const detail = cause.status ? 'HTTP '+cause.status : cause instanceof SyntaxError ? 'invalid JSON response' : networkCode;
+      const error = new Error('Release API '+label+' failed after '+attempt+' attempt'+(attempt === 1 ? '' : 's')+': '+detail);
+      error.status = cause.status;
+      const retryable = cause.status ? [408,500,502,503,504].includes(cause.status) : !(cause instanceof SyntaxError);
+      if (attempt === attempts || !retryable) throw error;
+      console.warn('Release API '+label+': '+detail+'; retrying ('+(attempt+1)+'/'+attempts+').');
+      await new Promise(resolve => setTimeout(resolve, 1000 * 2 ** (attempt - 1)));
+    }
   }
-  const body = await r.text();
-  return body ? JSON.parse(body) : null;
 }
 function vercel(args, capture = false) {
   const cli = process.env.VERCEL_CLI;
@@ -138,4 +158,4 @@ async function main() {
   if (action === 'rollback') await rollback(); else if (action === 'stage') await stage(); else if (action === 'smoke') await smoke(); else if (action === 'promote') await promote(); else if (action === 'public-smoke') await publicSmoke(); else throw new Error('Unknown release action.');
 }
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
-module.exports = { settled, checkCatalog, parseCandidate, waitForAlias, aliasOperation };
+module.exports = { api, latest, settled, checkCatalog, parseCandidate, waitForAlias, aliasOperation };

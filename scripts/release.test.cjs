@@ -1,6 +1,87 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { settled, checkCatalog, parseCandidate, waitForAlias, aliasOperation } = require('./release.cjs');
+const { api, latest, settled, checkCatalog, parseCandidate, waitForAlias, aliasOperation } = require('./release.cjs');
+
+function mockReadApi(t, responses) {
+  process.env.GITHUB_TOKEN = 'private-test-token';
+  const calls = [], delays = [];
+  t.mock.method(global, 'setTimeout', (callback, delay) => { delays.push(delay); queueMicrotask(callback); return 0; });
+  t.mock.method(global, 'fetch', async (url, options) => {
+    calls.push({ url, options });
+    const response = responses[Math.min(calls.length - 1, responses.length - 1)];
+    if (response instanceof Error) throw response;
+    return response();
+  });
+  return { calls, delays };
+}
+
+test('release API recovers from a transient fetch failure with backoff', async t => {
+  const { calls, delays } = mockReadApi(t, [new TypeError('fetch failed'), () => Response.json({ object: { sha: 'current' } })]);
+  assert.deepEqual(await api('https://api.github.com', '/repos/owner/app/git/ref/heads/master', 'GITHUB_TOKEN'), { object: { sha: 'current' } });
+  assert.equal(calls.length, 2);
+  assert.deepEqual(delays, [1000]);
+  assert.notEqual(calls[0].options.signal, calls[1].options.signal);
+});
+
+test('release API retries transient server and response-body failures', async t => {
+  const { calls, delays } = mockReadApi(t, [
+    () => new Response('Unavailable', { status: 503 }),
+    () => ({ ok: true, text: async () => { throw new TypeError('terminated'); } }),
+    () => Response.json({ ok: true }),
+  ]);
+  assert.deepEqual(await api('https://api.github.com', '/test', 'GITHUB_TOKEN'), { ok: true });
+  assert.equal(calls.length, 3);
+  assert.deepEqual(delays, [1000, 2000]);
+});
+
+test('persistent network failures stop after three attempts with safe endpoint context', async t => {
+  const failure = new TypeError('fetch failed private-test-token');
+  failure.cause = { code: 'UND_ERR_CONNECT_TIMEOUT' };
+  const { calls, delays } = mockReadApi(t, [failure]);
+  await assert.rejects(api('https://api.github.com', '/test?secret=hidden', 'GITHUB_TOKEN'), error => {
+    assert.match(error.message, /GET api.github.com\/test failed after 3 attempts/);
+    assert.match(error.message, /UND_ERR_CONNECT_TIMEOUT/);
+    assert.doesNotMatch(error.message, /private-test-token|hidden|secret/);
+    return true;
+  });
+  assert.equal(calls.length, 3);
+  assert.deepEqual(delays, [1000, 2000]);
+});
+
+test('authentication and rate-limit rejections fail immediately', async t => {
+  for (const status of [401, 403, 429]) {
+    const { calls, delays } = mockReadApi(t, [() => new Response('{}', { status })]);
+    await assert.rejects(api('https://api.github.com', '/test', 'GITHUB_TOKEN'), new RegExp('HTTP ' + status));
+    assert.equal(calls.length, 1);
+    assert.deepEqual(delays, []);
+    t.mock.restoreAll();
+  }
+});
+
+test('malformed API JSON fails without retrying', async t => {
+  const { calls, delays } = mockReadApi(t, [() => new Response('<html>unavailable</html>')]);
+  await assert.rejects(api('https://api.github.com', '/test', 'GITHUB_TOKEN'), /invalid JSON response/);
+  assert.equal(calls.length, 1);
+  assert.deepEqual(delays, []);
+});
+
+test('transient write failures are never resent by the API helper', async t => {
+  for (const response of [new TypeError('fetch failed'), () => new Response('{}', { status: 503 })]) {
+    const { calls, delays } = mockReadApi(t, [response]);
+    await assert.rejects(api('https://api.vercel.com', '/promote', 'GITHUB_TOKEN', 'POST'));
+    assert.equal(calls.length, 1);
+    assert.deepEqual(delays, []);
+    t.mock.restoreAll();
+  }
+});
+
+test('a recovered GitHub request still rejects a stale release commit', async t => {
+  process.env.GITHUB_REPOSITORY = 'owner/app';
+  process.env.GITHUB_SHA = 'old';
+  const { calls } = mockReadApi(t, [new TypeError('fetch failed'), () => Response.json({ object: { sha: 'new' } })]);
+  await assert.rejects(latest(), /newer master commit exists/);
+  assert.equal(calls.length, 2);
+});
 test('unfinished or unknown remote promotions stop releases', () => {
   for (const jobStatus of ['pending','in-progress','unknown',undefined]) assert.throws(() => settled({jobStatus}));
   for (const jobStatus of ['succeeded','failed','skipped']) assert.doesNotThrow(() => settled({jobStatus}));
