@@ -66,7 +66,7 @@ test('renders lesson blocks and reveals the simulated console output', async () 
   expect(screen.getByRole('img', { name: 'React lessons figure', }))
     .toHaveAttribute('src', 'http://localhost:3001/course-12.jpg');
   expect(screen.getByText('console.log(1);')).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: 'Run', }));
+  fireEvent.click(screen.getByRole('button', { name: 'Show expected output', }));
   expect(screen.getByText('React lessons — step 1')).toBeInTheDocument();
 });
 
@@ -74,4 +74,18 @@ test('rejects a lesson index outside the selected course', async () => {
   jest.mocked($api.get).mockResolvedValue({ data: course, });
   openLesson('/course/12/lesson/99');
   expect(await screen.findByRole('heading', { name: /lesson not found/i, })).toBeInTheDocument();
+});
+
+test('uses the actual lesson title for the page heading and outline', async () => {
+  jest.mocked($api.get).mockResolvedValue({
+    data: {
+      ...course,
+      lessons: [{ title: '1. Your first JavaScript program', blocks: [], }],
+    },
+  });
+  openLesson('/course/12/lesson/0');
+  expect(await screen.findByRole('heading', { level: 1, name: 'Your first JavaScript program', }))
+    .toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /01 Your first JavaScript program/i, }))
+    .toHaveAttribute('aria-current', 'page');
 });

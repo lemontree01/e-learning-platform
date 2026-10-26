@@ -17,7 +17,7 @@ export default defineConfig({
       timeout: 60000,
     },
     {
-      command: 'npm start',
+      command: process.env.PLAYWRIGHT_PRODUCTION ? 'npm run serve' : 'npm start',
       url: 'http://localhost:3000',
       reuseExistingServer: false,
       timeout: 60000,

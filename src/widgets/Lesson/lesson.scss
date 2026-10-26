@@ -1,3 +1,13 @@
+.copy-code > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.lesson-drawer-close span {
+  font-size: 2.4rem;
+}
+
 .watch-video {
   padding-top: 3.2rem;
 }
@@ -6,7 +16,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 30rem;
   gap: 4.8rem;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .video-container {
@@ -46,7 +56,7 @@
   border-radius: var(--radius-card);
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
 
   h2 {
@@ -137,7 +147,39 @@
 }
 
 .lesson-code figcaption {
-  padding-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding-block: 1.2rem;
+  border-bottom: var(--border);
+}
+
+.copy-code {
+  color: var(--muted);
+  background: transparent;
+  font-size: var(--text-small);
+  padding: 0.8rem;
+  min-height: 4rem;
+}
+
+.copy-code:hover {
+  color: var(--ink);
+}
+
+.copy-status {
+  display: block;
+  color: var(--muted);
+  font-size: var(--text-small);
+  padding: 0 2.4rem;
+}
+
+.copy-status:empty {
+  display: none;
+}
+
+.lesson-console > .demo-note {
+  margin-block: 1.2rem 2rem;
 }
 
 .lesson-console pre {
@@ -196,6 +238,8 @@
   }
 
   a {
+    position: relative;
+    isolation: isolate;
     display: flex;
     align-items: center;
     gap: 1.2rem;
@@ -206,7 +250,7 @@
     color: var(--muted);
   }
 
-  a > span:first-child {
+  a > span:not(.lesson-active-marker) {
     font-size: var(--text-label);
     line-height: 1.4;
   }
@@ -223,12 +267,36 @@
   }
 }
 
-.current-lesson-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--accent);
-  margin-left: auto;
+.lesson-active-marker {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--raised);
+  border-radius: var(--radius);
+  border-left: 2px solid var(--ink);
+}
+
+.mobile-lesson-bar {
+  display: none;
+}
+
+.lesson-drawer .lesson-outline {
+  position: static;
+  border: 0;
+  padding: 2.4rem 0;
+}
+
+.lesson-drawer-close {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 4.4rem;
+  background: transparent;
+  color: var(--ink);
+  border-bottom: var(--border);
+  padding-bottom: 1.6rem;
+  font-size: var(--text-small);
 }
 
 @media (width <= 1000px) {
@@ -239,6 +307,61 @@
 }
 
 @media (width <= 768px) {
+  .watch-video {
+    padding-bottom: 10rem;
+  }
+
+  .desktop-outline,
+  .lesson-pagination {
+    display: none;
+  }
+
+  .mobile-lesson-bar {
+    position: fixed;
+    bottom: 0;
+    inset-inline: 0;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: 4.4rem minmax(0, 1fr) 4.4rem;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 1.2rem 1.6rem max(1.2rem, env(safe-area-inset-bottom));
+    background: var(--page);
+    border-top: var(--border);
+  }
+
+  .mobile-lesson-bar a,
+  .mobile-lesson-bar button {
+    min-height: 4.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    background: var(--raised);
+    border: var(--border);
+    border-radius: var(--radius);
+  }
+
+  .mobile-lesson-bar button {
+    gap: 1.2rem;
+    font-size: var(--text-small);
+  }
+
+  .mobile-lesson-bar button span:first-child {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    color: var(--muted);
+  }
+
+  .lesson-code figcaption {
+    padding-inline: 1.6rem;
+    gap: 0.8rem;
+  }
+
+  .lesson-code pre {
+    padding: 1.6rem;
+  }
+
   .lesson-layout {
     grid-template-columns: 1fr;
   }

@@ -75,14 +75,33 @@
 
 @media (width <= 600px) {
   .inner {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     padding: 1.2rem 1.6rem;
     gap: 1.2rem;
     justify-content: space-between;
   }
 
+  .inner > a {
+    min-width: 0;
+    font-size: 1.5rem;
+    gap: 0.6rem;
+  }
+
+  .inner > a svg {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .controls { gap: 0.4rem; }
+
   .search {
+    grid-column: 1 / -1;
     order: 3;
     width: 100%;
   }
+}
+
+@media (width <= 360px) {
+  .inner > a { font-size: 1.3rem; }
 }

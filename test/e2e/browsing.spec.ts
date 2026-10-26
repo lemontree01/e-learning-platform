@@ -11,7 +11,7 @@ test('the default black palette is present before React starts', async ({ browse
   const context = await browser.newContext({ javaScriptEnabled: false, });
   try {
     const page = await context.newPage();
-    await page.goto('http://localhost:3000/home');
+    await page.goto(new URL('/home', test.info().project.use.baseURL).href);
     await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
     await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#000000');
   } finally {
@@ -27,7 +27,7 @@ test('monochrome palettes stay consistent across language changes', async ({ pag
     }
   });
   await page.goto('/home');
-  await expect(page.getByRole('heading', { level: 1, name: 'Learning platform', })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Build your programming foundations.', })).toBeVisible();
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
   await expect(page.locator('header')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
   await page.getByRole('button', { name: 'Toggle theme', }).click();
@@ -59,7 +59,7 @@ test('the catalog can recover from a failed request', async ({ page, }) => {
 test('the skip link works and reduced motion keeps transitions quiet', async ({ page, }) => {
   await page.emulateMedia({ reducedMotion: 'reduce', });
   await page.goto('/home');
-  await expect(page.getByRole('heading', { level: 1, name: 'Learning platform', })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Build your programming foundations.', })).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content', })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -108,11 +108,11 @@ test('direct course and lesson links survive refresh', async ({ page, }) => {
   await expect(page.getByRole('heading', {
     name: 'Python Web Scraping', exact: true,
   })).toBeVisible();
-  await page.getByRole('link', { name: 'Python Web Scraping (part 1)', }).click();
+  await page.getByRole('link', { name: '01 Lesson 1. Python Web Scraping Preview lesson', }).click();
   await expect(page).toHaveURL(/\/course\/12\/lesson\/0$/);
-  await expect(page.getByRole('heading', { name: 'Python Web Scraping. Lesson 1', })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Lesson 1. Python Web Scraping', })).toBeVisible();
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'Python Web Scraping. Lesson 1', })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Lesson 1. Python Web Scraping', })).toBeVisible();
   await expect(page.locator('.tutor img')).toBeVisible();
   await expect.poll(async () => await page.locator('.tutor img').evaluate(
     (image: HTMLImageElement) => image.complete && image.naturalWidth > 0

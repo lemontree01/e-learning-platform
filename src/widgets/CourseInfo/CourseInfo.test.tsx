@@ -64,3 +64,15 @@ test('unknown course IDs show a useful not-found state', async () => {
   const recoveryLink = screen.getByRole('link', { name: /back to courses/i, });
   expect(recoveryLink).toHaveAttribute('href', '/courses');
 });
+
+test('uses the lesson titles supplied by the course instead of generated part labels', async () => {
+  jest.mocked($api.get).mockResolvedValue({
+    data: {
+      ...course,
+      lessons: [{ title: '1. Functions and return values', blocks: [], }],
+    },
+  });
+  openCourse();
+  expect(await screen.findByRole('link', { name: /Functions and return values/i, }))
+    .toHaveAttribute('href', '/course/12/lesson/0');
+});

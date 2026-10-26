@@ -9,6 +9,8 @@ import {
   initialThemeColor, initialThemeStyle, themeBootScript
 } from '~/shared/lib/theme/themeBoot';
 import './styles/app.scss';
+import '@fontsource-variable/manrope';
+import '@fontsource/ibm-plex-mono/400.css';
 
 export async function generateMetadata (): Promise<Metadata> {
   const saved = (await cookies()).get(LANGUAGE_COOKIE)?.value;

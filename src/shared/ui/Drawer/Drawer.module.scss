@@ -1,0 +1,65 @@
+.drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  width: min(42rem, 100%);
+  max-width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 2.4rem;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  overflow-y: auto;
+
+  &[open] {
+    animation: drawer-in 280ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  &[data-closing='true'] {
+    animation: drawer-out 220ms ease-in both;
+  }
+
+  &::backdrop {
+    background: var(--overlay);
+    backdrop-filter: blur(4px);
+    animation: backdrop-in 220ms both;
+  }
+
+  &[data-closing='true']::backdrop {
+    animation: backdrop-out 220ms both;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-out {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdrop-out {
+  to {
+    opacity: 0;
+  }
+}

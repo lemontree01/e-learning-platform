@@ -43,14 +43,7 @@
   margin-top: 1rem;
 }
 
-.course-cover img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: var(--radius);
-}
-
-.course-cover > div {
+.course-cover > div:last-child {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -166,9 +159,6 @@
     max-width: 54rem;
   }
 
-  .course-cover img {
-    aspect-ratio: 16 / 9;
-  }
 }
 
 @media (width <= 400px) {

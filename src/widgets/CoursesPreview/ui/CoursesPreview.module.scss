@@ -26,6 +26,8 @@
 }
 
 .topics a {
+  position: relative;
+  isolation: isolate;
   font-size: var(--text-small);
   padding: 0.7rem 1.6rem;
   border-radius: var(--radius);
@@ -33,12 +35,21 @@
   border: 1px solid transparent;
 }
 
+.topic-indicator {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius);
+  background: var(--raised);
+  border: 1px solid var(--line);
+}
+
 .topics a:hover {
   color: var(--ink);
   background: var(--raised);
 }
 
-.topics a[aria-current='page'] {
+.topics a[aria-current="page"] {
   border-color: var(--line);
   background: var(--surface);
   color: var(--ink);
@@ -58,11 +69,14 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  transition: border-color 180ms;
+  transition:
+    border-color 180ms,
+    translate 220ms;
 }
 
 .card:hover {
   border-color: var(--accent);
+  translate: 0 -0.4rem;
 }
 
 .cover {
@@ -71,31 +85,10 @@
   background: var(--raised);
 }
 
-.cover img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-
-.cover::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(transparent 65%, var(--image-shade));
-  pointer-events: none;
-}
-
-.number {
-  position: absolute;
-  bottom: 1.2rem;
-  left: 1.6rem;
-  z-index: 1;
-  color: var(--image-ink);
-  font-size: var(--text-label);
-  font-weight: var(--weight-medium);
-  line-height: 1.4;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    translate: none;
+  }
 }
 
 .content {
@@ -189,7 +182,8 @@
   border-radius: var(--radius-card);
 }
 
-.skeleton div, .skeleton span {
+.skeleton div,
+.skeleton span {
   display: block;
   background: var(--raised);
   border-radius: var(--radius);
@@ -206,6 +200,34 @@
 
 .skeleton span:last-child {
   width: 60%;
+}
+
+.compact {
+  .card {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+  }
+
+  .cover {
+    border-right: 1px solid var(--line);
+  }
+
+  .content {
+    padding: 1.6rem;
+  }
+
+  .metadata {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .author {
+    display: none;
+  }
+
+  h3 {
+    margin-block: 1.6rem;
+  }
 }
 
 @media (width <= 1000px) {

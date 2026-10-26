@@ -1,0 +1,195 @@
+.index {
+  border-block: 1px solid var(--line);
+}
+
+.toolbar,
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2.4rem;
+  padding-block: 1.6rem;
+}
+
+.toolbar p span {
+  color: var(--muted);
+}
+
+.views {
+  display: flex;
+  gap: 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 0.4rem;
+}
+
+.views button {
+  padding: 0.6rem 1.2rem;
+  min-height: 3.2rem;
+  border-radius: 0.3rem;
+  font-size: var(--text-small);
+  color: var(--muted);
+  background: transparent;
+  transition:
+    background 180ms,
+    color 180ms;
+}
+
+.views button[aria-pressed='true'] {
+  background: var(--raised);
+  color: var(--ink);
+}
+
+.lessons {
+  position: relative;
+  list-style: none;
+}
+
+.lessons a {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  padding: 2rem;
+  min-height: 7.2rem;
+  border-bottom: 1px solid var(--line);
+  transition: background 180ms;
+}
+
+.lessons a:hover {
+  background: var(--raised);
+}
+
+.number {
+  font-family: var(--font-mono);
+  color: var(--muted);
+  font-size: var(--text-small);
+}
+
+.title {
+  font-size: var(--text-ui);
+  line-height: 1.5;
+}
+
+.arrow {
+  margin-left: auto;
+  color: var(--muted);
+}
+
+.foot {
+  font-family: var(--font-mono);
+  color: var(--muted);
+  font-size: var(--text-label);
+}
+
+@media (width >= 1024px) {
+  .index[data-view='grid'] {
+    .lessons {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-auto-rows: 15rem;
+    }
+
+    .lessons a {
+      height: 100%;
+      padding: 1.6rem;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 0;
+      border: 1px solid transparent;
+      background: transparent;
+    }
+
+    .lessons a::before {
+      content: '';
+      position: absolute;
+      top: 5rem;
+      left: 1.6rem;
+      right: 1.6rem;
+      height: 1px;
+      z-index: -1;
+      background: var(--line);
+      transform-origin: left;
+      transition:
+        background 180ms,
+        transform 220ms;
+    }
+
+    .lessons a:hover::before,
+    .lessons a:focus-visible::before {
+      background: var(--ink);
+      transform: translateY(-0.2rem);
+    }
+
+    .number {
+      color: var(--muted);
+      font-size: 1.8rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      pointer-events: none;
+      transition: color 180ms;
+    }
+
+    .lessons a:hover .number,
+    .lessons a:focus-visible .number {
+      color: var(--ink);
+    }
+
+    .title {
+      max-width: 18rem;
+      margin-top: 3.2rem;
+    }
+
+    .arrow {
+      position: absolute;
+      right: 1.6rem;
+      top: 1.2rem;
+      opacity: 0;
+      transition: opacity 180ms;
+    }
+
+    .lessons a:hover .arrow,
+    .lessons a:focus-visible .arrow {
+      opacity: 1;
+    }
+  }
+}
+
+@media (width < 1024px) {
+  .views {
+    display: none;
+  }
+
+  .lessons a {
+    padding-inline: 0.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .index[data-view='grid'] .lessons a:hover::before,
+  .index[data-view='grid'] .lessons a:focus-visible::before {
+    transform: none;
+  }
+}
+
+@media (width <= 600px) {
+  .toolbar {
+    align-items: start;
+  }
+
+  .toolbar p span {
+    display: block;
+    margin-top: 0.8rem;
+  }
+
+  .lessons a {
+    padding: 1.6rem;
+    gap: 1.6rem;
+  }
+
+  .foot span:last-child {
+    display: none;
+  }
+}

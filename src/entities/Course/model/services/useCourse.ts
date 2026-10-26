@@ -12,7 +12,7 @@ export function useCourse (id: string | undefined) {
   const language = getApiLanguage(i18n.resolvedLanguage ?? i18n.language);
   const [course, setCourse] = useState<Course>();
   const [status, setStatus] = useState<CourseLoadStatus>('loading');
-  const shownId = useRef<number>();
+  const shownId = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (id === undefined || !/^\d+$/.test(id) || !Number.isSafeInteger(Number(id))) {

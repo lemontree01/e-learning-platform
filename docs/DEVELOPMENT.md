@@ -4,9 +4,9 @@ Run the commands below from the frontend repository root.
 
 An English/Russian Next.js learning platform with minimal black and white themes, a searchable course catalog, and lessons served by the PostgreSQL-backed NestJS API. See [the design contract](DESIGN.md) for the visual direction and scope.
 
-The complete staged roadmap, including the future **Code Observatory** 3D experience, is in [docs/MODERNIZATION.md](MODERNIZATION.md).
+The current homepage, minimal chapter grid, motion, and React compatibility decisions are in [PORTFOLIO.md](PORTFOLIO.md). [MODERNIZATION.md](MODERNIZATION.md) records the historical staged roadmap; its Observatory direction is superseded by the current course-focused design.
 
-The playground is temporarily hidden. Its implementation and translations remain in the repository; set `features.playground` in [src/shared/config/features.ts](../src/shared/config/features.ts) to `true` and rebuild to show it again. With the flag off, its widget is not mounted or loaded, and public links lead to courses instead. Russian interface copy lives in `public/locales/ru/` and was translated with AI for this pass.
+The Observatory implementation and translations remain in the repository, but the current homepage does not mount its widget. Keep `features.playground` in [src/shared/config/features.ts](../src/shared/config/features.ts) set to `false` so legacy recovery links lead to courses. Russian interface copy lives in `public/locales/ru/`.
 
 ## Run locally
 

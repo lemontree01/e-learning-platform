@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom/server.node';
 import { StoreProvider } from './StoreProvider/ui/StoreProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { ToggleTheme } from '~/features/ToggleTheme';

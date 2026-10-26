@@ -1,5 +1,13 @@
 # Frontend redesign contract
 
+## Current portfolio direction — 2026-10-26
+
+The approved sculptural frontend is documented in [PORTFOLIO.md](PORTFOLIO.md).
+It supersedes the historic Observatory direction below: the homepage presents the complete
+JavaScript course through a minimal chapter grid with ordinary lesson links. Keep the
+black/white palettes, localized content, keyboard support, and useful graphics fallback.
+The Observatory remains hidden. Historical verification counts below describe earlier passes.
+
 ## Direction
 
 Current presentation: **Learning platform / Учебная платформа**. The public UI focuses on courses. The playground is preserved behind `features.playground = false` in `src/shared/config/features.ts`, including its component/model tests and translations. Navigation, page metadata, controls, sample names, and course copy are localized through i18next; Russian lesson counts use its plural forms. The original Observatory direction below remains a later design option.

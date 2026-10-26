@@ -1,0 +1,48 @@
+.art {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 5 / 3;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, var(--raised), var(--surface) 75%);
+  border-bottom: 1px solid var(--line);
+  perspective: 80rem;
+}
+
+.object {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 220ms ease-out;
+  transform: rotateX(var(--art-x, 0deg)) rotateY(var(--art-y, 0deg));
+}
+
+.art:hover .object {
+  transform: translateY(-0.4rem) rotateX(var(--art-x, 0deg)) rotateY(var(--art-y, 0deg));
+}
+
+.index,
+.coordinate {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--muted);
+  z-index: 1;
+}
+
+.index {
+  top: 1.6rem;
+  left: 1.6rem;
+}
+
+.coordinate {
+  bottom: 1.6rem;
+  right: 1.6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .object,
+  .art:hover .object {
+    transform: none;
+  }
+}

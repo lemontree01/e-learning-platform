@@ -1,5 +1,6 @@
 :root {
-  --font: 'Segoe UI', -apple-system, 'BlinkMacSystemFont', sans-serif;
+  --font: 'Manrope Variable', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Cascadia Code', consolas, monospace;
   --text-display: clamp(3.6rem, 5vw, 5.6rem);
   --text-title: clamp(2.4rem, 3vw, 3.2rem);
   --text-heading: 1.8rem;
@@ -63,6 +64,10 @@ h3 { font-size: var(--text-heading); }
 
 button, input, textarea, select, code, kbd, samp, pre {
   font: inherit;
+}
+
+code, kbd, samp, pre, .eyebrow {
+  font-family: var(--font-mono);
 }
 
 input, textarea, select {
@@ -164,7 +169,7 @@ section {
 .section-head {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
   gap: 2rem;
   margin-bottom: 2.4rem;
 }
@@ -272,7 +277,7 @@ section {
   }
 
   .section-head {
-    align-items: start;
+    align-items: flex-start;
     flex-direction: column;
     gap: 1rem;
   }

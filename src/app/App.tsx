@@ -1,6 +1,8 @@
 'use client';
 
 import { type ReactNode, useEffect, useRef } from 'react';
+import { motion, MotionConfig } from 'motion/react';
+import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Footer from '~/widgets/Footer/Footer';
 import Sidebar from '~/widgets/Sidebar/Sidebar';
@@ -21,23 +23,37 @@ export const App = ({ children, language, }: { children: ReactNode; language: Ap
     }
   }
   const { t, i18n: instance, } = useTranslation();
+  const pathname = usePathname();
   useEffect(() => {
     document.documentElement.lang = normalizeLanguage(instance.resolvedLanguage);
     document.title = t('app-title');
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      'content', t('app-description')
-    );
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute('content', t('app-description'));
   }, [instance.resolvedLanguage, t]);
   return (
     <ErrorBoundary>
       <StoreProvider>
         <ThemeProvider>
           <AccountProvider>
-          <a href='#main-content' className='skip-link action'>{t('skip-content')}</a>
-          <Header />
-          <Sidebar />
-          <main id='main-content' tabIndex={-1}>{children}</main>
-          <Footer />
+            <MotionConfig reducedMotion="user" transition={{ duration: 0.28, }}>
+              <a href="#main-content" className="skip-link action">
+                {t('skip-content')}
+              </a>
+              <Header />
+              <Sidebar />
+              <main id="main-content" tabIndex={-1}>
+                <motion.div
+                  key={pathname}
+                  initial={{ opacity: 0.6, y: 6, }}
+                  animate={{ opacity: 1, y: 0, }}
+                  transition={{ duration: 0.22, }}
+                >
+                  {children}
+                </motion.div>
+              </main>
+              <Footer />
+            </MotionConfig>
           </AccountProvider>
         </ThemeProvider>
       </StoreProvider>

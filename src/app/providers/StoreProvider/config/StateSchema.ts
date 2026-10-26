@@ -1,6 +1,5 @@
 import {
   type EnhancedStore,
-  type CombinedState,
   type ReducersMapObject,
   type AnyAction,
   type Reducer
@@ -18,7 +17,7 @@ export type StateSchemaKey = keyof StateSchema;
 
 export interface ReducerManager {
   getReducerMap: () => ReducersMapObject<StateSchema>;
-  reduce: (state: StateSchema, action: AnyAction) => CombinedState<StateSchema>;
+  reduce: (state: StateSchema, action: AnyAction) => StateSchema;
   add: (key: StateSchemaKey, reducer: Reducer) => void;
   remove: (key: StateSchemaKey) => void;
 }

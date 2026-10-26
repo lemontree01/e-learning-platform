@@ -37,7 +37,7 @@ test('the complete JavaScript course opens its lesson material and final project
   await page.goto('/course/0/lesson/0');
   await expect(page.getByRole('heading', { name: 'Your first JavaScript program', exact: true, })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Practice', exact: true, })).toBeVisible();
-  await page.getByRole('button', { name: 'Run', exact: true, }).click();
+  await page.getByRole('button', { name: 'Show expected output', exact: true, }).click();
   await expect(page.locator('.lesson-console-output')).toHaveText('Hello, learner!\n5');
   await page.goto('/course/0/lesson/9');
   await expect(page.getByRole('heading', { name: 'Final project: a course progress report', exact: true, })).toBeVisible();
