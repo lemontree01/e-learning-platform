@@ -1,13 +1,19 @@
+'use client';
+
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { useCourse } from '~/entities/Course/model/services/useCourse';
 import { CourseIndex } from '~/widgets/CourseIndex/CourseIndex';
 import { CoursesPreview } from '~/widgets/CoursesPreview';
+import { type HomeSeed } from '../loadHome';
 import styles from './HomePage.module.scss';
 
-const HomePage = () => {
+const HomePage = ({ seed, }: { seed?: HomeSeed }) => {
   const { t, } = useTranslation();
-  const { course, status, } = useCourse('0');
+  const { course, status, } = useCourse(
+    '0',
+    seed?.course ? { language: seed.language, course: seed.course, } : undefined
+  );
   return (
     <>
       <section className={styles.hero}>
@@ -24,11 +30,11 @@ const HomePage = () => {
           </span>
           <p>{t('home-description')}</p>
           <div className={styles.actions}>
-            <Link href="/course/0/lesson/0" className="action">
+            <Link href="/course/0/lesson/0" className="action" prefetch={false}>
               {t('start-learning')}
               <span aria-hidden="true">↗</span>
             </Link>
-            <Link href="/courses" className="text-link">
+            <Link href="/courses" className="text-link" prefetch={false}>
               {t('browse-courses')}
               <span aria-hidden="true">→</span>
             </Link>
@@ -61,7 +67,10 @@ const HomePage = () => {
           </div>
             )}
       </section>
-      <CoursesPreview featured />
+      <CoursesPreview
+        featured
+        seed={seed?.courses ? { language: seed.language, courses: seed.courses, } : undefined}
+      />
     </>
   );
 };

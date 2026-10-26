@@ -4,20 +4,28 @@ import { isAxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, type StateSchema } from '~/app/providers/StoreProvider';
 import AppService from '../../api/courseServices';
-import { getApiLanguage } from '../../api/getApiLanguage';
+import { getApiLanguage, type ApiLanguage } from '../../api/getApiLanguage';
 import { courseActions } from '../slice/courseSlice';
+import { type Course } from '../types/course';
 
 export type CourseLoadStatus = 'loading' | 'ready' | 'not-found' | 'error';
 
-export function useCourse (id: string | undefined) {
+export function useCourse (
+  id: string | undefined,
+  seed?: { language: ApiLanguage; course: Course }
+) {
   const { i18n, } = useTranslation();
   const language = getApiLanguage(i18n.resolvedLanguage ?? i18n.language);
   const dispatch = useAppDispatch();
   const validId = id !== undefined && /^\d+$/.test(id) && Number.isSafeInteger(Number(id));
   const key = `${language}:${Number(id)}`;
-  const course = useSelector((state: StateSchema) =>
+  const stored = useSelector((state: StateSchema) =>
     validId ? state.course.details?.[key] : undefined
   );
+  const seeded = seed?.language === language && validId && seed.course.id === Number(id)
+    ? seed.course
+    : undefined;
+  const course = stored ?? seeded;
   const [failure, setFailure] = useState<{ key: string; status: CourseLoadStatus }>();
 
   useEffect(() => {

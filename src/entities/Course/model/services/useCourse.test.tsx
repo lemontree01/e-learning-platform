@@ -69,6 +69,25 @@ test('caches translations separately and reuses them when switching back', async
   expect($api.get).toHaveBeenCalledTimes(2);
 });
 
+test('shows the server course without requesting it again', () => {
+  const hook = renderHook(
+    () => useCourse('12', { language: 'eng', course, }),
+    { wrapper: createWrapper(), }
+  );
+  expect(hook.result.current).toEqual({ course, status: 'ready', });
+  expect($api.get).not.toHaveBeenCalled();
+});
+
+test('requests a course when the server copy is for another language', async () => {
+  jest.mocked($api.get).mockResolvedValue({ data: course, });
+  const hook = renderHook(
+    () => useCourse('12', { language: 'rus', course: { ...course, name: 'Старый', }, }),
+    { wrapper: createWrapper(), }
+  );
+  expect(hook.result.current).toEqual({ course: undefined, status: 'loading', });
+  await waitFor(() => { expect(hook.result.current.course).toEqual(course); });
+});
+
 test.each([undefined, 'abc', '-1', '9007199254740992'])(
   'rejects invalid course ID %s without a request', (id) => {
     const hook = renderHook(() => useCourse(id), { wrapper: createWrapper(), });

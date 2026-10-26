@@ -7,6 +7,7 @@ import { motion } from 'motion/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import { type Course, getCourses, getStatus } from '~/entities/Course';
+import { getApiLanguage, type ApiLanguage } from '~/entities/Course/api/getApiLanguage';
 import { fetchCourses } from '~/entities/Course/model/services/fetchCourses';
 import { fetchCoursesByQuery } from '~/entities/Course/model/services/fetchCoursesByQuery';
 import { CourseArtwork } from '~/shared/ui/CourseArtwork/CourseArtwork';
@@ -16,24 +17,36 @@ import { Response } from '~/shared/types/Response';
 import { useAppDispatch } from '~/app/providers/StoreProvider';
 import styles from './CoursesPreview.module.scss';
 
-const CoursesPreviewContent = ({ featured = false, }: { featured?: boolean }) => {
+const CoursesPreviewContent = ({
+  featured = false, seed,
+}: {
+  featured?: boolean;
+  seed?: { language: ApiLanguage; courses: Course[] };
+}) => {
   const dispatch = useAppDispatch();
   const { t, i18n, } = useTranslation();
   const params = useSearchParams();
   const [retry, setRetry] = useState(0);
   const query = (params.get('search') ?? '').trim();
   const language = i18n.resolvedLanguage ?? i18n.language;
-  const courses = useSelector(getCourses);
-  const status = useSelector(getStatus);
+  const coursesFromStore = useSelector(getCourses);
+  const requestStatus = useSelector(getStatus);
+  const seededCourses = !query && seed?.language === getApiLanguage(language)
+    ? seed.courses
+    : undefined;
 
   useEffect(() => {
+    if (seededCourses) return;
     const request = query
       ? dispatch(fetchCoursesByQuery({ query, lang: language, }))
       : dispatch(fetchCourses(language));
     return () => {
       request.abort();
     };
-  }, [dispatch, language, query, retry]);
+  }, [dispatch, language, query, retry, seededCourses]);
+
+  const courses = coursesFromStore.length > 0 ? coursesFromStore : (seededCourses ?? []);
+  const status = seededCourses && coursesFromStore.length === 0 ? Response.OK : requestStatus;
 
   const visibleCourses = featured
     ? courses.filter((course) => !isCompleteCourse(course)).slice(0, 3)
@@ -137,7 +150,7 @@ const CoursesPreviewContent = ({ featured = false, }: { featured?: boolean }) =>
               layout
               className={styles.card}
               key={course.id}
-              initial={{ opacity: 0, y: 12, }}
+              initial={false}
               animate={{ opacity: 1, y: 0, }}
               transition={{ duration: 0.28, }}
             >
@@ -186,8 +199,13 @@ const CoursesPreviewContent = ({ featured = false, }: { featured?: boolean }) =>
   );
 };
 
-export const CoursesPreview = ({ featured = false, }: { featured?: boolean }) => (
+export const CoursesPreview = ({
+  featured = false, seed,
+}: {
+  featured?: boolean;
+  seed?: { language: ApiLanguage; courses: Course[] };
+}) => (
   <Suspense fallback={null}>
-    <CoursesPreviewContent featured={featured} />
+    <CoursesPreviewContent featured={featured} seed={seed} />
   </Suspense>
 );

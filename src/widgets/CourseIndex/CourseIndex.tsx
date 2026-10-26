@@ -50,7 +50,7 @@ export function CourseIndex ({ course, }: { course: Course }) {
             key={index}
             transition={{ duration: 0.28, }}
           >
-            <Link href={getRouteLesson(String(course.id), String(index))}>
+            <Link href={getRouteLesson(String(course.id), String(index))} prefetch={false}>
               <span className={styles.number}>
                 {String(index + 1).padStart(2, '0')}
               </span>
