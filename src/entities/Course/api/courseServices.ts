@@ -4,7 +4,7 @@ import {
 import {
   $api
 } from '~/shared/api/instance';
-import { type Course } from '../model/types/course';
+import { type Course, type CourseLesson } from '../model/types/course';
 import { type ApiLanguage } from './getApiLanguage';
 
 export default class AppService {
@@ -32,6 +32,14 @@ export default class AppService {
       params: {
         lang,
       },
+    });
+  }
+
+  static async getLesson (
+    courseId: string, lessonId: string, lang: ApiLanguage, signal?: AbortSignal
+  ): Promise<AxiosResponse<CourseLesson>> {
+    return await $api.get<CourseLesson>(`/courses/${courseId}/lessons/${lessonId}`, {
+      params: { lang, }, signal,
     });
   }
 

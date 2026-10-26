@@ -1,8 +1,7 @@
 'use client';
 
 import { type ReactNode, useEffect, useRef } from 'react';
-import { motion, MotionConfig } from 'motion/react';
-import { usePathname } from 'next/navigation';
+import { MotionConfig } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import Footer from '~/widgets/Footer/Footer';
 import Sidebar from '~/widgets/Sidebar/Sidebar';
@@ -23,7 +22,6 @@ export const App = ({ children, language, }: { children: ReactNode; language: Ap
     }
   }
   const { t, i18n: instance, } = useTranslation();
-  const pathname = usePathname();
   useEffect(() => {
     document.documentElement.lang = normalizeLanguage(instance.resolvedLanguage);
     document.title = t('app-title');
@@ -43,14 +41,9 @@ export const App = ({ children, language, }: { children: ReactNode; language: Ap
               <Header />
               <Sidebar />
               <main id="main-content" tabIndex={-1}>
-                <motion.div
-                  key={pathname}
-                  initial={{ opacity: 0.6, y: 6, }}
-                  animate={{ opacity: 1, y: 0, }}
-                  transition={{ duration: 0.22, }}
-                >
+                <div>
                   {children}
-                </motion.div>
+                </div>
               </main>
               <Footer />
             </MotionConfig>

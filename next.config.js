@@ -1,4 +1,5 @@
 const path = require('path');
+const { sandboxCsp } = require('./scripts/playground-security.cjs');
 
 const configuredOrigin = process.env.SERVER_URL;
 if (process.env.VERCEL && !configuredOrigin) {
@@ -17,6 +18,24 @@ const nextConfig = {
   reactStrictMode: true,
   eslint: { ignoreDuringBuilds: true, },
   images: { disableStaticImages: true, },
+  async headers () {
+    return [{
+      source: '/code-runtime/:path*',
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable', }],
+    }, {
+      source: '/code-runtime/manifest.json',
+      headers: [{ key: 'Cache-Control', value: 'no-store', }],
+    }, {
+      source: '/code-sandbox/frame.html',
+      headers: [
+        { key: 'Content-Security-Policy', value: sandboxCsp, },
+        { key: 'Referrer-Policy', value: 'no-referrer', },
+        { key: 'X-Content-Type-Options', value: 'nosniff', },
+        { key: 'Cache-Control', value: 'no-store', },
+        { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()', }
+      ],
+    }];
+  },
   async rewrites () {
     // https://nextjs.org/docs/15/app/api-reference/config/next-config-js/rewrites#rewriting-to-an-external-url
     return [

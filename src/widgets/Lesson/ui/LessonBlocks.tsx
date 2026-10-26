@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { type LessonBlock } from '~/entities/Course/model/types/course';
 import { serverUrl } from '~/shared/api/instance';
+const CodePlayground = lazy(async () =>
+  await import('~/features/CodePlayground/ui/CodePlayground'));
 
 function mediaUrl (src: string) {
   if (!/^[\w.-]+$/.test(src)) return '';
@@ -51,9 +53,19 @@ function VideoBlock ({
   );
 }
 
-function CodeBlock ({ language, code, }: { language: string; code: string }) {
+function isRunnable (language: string) {
+  return ['javascript', 'js', 'python', 'py'].includes(language.toLowerCase());
+}
+
+function CodeBlock ({ language, code, starters, expected, }: {
+  language: string; code: string; expected?: { command: string; output: string };
+  starters?: Extract<LessonBlock, { type: 'code' }>['starters'];
+}) {
   const { t, } = useTranslation();
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+  const kind = language.toLowerCase();
+  const runnable = isRunnable(language);
+  const runtimeLanguage = ['python', 'py'].includes(kind) ? 'python' : 'javascript';
   useEffect(() => {
     if (copyState !== 'copied') return;
     const timer = setTimeout(() => {
@@ -71,6 +83,14 @@ function CodeBlock ({ language, code, }: { language: string; code: string }) {
       setCopyState('error');
     }
   };
+  if (runnable) {
+    return <Suspense fallback={<div className="lesson-code lesson-editor-loading" aria-busy="true">
+      <p className="eyebrow">{t('code-example')}</p>
+      <p className="demo-note">{t('code-editor-loading')}</p>
+    </div>}>
+      <CodePlayground initialCode={code} initialLanguage={runtimeLanguage} starters={starters} expected={expected} />
+    </Suspense>;
+  }
   return (
     <figure className="lesson-code">
       <figcaption>
@@ -89,9 +109,7 @@ function CodeBlock ({ language, code, }: { language: string; code: string }) {
           </motion.span>
         </button>
       </figcaption>
-      <pre tabIndex={0}>
-        <code>{code}</code>
-      </pre>
+      <pre tabIndex={0}><code>{code}</code></pre>
       <span className="copy-status" role="status">
         {copyState === 'error' ? t('copy-failed') : copyState === 'copied' ? t('copied') : ''}
       </span>
@@ -101,30 +119,13 @@ function CodeBlock ({ language, code, }: { language: string; code: string }) {
 
 function ConsoleBlock ({ command, output, }: { command: string; output: string }) {
   const { t, } = useTranslation();
-  const [ran, setRan] = useState(false);
   return (
-    <div className="lesson-console">
-      <p className="eyebrow">{t('expected-output')}</p>
+    <details className="lesson-console lesson-reference">
+      <summary>{t('expected-output')}</summary>
       <p className="demo-note">{t('output-note')}</p>
-      <pre>
-        <code>$ {command}</code>
-      </pre>
-      <button
-        type="button"
-        className="action"
-        onClick={() => {
-          setRan(true);
-        }}
-        disabled={ran}
-      >
-        {t('show-output')}
-      </button>
-      {ran && (
-        <pre className="lesson-console-output" role="status">
-          {output}
-        </pre>
-      )}
-    </div>
+      <code className="reference-command">$ {command}</code>
+      <pre tabIndex={0} aria-label={t('expected-output')}>{output}</pre>
+    </details>
   );
 }
 
@@ -135,8 +136,16 @@ export function LessonBlocks ({ blocks, title, }: { blocks: LessonBlock[]; title
         if (block.type === 'text') return <TextBlock key={index} {...block} title={title} />;
         if (block.type === 'picture') return <PictureBlock key={index} {...block} />;
         if (block.type === 'video') return <VideoBlock key={index} {...block} />;
-        if (block.type === 'code') return <CodeBlock key={index} {...block} />;
-        if (block.type === 'console') return <ConsoleBlock key={index} {...block} />;
+        if (block.type === 'code') {
+          const next = blocks[index + 1];
+          return <CodeBlock key={index} {...block}
+            expected={next?.type === 'console' && isRunnable(block.language) ? next : undefined} />;
+        }
+        if (block.type === 'console') {
+          const previous = blocks[index - 1];
+          if (previous?.type === 'code' && isRunnable(previous.language)) return null;
+          return <ConsoleBlock key={index} {...block} />;
+        }
         return null;
       })}
     </div>

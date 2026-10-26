@@ -9,5 +9,9 @@ export function RouteLink ({
 }: ComponentProps<typeof Link> & { children?: ReactNode }) {
   const pathname = usePathname();
   const current = pathname === href;
-  return <Link href={href} aria-current={current ? 'page' : undefined} {...props}>{children}</Link>;
+  return (
+    <Link href={href} prefetch={true} aria-current={current ? 'page' : undefined} {...props}>
+      {children}
+    </Link>
+  );
 }

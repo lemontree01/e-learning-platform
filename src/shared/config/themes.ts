@@ -2,7 +2,8 @@ import { Color } from '../types/Color';
 
 type ThemeToken = 'page' | 'surface' | 'raised' | 'ink' | 'muted' | 'accent' |
 'accent-fill' | 'on-accent' | 'line' | 'control-line' | 'positive' |
-'overlay' | 'image-ink' | 'image-shade';
+'overlay' | 'image-ink' | 'image-shade' | 'syntax-keyword' | 'syntax-string' |
+'syntax-number' | 'syntax-function' | 'syntax-definition' | 'syntax-property' | 'syntax-type';
 
 interface ThemeConfig {
   colorScheme: 'dark' | 'light';
@@ -30,6 +31,13 @@ export const themes: Record<Color, ThemeConfig> = {
       overlay: 'rgba(0, 0, 0, 0.7)',
       'image-ink': '#ffffff',
       'image-shade': 'rgba(0, 0, 0, 0.6)',
+      'syntax-keyword': '#c4a7ff',
+      'syntax-string': '#9bd59f',
+      'syntax-number': '#eebc83',
+      'syntax-function': '#86cfff',
+      'syntax-definition': '#f5adc9',
+      'syntax-property': '#d9b982',
+      'syntax-type': '#82d9cf',
     },
   },
   [Color.LIGHT]: {
@@ -49,6 +57,13 @@ export const themes: Record<Color, ThemeConfig> = {
       overlay: 'rgba(0, 0, 0, 0.4)',
       'image-ink': '#ffffff',
       'image-shade': 'rgba(0, 0, 0, 0.6)',
+      'syntax-keyword': '#7538a3',
+      'syntax-string': '#246b38',
+      'syntax-number': '#955322',
+      'syntax-function': '#005f9e',
+      'syntax-definition': '#954067',
+      'syntax-property': '#87500d',
+      'syntax-type': '#226e66',
     },
   },
 };

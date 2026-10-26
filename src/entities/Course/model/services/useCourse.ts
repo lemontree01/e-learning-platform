@@ -1,48 +1,49 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { isAxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch, type StateSchema } from '~/app/providers/StoreProvider';
 import AppService from '../../api/courseServices';
 import { getApiLanguage } from '../../api/getApiLanguage';
-import { type Course } from '../types/course';
+import { courseActions } from '../slice/courseSlice';
 
 export type CourseLoadStatus = 'loading' | 'ready' | 'not-found' | 'error';
 
 export function useCourse (id: string | undefined) {
   const { i18n, } = useTranslation();
   const language = getApiLanguage(i18n.resolvedLanguage ?? i18n.language);
-  const [course, setCourse] = useState<Course>();
-  const [status, setStatus] = useState<CourseLoadStatus>('loading');
-  const shownId = useRef<number | undefined>(undefined);
+  const dispatch = useAppDispatch();
+  const validId = id !== undefined && /^\d+$/.test(id) && Number.isSafeInteger(Number(id));
+  const key = `${language}:${Number(id)}`;
+  const course = useSelector((state: StateSchema) =>
+    validId ? state.course.details?.[key] : undefined
+  );
+  const [failure, setFailure] = useState<{ key: string; status: CourseLoadStatus }>();
 
   useEffect(() => {
-    if (id === undefined || !/^\d+$/.test(id) || !Number.isSafeInteger(Number(id))) {
-      shownId.current = undefined;
-      setCourse(undefined);
-      setStatus('not-found');
-      return;
-    }
+    if (!validId || id === undefined || course) return;
 
-    const numericId = Number(id);
     const controller = new AbortController();
-    if (shownId.current !== numericId) {
-      setCourse(undefined);
-      setStatus('loading');
-    }
+    setFailure(undefined);
     AppService.getCourse(id, language, controller.signal)
       .then(({ data, }) => {
         if (!controller.signal.aborted) {
-          shownId.current = data.id;
-          setCourse(data);
-          setStatus('ready');
+          dispatch(courseActions.cacheCourse({ key, course: data, }));
         }
       })
       .catch((error: unknown) => {
         if (!controller.signal.aborted) {
-          setStatus(isAxiosError(error) && error.response?.status === 404 ? 'not-found' : 'error');
+          setFailure({
+            key,
+            status: isAxiosError(error) && error.response?.status === 404 ? 'not-found' : 'error',
+          });
         }
       });
     return () => { controller.abort(); };
-  }, [id, language]);
+  }, [id, language, key, validId, course, dispatch]);
 
+  const status: CourseLoadStatus = !validId
+    ? 'not-found'
+    : course ? 'ready' : failure?.key === key ? failure.status : 'loading';
   return { course, status, };
 }

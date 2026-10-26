@@ -73,9 +73,11 @@ Non-mutating lint commands are `npm run lint:ts` and `npm run lint:scss`. Fronte
 - English/Russian course catalogs, search, thumbnails, and language switching.
 - Course details loaded by their URL, including fresh visits and refresh.
 - Course-specific lesson links: `/course/:courseId/lesson/:lessonId`.
+- Course details include only the ordered lesson titles; no lesson bodies are downloaded for the overview. Opening a lesson requests `GET /api/courses/:courseId/lessons/:lessonIndex?lang=eng|rus`. Only that stored lesson's title and blocks are returned. Loading and retry states stay within the lesson body, leaving its outline visible. Redux caches course outlines by course/language and opened lesson bodies by course/index/language until a full reload. Back and revisiting an opened lesson reuse its body; unopened lessons are never prefetched. Main navigation and lesson links may prefetch their Next.js routes in production, and the page container stays mounted across URL changes.
 - Recovery states for missing courses, invalid lessons, and old lesson links without a course identifier.
 - Mobile search/navigation and theme switching.
 - Registration, sign-in, persistent seven-day sessions, profile display, and sign-out at `/register`, `/login`, and `/profile`. Account forms and errors are translated into English and Russian. Sessions use HttpOnly cookies through the same-origin API proxy.
+- JavaScript/Python lesson examples open directly in an editor with colorful syntax highlighting, completion, optional input, live output, Run/Stop/Reset, and isolated browser execution. The original expected answer can be expanded for comparison. Python downloads only when first run. Lesson text, code, reference answers, and alternate-language starters are supplied by the backend. Deploy the updated backend and run `npm run db:seed` there to upgrade unchanged lessons with language starters; no schema migration is needed. See [the runtime/security contract](CODE_PLAYGROUND.md) for limitations, asset generation and abuse tests. This does not enable the legacy Observatory feature flag.
 - A complete ten-lesson JavaScript course in both languages, including examples, exercises, solutions, and a final project. After seeding, open `/course/0/lesson/0`; the final project is `/course/0/lesson/9`.
 
 ## What is still unfinished

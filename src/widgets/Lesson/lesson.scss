@@ -195,6 +195,31 @@
   color: var(--positive);
 }
 
+.lesson-reference summary {
+  cursor: pointer;
+  min-height: 4.4rem;
+  font-size: var(--text-ui);
+  font-weight: var(--weight-medium);
+}
+
+.lesson-reference > code {
+  display: block;
+  margin-bottom: 0.8rem;
+  color: var(--muted);
+  font-size: var(--text-small);
+}
+
+.lesson-reference pre {
+  margin-top: 1.2rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.lesson-editor-loading {
+  min-height: 36rem;
+  padding: 2.4rem;
+}
+
 .lesson-pagination {
   display: flex;
   justify-content: space-between;

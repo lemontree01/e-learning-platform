@@ -18,6 +18,7 @@ function Outline ({ course, index, }: { course: Course; index: number }) {
         {Array.from({ length: course.numberOfLessons, }, (_, lesson) => (
           <li key={lesson}>
             <Link
+              prefetch={true}
               href={getRouteLesson(String(course.id), String(lesson))}
               aria-current={lesson === index ? 'page' : undefined}
             >
@@ -50,6 +51,7 @@ export function LessonNavigation ({ course, index, }: { course: Course; index: n
         {index > 0
           ? (
           <Link
+            prefetch={true}
             href={getRouteLesson(String(course.id), String(index - 1))}
             aria-label={t('previous-lesson')}
           >
@@ -76,6 +78,7 @@ export function LessonNavigation ({ course, index, }: { course: Course; index: n
         {index + 1 < course.numberOfLessons
           ? (
           <Link
+            prefetch={true}
             href={getRouteLesson(String(course.id), String(index + 1))}
             aria-label={t('next-lesson')}
           >

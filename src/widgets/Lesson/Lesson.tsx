@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useCourse } from '~/entities/Course/model/services/useCourse';
+import { useLesson } from '~/entities/Course/model/services/useLesson';
 import { CourseFeedback } from '~/entities/Course/ui/CourseFeedback';
 import { avatars } from '~/shared/assets/avatars';
 import { getRouteLesson } from '~/shared/routes/routes';
-import { features } from '~/shared/config/features';
 import { lessonTitle } from '~/entities/Course/model/presentation';
 import { LessonBlocks } from './ui/LessonBlocks';
 import { LessonNavigation } from './ui/LessonNavigation';
@@ -23,7 +23,13 @@ const Lesson = () => {
         ? params.id
         : undefined;
   const { course, status, } = useCourse(courseId);
-  const { t, } = useTranslation();
+  const index = Number(lessonId);
+  const validLesson = course !== undefined && lessonId !== undefined &&
+    /^\d+$/.test(lessonId) && Number.isSafeInteger(index) && index < course.numberOfLessons;
+  const { lesson, status: lessonStatus, retry, } = useLesson(
+    validLesson ? courseId : undefined, validLesson ? lessonId : undefined
+  );
+  const { t, i18n, } = useTranslation();
   if (!courseId) {
     return (
       <section>
@@ -37,13 +43,7 @@ const Lesson = () => {
     );
   }
   if (!course || status !== 'ready') return <CourseFeedback status={status} />;
-  const index = Number(lessonId);
-  if (
-    lessonId === undefined ||
-    !/^\d+$/.test(lessonId) ||
-    !Number.isSafeInteger(index) ||
-    index >= course.numberOfLessons
-  ) {
+  if (!validLesson) {
     return (
       <section>
         <div className="state-panel">
@@ -82,33 +82,34 @@ const Lesson = () => {
               <span>{course.date}</span>
             </div>
           </div>
-          {course.lessons?.[index]
-            ? (
+          <div aria-live="polite" aria-busy={lessonStatus === 'loading'}>
+          {lessonStatus === 'loading'
+            ? <p role="status">{t('loading')}</p>
+            : lesson
+              ? (
             <LessonBlocks
-              blocks={course.lessons[index].blocks}
+              key={`${i18n.resolvedLanguage ?? i18n.language}:${course.id}:${index}`}
+              blocks={lesson.blocks}
               title={lessonTitle(course, index, '')}
             />
-              )
-            : (
+                )
+              : (
             <div className="lesson-placeholder">
-              <span className="placeholder-symbol" aria-hidden="true">
-                ⌘
-              </span>
-              <h2>{t('coming-soon-title')}</h2>
-              <p>{t('coming-soon-description')}</p>
-              <Link
-                href={features.playground ? '/home#observatory' : `/course/${course.id}`}
-                className="action action-secondary"
-              >
-                {t(features.playground ? 'try-observatory' : 'back-to-overview')}
-                <ArrowForwardIcon />
-              </Link>
+              {lessonStatus === 'not-found'
+                ? <h2>{t('lesson-not-found')}</h2>
+                : <>
+                  <p role="alert">{t('lesson-load-error')}</p>
+                  <button type="button" className="action action-secondary" onClick={retry}>
+                    {t('try-again')}
+                  </button>
+                </>}
             </div>
-              )}
+                )}
+          </div>
           <nav className="lesson-pagination" aria-label={t('lesson-navigation')}>
             {index > 0
               ? (
-              <Link href={getRouteLesson(String(course.id), String(index - 1))}>
+              <Link prefetch={true} href={getRouteLesson(String(course.id), String(index - 1))}>
                 <ArrowBackIcon />
                 {t('previous-lesson')}
               </Link>
@@ -117,7 +118,7 @@ const Lesson = () => {
               <span />
                 )}
             {index + 1 < course.numberOfLessons && (
-              <Link href={getRouteLesson(String(course.id), String(index + 1))}>
+              <Link prefetch={true} href={getRouteLesson(String(course.id), String(index + 1))}>
                 {t('next-lesson')}
                 <ArrowForwardIcon />
               </Link>
