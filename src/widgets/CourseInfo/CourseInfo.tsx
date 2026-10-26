@@ -1,94 +1,74 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import './courseInfo.scss';
-import { Skeleton } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { type Course, getCurrentCourse } from '~/entities/Course';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
+import { useCourse } from '~/entities/Course/model/services/useCourse';
+import { CourseFeedback } from '~/entities/Course/ui/CourseFeedback';
 import { avatars } from '~/shared/assets/avatars';
-import { useAppDispatch } from '~/app/providers/StoreProvider';
+import { getCourseImage } from '~/shared/api/instance';
+import { getRouteLesson } from '~/shared/routes/routes';
+import './courseInfo.scss';
 
 const CourseInfo = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useAppDispatch();
+  const params = useParams();
+  const id = typeof params.id === 'string' ? params.id : undefined;
+  const { course, status, } = useCourse(id);
+  const { t, } = useTranslation();
+  if (!course || status !== 'ready') return <CourseFeedback status={status} />;
 
-  const course: Course = useSelector(getCurrentCourse) ??
-  JSON.parse(localStorage.getItem('current-course') ?? '');
-
-  useEffect(() => {
-    localStorage.setItem('current-course', JSON.stringify(course));
-  }, [dispatch, course]);
-
-  return (
-    <>
-      <section className="playlist-details">
-        <h1 className="heading">Course Info</h1>
-        <div className="row">
-          <div className="column">
-            <div className="save-playlist">
-              <button>
-                <i className="far fa-bookmark"></i> <span>save course</span>
-              </button>
-            </div>
-
-            <div className="thumb">
-              {isLoading && <Skeleton width={'100%'} height={'30rem'} />}
-              <img
-                onLoad={() => { setIsLoading(false); }}
-                src={`${process.env.SERVER_URL ??
-        'https://sleepy-jay-bracelet.cyclic.app'}/course-${course.id}.jpg`}
-                alt=""
-                style={{ visibility: isLoading ? 'hidden' : 'visible', }}
-              />
-              <span>{course.numberOfLessons} videos</span>
-            </div>
+  return <>
+    <section className='playlist-details'>
+      <nav className='course-breadcrumb' aria-label={t('breadcrumb-label')}>
+        <Link href='/courses'><ArrowBackIcon />{t('back-to-courses')}</Link>
+        <span>/</span><span>{t('course-overview')}</span>
+      </nav>
+      <div className='course-overview-grid'>
+        <div className='course-introduction'>
+          <p className='eyebrow'>
+            {t('collection-label')} / {String(course.id + 1).padStart(2, '0')}
+          </p>
+          <h1>{course.name}</h1>
+          <p className='course-description'>{t('course-demo-description')}</p>
+          <div className='course-facts'>
+            <span><AutoStoriesOutlinedIcon />
+              {t('lesson-count', { count: course.numberOfLessons, })}</span>
+            <span>{t('demo-course')}</span>
           </div>
-          <div className="column">
-            <div className="tutor">
-              <img src={avatars[course.id % 9]} alt="" />
-              <div>
-                <h3>{course.author}</h3>
-                <span>{course.date}</span>
-              </div>
-            </div>
-
-            <div className="details">
-              <h3>{course.name}</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum
-                minus reiciendis, error sunt veritatis exercitationem deserunt
-                velit doloribus itaque voluptate.
-              </p>
-              <Link to="/home" className="inline-btn">
-                Back
-              </Link>
-            </div>
+          <Link href={getRouteLesson(String(course.id), '0')} className='action'>
+            {t('open-first-lesson')}<ArrowForwardIcon />
+          </Link>
+          <div className='tutor'>
+            <img src={avatars[course.id % avatars.length]} alt='' />
+            <div><span className='eyebrow'>{t('course-author')}</span><p>{course.author}</p></div>
           </div>
         </div>
-      </section>
-
-      <section className="playlist-videos">
-        <h1 className="heading">Course lessons</h1>
-
-        <div className="box-container">
-          {Array(course.numberOfLessons)
-            .fill(1)
-            .map((_, num: number) => (
-              <Link key={num} className="box" to={`/lesson/${num}`}>
-                <i className="fas fa-play"></i>
-                <img
-                  src={`${process.env.SERVER_URL ??
-            'https://sleepy-jay-bracelet.cyclic.app'}/course-${course.id}.jpg`}
-                  alt=""
-                />
-                <h3>
-                  {course.name} (part {num + 1})
-                </h3>
-              </Link>
-            ))}
+        <div className='course-cover'>
+          <img src={getCourseImage(course.id)} alt={course.name} />
+          <div><span className='eyebrow'>{t('brand-name')}</span>
+            <span className='eyebrow'>{course.date}</span></div>
         </div>
-      </section>
-    </>
-  );
+      </div>
+    </section>
+    <section className='playlist-videos'>
+      <div className='section-head'>
+        <div><p className='eyebrow'>{t('course-outline')}</p><h2>{t('course-lessons')}</h2></div>
+        <p className='demo-note'>{t('outline-description')}</p>
+      </div>
+      <ol className='lesson-list'>
+        {Array.from({ length: course.numberOfLessons, }, (_, index) => {
+          const name = `${course.name} (${t('part')} ${index + 1})`;
+          return <li key={index}>
+            <Link href={getRouteLesson(String(course.id), String(index))}>
+              <span className='lesson-number'>{String(index + 1).padStart(2, '0')}</span>
+              <div><h3>{name}</h3><p>{t('lesson-preview')}</p></div>
+              <ArrowForwardIcon />
+            </Link>
+          </li>;
+        })}
+      </ol>
+    </section>
+  </>;
 };
-
 export default CourseInfo;

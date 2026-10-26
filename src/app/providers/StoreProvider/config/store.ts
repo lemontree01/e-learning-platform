@@ -19,7 +19,7 @@ export const createReduxStore = (
 
   return configureStore({
     reducer,
-    devTools: IS_DEV,
+    devTools: process.env.NODE_ENV !== 'production',
     preloadedState: initialState,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       thunk: {

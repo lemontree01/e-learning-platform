@@ -3,8 +3,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector } from 'react-redux';
 import { getIsSidebarShown, themeActions } from '~/entities/Theme';
 import { useAppDispatch } from '~/app/providers/StoreProvider';
+import { useTranslation } from 'react-i18next';
 
 export const ToggleSidebar = () => {
+  const { t, } = useTranslation();
   const isSidebarShown = useSelector(getIsSidebarShown);
   const dispatch = useAppDispatch();
 
@@ -13,7 +15,9 @@ export const ToggleSidebar = () => {
   };
 
   return (
-    <IconButton onClick={toggleIsSidebarShown}>
+    <IconButton onClick={toggleIsSidebarShown} aria-label={t('toggle-navigation')}
+      title={t('toggle-navigation')}
+      aria-expanded={isSidebarShown} aria-controls='main-navigation'>
       <MenuIcon />
     </IconButton>
   );

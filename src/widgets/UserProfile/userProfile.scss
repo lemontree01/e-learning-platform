@@ -21,12 +21,12 @@
 }
 
 .user-profile .info .user h3 {
-  font-size: 2rem;
+  font-size: var(--text-heading);
   color: var(--black);
 }
 
 .user-profile .info .user p {
-  font-size: 1.7rem;
+  font-size: var(--text-body);
   color: var(--light-color);
   padding: 0.3rem 0;
 }
@@ -52,7 +52,7 @@
 }
 
 .user-profile .info .box-container .box .flex i {
-  font-size: 2rem;
+  font-size: var(--text-heading);
   color: var(--white);
   background-color: var(--black);
   text-align: center;
@@ -63,11 +63,11 @@
 }
 
 .user-profile .info .box-container .box .flex span {
-  font-size: 2.5rem;
+  font-size: var(--text-title);
   color: var(--main-color);
 }
 
 .user-profile .info .box-container .box .flex p {
   color: var(--light-color);
-  font-size: 1.7rem;
+  font-size: var(--text-body);
 }

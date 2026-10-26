@@ -21,7 +21,7 @@
   }
 
   .name {
-    font-size: 2rem;
+    font-size: var(--text-heading);
     color: var(--black);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -29,7 +29,7 @@
   }
 
   .role {
-    font-size: 1.8rem;
+    font-size: var(--text-body);
     color: var(--light-color);
   }
 }

@@ -1,0 +1,14 @@
+title = "Learning platform secret protection"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Generated dependencies and local verification artifacts"
+paths = ['''(^|/)(node_modules|\.cache|\.next|build|dist|coverage|test-results|playwright-report)/''']
+
+[[rules]]
+id = "mongodb-authenticated-uri"
+description = "MongoDB connection string containing embedded credentials"
+regex = '''(?i)mongodb(?:\+srv)?://[^:\s/@'"`]+:[^@\s/'"`]+@'''
+keywords = ["mongodb"]

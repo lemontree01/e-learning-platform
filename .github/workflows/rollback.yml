@@ -1,0 +1,38 @@
+name: Roll back application
+on:
+  workflow_dispatch:
+    inputs:
+      deployment:
+        description: 'Previous production deployment ID from a release summary (dpl_...)'
+        type: string
+        required: true
+permissions:
+  contents: read
+jobs:
+  rollback:
+    if: github.ref == 'refs/heads/master'
+    environment: vercel-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: production
+      cancel-in-progress: false
+      queue: max
+    env:
+      VERCEL_ORG_ID: team_3gF0sRbKWp20ZoHeWO5guc95
+      VERCEL_PROJECT_ID: prj_mLkBdgU038MAGY7Rwg4L2u0JYH57
+      PRODUCTION_URL: https://learning-platform-gray-mu.vercel.app
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version-file: .node-version
+      - run: npm install --global vercel@65.2.0 --ignore-scripts
+      - name: Restore a prior app deployment, leaving the database in place
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          ROLLBACK_DEPLOYMENT: ${{ inputs.deployment }}
+        run: node scripts/release.cjs rollback
+      - run: node scripts/release.cjs public-smoke

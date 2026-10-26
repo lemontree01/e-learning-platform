@@ -1,0 +1,99 @@
+name: Verify and release
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Use the pinned npm version
+        run: npm install --global npm@11.21.1 --ignore-scripts
+      - name: Scan working tree and full available Git history
+        run: npm run security:secrets
+      - name: Install without dependency lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Verify the lockfile is unchanged
+        run: git diff --exit-code -- package-lock.json
+      - name: Audit all and production dependencies
+        run: npm run security:audit
+      - name: Release safeguard tests
+        run: node --test scripts/release.test.cjs
+      - name: TypeScript and SCSS lint
+        run: npm run lint:ts && npm run lint:scss
+      - name: Type check
+        run: npm run typecheck
+      - name: Unit and component tests
+        run: npm run unit -- --runInBand
+      - name: Production build
+        run: npm run build
+
+  deploy:
+    name: Release frontend
+    needs: verify
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: vercel-production
+    concurrency:
+      group: production
+      cancel-in-progress: false
+      queue: max
+    permissions:
+      contents: read
+    env:
+      VERCEL_ORG_ID: team_3gF0sRbKWp20ZoHeWO5guc95
+      VERCEL_PROJECT_ID: prj_mLkBdgU038MAGY7Rwg4L2u0JYH57
+      RELEASE_APP: frontend
+      PRODUCTION_URL: https://learning-platform-gray-mu.vercel.app
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+      - name: Install pinned release tools
+        run: npm install --global npm@11.21.1 vercel@65.2.0 --ignore-scripts
+      - name: Export exactly the verified source without local Git metadata
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/release"
+          git archive "$GITHUB_SHA" | tar -x -C "$RUNNER_TEMP/release"
+      - name: Build and stage production candidate without switching traffic
+        id: candidate
+        working-directory: ${{ runner.temp }}/release
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/release.cjs stage
+      - name: Smoke-test staged application and database reads
+        working-directory: ${{ runner.temp }}/release
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          CANDIDATE_URL: ${{ steps.candidate.outputs.url }}
+        run: node scripts/release.cjs smoke
+      - name: Promote only if this is still the latest master commit
+        working-directory: ${{ runner.temp }}/release
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          CANDIDATE_URL: ${{ steps.candidate.outputs.url }}
+        run: node scripts/release.cjs promote
+      - name: Check public production catalog
+        working-directory: ${{ runner.temp }}/release
+        run: node scripts/release.cjs public-smoke

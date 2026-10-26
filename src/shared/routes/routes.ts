@@ -7,6 +7,7 @@ export enum AppRoutes {
   COURSES = 'COURSES',
   COURSE = 'COURSE',
   LESSON = 'LESSON',
+  LEGACY_LESSON = 'LEGACY_LESSON',
   TEACHERS = 'TEACHERS',
   TEACHER = 'TEACHER',
   CONTACTS = 'CONTACTS',
@@ -20,7 +21,8 @@ export const getRouteAbout = () => '/about';
 export const getRouteRegister = () => '/register';
 export const getRouteAllCourses = () => '/courses';
 export const getRouteCourse = (courseId: string) => `/course/${courseId}`;
-export const getRouteLesson = (lessonId: string) => `/lesson/${lessonId}`;
+export const getRouteLesson = (courseId: string, lessonId: string) =>
+  `/course/${courseId}/lesson/${lessonId}`;
 export const getRouteAllTeachers = () => '/teachers';
 export const getRouteTeacher = (teacherId: string) => `/teachers/${teacherId}`;
 export const getContacts = () => '/contacts';

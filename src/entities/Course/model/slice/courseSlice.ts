@@ -36,10 +36,10 @@ export const courseSlice = createSlice({
         }
       )
       .addCase(fetchCourses.pending, (state: CourseSchema) => {
-        state.status = Response.LOADING;
+        if (state.courses.length === 0) state.status = Response.LOADING;
       })
-      .addCase(fetchCourses.rejected, (state: CourseSchema) => {
-        state.status = Response.ERROR;
+      .addCase(fetchCourses.rejected, (state: CourseSchema, action) => {
+        if (!action.meta.aborted) state.status = Response.ERROR;
       })
       .addCase(
         fetchShortCourses.fulfilled,
@@ -49,14 +49,14 @@ export const courseSlice = createSlice({
         }
       )
       .addCase(fetchShortCourses.pending, (state: CourseSchema) => {
-        state.status = Response.LOADING;
+        if (state.courses.length === 0) state.status = Response.LOADING;
       })
       .addCase(fetchShortCourses.rejected, (state: CourseSchema) => {
         state.status = Response.ERROR;
       })
       .addCase(
         fetchCoursesByQuery.pending, (state: CourseSchema) => {
-          state.status = Response.LOADING;
+          if (state.courses.length === 0) state.status = Response.LOADING;
         }
       )
       .addCase(
@@ -66,8 +66,8 @@ export const courseSlice = createSlice({
           state.courses = action.payload;
         }
       )
-      .addCase(fetchCoursesByQuery.rejected, (state: CourseSchema) => {
-        state.status = Response.ERROR;
+      .addCase(fetchCoursesByQuery.rejected, (state: CourseSchema, action) => {
+        if (!action.meta.aborted) state.status = Response.ERROR;
       });
   },
 });

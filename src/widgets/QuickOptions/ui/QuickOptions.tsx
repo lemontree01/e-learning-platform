@@ -7,7 +7,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
 import './quickOptions.scss';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Text } from '~/shared/ui/Text';
 import { Divider } from '~/shared/ui/Divider';
 import { Card } from '~/shared/ui/Card';
@@ -81,7 +81,7 @@ const QuickOptions = () => {
               <p className="tutor">
                 {t('tutor')}
               </p>
-              <Link to="" className="inline-btn">
+              <Link href="" className="inline-btn">
                 {t('get started')}
               </Link>
             </div>

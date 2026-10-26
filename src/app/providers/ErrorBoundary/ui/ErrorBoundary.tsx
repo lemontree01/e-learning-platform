@@ -1,5 +1,5 @@
-import React, { type ErrorInfo, type ReactNode, Suspense } from 'react';
-import { ErrorPage } from '~/pages/ErrorPage';
+import React, { type ErrorInfo, type ReactNode, type JSX, Suspense } from 'react';
+import { ErrorPage } from '~/screens/ErrorPage';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -26,7 +26,7 @@ ErrorBoundaryState
     console.log(error, errorInfo);
   }
 
-  render () {
+  render (): JSX.Element | null {
     const { hasError, } = this.state;
     const { children, } = this.props;
 
@@ -38,7 +38,7 @@ ErrorBoundaryState
       );
     }
 
-    return children;
+    return <>{children}</>;
   }
 }
 

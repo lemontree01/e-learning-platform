@@ -1,6 +1,7 @@
 .xl {
-  font-size: 2.5rem;
+  font-size: var(--text-title);
   color: var(--black);
+
   // margin-bottom: 2.5rem;
   // border-bottom: var(--border);
   // padding-bottom: 1.5rem;
@@ -8,15 +9,15 @@
 }
 
 .l {
-  font-size: 2rem;
+  font-size: var(--text-heading);
 }
 
 .m {
-  font-size: 1.7rem;
+  font-size: var(--text-body);
 }
 
 .s {
-  font-size: 1.3rem;
+  font-size: var(--text-small);
 }
 
 .primary {
@@ -32,5 +33,5 @@
 }
 
 .bold {
-  font-weight: bold;
+  font-weight: var(--weight-strong);
 }

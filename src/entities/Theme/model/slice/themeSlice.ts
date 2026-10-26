@@ -1,9 +1,10 @@
-import { Color } from '~/shared/types/Color';
+import { type Color } from '~/shared/types/Color';
+import { DEFAULT_THEME } from '~/shared/config/themes';
 import { type ThemeSchema } from '../types/theme';
 import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState: ThemeSchema = {
-  color: Color.LIGHT,
+  color: DEFAULT_THEME,
   isSidebarShown: false,
   isUserShown: false,
 };

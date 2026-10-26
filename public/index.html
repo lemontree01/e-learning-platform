@@ -1,21 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="<%= initialThemeStyle %>">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <title>Main page</title>
-    <base href="/" />
+    <meta name="description" content="Explore programming courses, browse lesson outlines, and learn at your own pace." />
+    <meta name="theme-color" content="<%= initialThemeColor %>" />
+    <!-- Blocking on purpose: apply the saved theme before the first paint. -->
+    <script><%= themeBootScript %></script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Learning platform — Programming courses</title>
   </head>
   <body>
     <div id="root"></div>

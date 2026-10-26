@@ -1,65 +1,32 @@
 import './teachers.scss';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { avatars } from '~/shared/assets/avatars';
 import { useTranslation } from 'react-i18next';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { getRouteTeacher } from '~/shared/routes/routes';
 
 export const names = [
-  'Noah Smith',
-  'Emma Johnson',
-  'Kevin Brown',
-  'Liam Wilson',
-  'Ava Martinez',
-  'William Taylor',
-  'Sophia Anderson',
-  'James Thomas',
-  'Andrew Garcia',
-  'Benjamin Davis'
+  'Noah Smith', 'Emma Johnson', 'Kevin Brown', 'Liam Wilson', 'Ava Martinez',
+  'William Taylor', 'Sophia Anderson', 'James Thomas', 'Andrew Garcia', 'Benjamin Davis'
 ];
 
 const Teachers = () => {
   const { t, } = useTranslation('teachers');
-  return (
-    <section className="teachers">
-      <h1 className="heading">{t('our-teachers')}</h1>
-
-      <div className="box-container">
-        <div className="box offer">
-          <h3>{t('become a tutor')}</h3>
-          <p>
-           {t('description')}
-          </p>
-          <Link to="/1" className="inline-btn">
-            {t('get started')}
-          </Link>
-        </div>
-
-        {Array.from({ length: 9, }).map((_, index) => (
-          <div className="box" key={index}>
-          <div className="tutor">
-            <img src={avatars[index]} alt="" />
-            <div>
-              <h3>{names[index]}</h3>
-              <span>{t('developer')}</span>
-            </div>
-          </div>
-          <p>
-            {t('total playlists')} : <span>{30 - index * 2 + 1}</span>
-          </p>
-          <p>
-            {t('total videos')} : <span>{40 - index * 3 }</span>
-          </p>
-          <p>
-         {t('total likes')} : <span>{1280 - 12 * index}</span>
-          </p>
-          <Link to={String(index)} className="inline-btn">
-            {t('View profile')}
-          </Link>
-        </div>
-        ))}
-
-      </div>
-    </section>
-  );
+  return <section className='teachers'>
+    <p className='eyebrow'>
+      {t('brand-name', { ns: 'translation', })} / {t('directory-label')}
+    </p>
+    <h1>{t('our-teachers')}</h1>
+    <p className='teachers-description'>{t('directory-description')}</p>
+    <div className='teacher-grid'>
+      {names.map((name, index) => <article key={name}>
+        <img src={avatars[index % avatars.length]} alt='' />
+        <span className='eyebrow'>{t('sample-label')}</span>
+        <h2>{t(`names.${index}`, { defaultValue: name, })}</h2><p>{t('developer')}</p>
+        <Link href={getRouteTeacher(String(index))}>{t('View profile')}
+          <ArrowForwardIcon /></Link>
+      </article>)}
+    </div>
+  </section>;
 };
-
 export default Teachers;

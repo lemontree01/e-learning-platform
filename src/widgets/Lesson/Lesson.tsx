@@ -1,113 +1,91 @@
-import { useEffect } from 'react';
-import './lesson.scss';
-import { Link, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { getCurrentCourse } from '~/entities/Course';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useCourse } from '~/entities/Course/model/services/useCourse';
+import { CourseFeedback } from '~/entities/Course/ui/CourseFeedback';
 import { avatars } from '~/shared/assets/avatars';
+import { getRouteLesson } from '~/shared/routes/routes';
+import { features } from '~/shared/config/features';
+import { LessonBlocks } from './ui/LessonBlocks';
+import './lesson.scss';
 
 const Lesson = () => {
-  const currentCourse = useSelector(getCurrentCourse);
-  const lessonNumber = useParams().id;
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth', });
-  }, []);
-
-  return (
-    <section className="watch-video">
-      <div className="video-container">
-        <h3 className="title">
-          {currentCourse?.name}. Lesson {lessonNumber}
-        </h3>
-        <div className="info">
-          <p className="date">
-            <i className="fas fa-calendar"></i>
-            <span>{currentCourse?.date}</span>
-          </p>
-          <p className="date">
-            <i className="fas fa-heart"></i>
-            <span>{(currentCourse?.id ?? 0 % 10) + 30} likes</span>
-          </p>
+  const params = useParams();
+  const lessonId = typeof params.lessonId === 'string' ? params.lessonId : undefined;
+  const courseId = typeof params.courseId === 'string'
+    ? params.courseId
+    : lessonId !== undefined && typeof params.id === 'string'
+      ? params.id
+      : undefined;
+  const { course, status, } = useCourse(courseId);
+  const { t, } = useTranslation();
+  if (!courseId) {
+    return <section><div className='state-panel'>
+      <h1 className='heading'>{t('choose-course')}</h1>
+      <Link href='/courses' className='action'>{t('back-to-courses')}</Link>
+    </div></section>;
+  }
+  if (!course || status !== 'ready') return <CourseFeedback status={status} />;
+  const index = Number(lessonId);
+  if (lessonId === undefined || !/^\d+$/.test(lessonId) ||
+    !Number.isSafeInteger(index) || index >= course.numberOfLessons) {
+    return <section><div className='state-panel'>
+      <h1 className='heading'>{t('lesson-not-found')}</h1>
+      <Link href={`/course/${course.id}`} className='action'>{t('view-course')}</Link>
+    </div></section>;
+  }
+  return <section className='watch-video'>
+    <nav className='course-breadcrumb' aria-label={t('breadcrumb-label')}>
+      <Link href={`/course/${course.id}`}><ArrowBackIcon />{t('view-course')}</Link>
+      <span>/</span><span>{t('lesson')} {index + 1}</span>
+    </nav>
+    <div className='lesson-layout'>
+      <div className='video-container'>
+        <p className='eyebrow'>{t('lesson-label')} / {String(index + 1).padStart(2, '0')}</p>
+        <h1 className='title'>{course.name}. {t('lesson')} {index + 1}</h1>
+        <div className='tutor'>
+          <img src={avatars[course.id % avatars.length]} alt='' />
+          <div><p>{course.author}</p><span>{course.date}</span></div>
         </div>
-        <div className="tutor">
-          <img src={avatars[currentCourse?.id ?? 0 % 9]} alt="" />
-          <div>
-            <h3>{currentCourse?.author}</h3>
-            <span>developer</span>
-          </div>
-        </div>
-        <div className="flex">
-          <Link to={'/course/' + currentCourse?.id} className="inline-btn">
-            view course
-          </Link>
-          <button>
-            <i className="far fa-heart"></i>
-            <span>like</span>
-          </button>
-        </div>
-        <p className="description">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora quia
-          optio modi suscipit mollitia sapiente a laborum cumque adipisci velit
-          quo consectetur qui, quidem, eum impedit eveniet aut enim ipsa ut!
-          Dolorum fugit sit, iure recusandae officia iusto ratione repellendus
-          id ullam et rerum maxime soluta repudiandae molestias, eveniet est!
-          Consequuntur perspiciatis fugit dolor at debitis totam rerum eligendi
-          deleniti dolorem modi. Ea vel dicta possimus, accusantium quam numquam
-          recusandae nesciunt corrupti rerum voluptates alias eum maxime
-          dignissimos ut. Tenetur nesciunt natus ipsum ab distinctio explicabo
-          laudantium quibusdam aliquam molestiae culpa minima, ratione eaque
-          cumque quos earum recusandae totam, magni labore nemo perspiciatis cum
-          magnam rerum quaerat hic! Accusamus corporis tenetur quisquam cumque
-          mollitia consequatur nulla odio facere, nostrum eaque amet explicabo
-          excepturi reiciendis cupiditate, aperiam facilis praesentium quidem
-          ea, repudiandae debitis dolore? Sint, itaque quidem? Corrupti quisquam
-          quibusdam, aperiam porro excepturi maxime repellendus maiores id
-          facilis cupiditate, quod soluta debitis numquam laboriosam ratione sed
-          adipisci impedit? Aut suscipit tempore ea est, numquam vel optio
-          laborum odit sit culpa quae accusamus! Corrupti soluta nam iusto fugit
-          totam, vitae obcaecati optio sint maxime fugiat, numquam repellat
-          officiis cum, quos quo quisquam impedit reprehenderit saepe aut
-          consequatur harum omnis iste vero. Et quidem exercitationem magnam
-          nulla sint, mollitia minus distinctio culpa molestiae facere unde
-          nostrum, eligendi eaque blanditiis optio enim debitis, corporis quis?
-          Ducimus expedita molestias suscipit sequi. Ratione exercitationem cum
-          odit, eaque aliquam labore dicta quasi blanditiis repellendus ipsam
-          expedita vitae magnam, voluptates optio recusandae enim inventore
-          earum ex quae perspiciatis!
-        </p>
-        <p className="description">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora quia
-          optio modi suscipit mollitia sapiente a laborum cumque adipisci velit
-          quo consectetur qui, quidem, eum impedit eveniet aut enim ipsa ut!
-          Dolorum fugit sit, iure recusandae officia iusto ratione repellendus
-          id ullam et rerum maxime soluta repudiandae molestias, eveniet est!
-          Consequuntur perspiciatis fugit dolor at debitis totam rerum eligendi
-          deleniti dolorem modi. Ea vel dicta possimus, accusantium quam numquam
-          recusandae nesciunt corrupti rerum voluptates alias eum maxime
-          dignissimos ut. Tenetur nesciunt natus ipsum ab distinctio explicabo
-          laudantium quibusdam aliquam molestiae culpa minima, ratione eaque
-          cumque quos earum recusandae totam, magni labore nemo perspiciatis cum
-          magnam rerum quaerat hic! Accusamus corporis tenetur quisquam cumque
-          mollitia consequatur nulla odio facere, nostrum eaque amet explicabo
-          excepturi reiciendis cupiditate, aperiam facilis praesentium quidem
-          ea, repudiandae debitis dolore? Sint, itaque quidem? Corrupti quisquam
-          quibusdam, aperiam porro excepturi maxime repellendus maiores id
-          facilis cupiditate, quod soluta debitis numquam laboriosam ratione sed
-          adipisci impedit? Aut suscipit tempore ea est, numquam vel optio
-          laborum odit sit culpa quae accusamus! Corrupti soluta nam iusto fugit
-          totam, vitae obcaecati optio sint maxime fugiat, numquam repellat
-          officiis cum, quos quo quisquam impedit reprehenderit saepe aut
-          consequatur harum omnis iste vero. Et quidem exercitationem magnam
-          nulla sint, mollitia minus distinctio culpa molestiae facere unde
-          nostrum, eligendi eaque blanditiis optio enim debitis, corporis quis?
-          Ducimus expedita molestias suscipit sequi. Ratione exercitationem cum
-          odit, eaque aliquam labore dicta quasi blanditiis repellendus ipsam
-          expedita vitae magnam, voluptates optio recusandae enim inventore
-          earum ex quae perspiciatis!
-        </p>
+        {course.lessons?.[index]
+          ? <LessonBlocks blocks={course.lessons[index].blocks} />
+          : <div className='lesson-placeholder'>
+            <span className='placeholder-symbol' aria-hidden='true'>⌘</span>
+            <h2>{t('coming-soon-title')}</h2>
+            <p>{t('coming-soon-description')}</p>
+            <Link href={features.playground ? '/home#observatory' : `/course/${course.id}`}
+              className='action action-secondary'>
+              {t(features.playground ? 'try-observatory' : 'back-to-overview')}<ArrowForwardIcon />
+            </Link>
+          </div>}
+        <nav className='lesson-pagination' aria-label={t('lesson-navigation')}>
+          {index > 0
+            ? <Link href={getRouteLesson(String(course.id), String(index - 1))}>
+            <ArrowBackIcon />{t('previous-lesson')}</Link>
+            : <span />}
+          {index + 1 < course.numberOfLessons &&
+            <Link href={getRouteLesson(String(course.id), String(index + 1))}>
+              {t('next-lesson')}<ArrowForwardIcon /></Link>}
+        </nav>
       </div>
-    </section>
-  );
+      <aside className='lesson-outline' aria-label={t('lesson-outline')}>
+        <p className='eyebrow'>{t('course-outline')}</p>
+        <h2>{course.name}</h2>
+        <ol>
+          {Array.from({ length: course.numberOfLessons, }, (_, lesson) =>
+            <li key={lesson}>
+              <Link href={getRouteLesson(String(course.id), String(lesson))}
+                aria-current={lesson === index ? 'page' : undefined}>
+                <span>{String(lesson + 1).padStart(2, '0')}</span>
+                {t('lesson')} {lesson + 1}
+                {lesson === index && <span className='current-lesson-dot' aria-hidden='true' />}
+              </Link>
+            </li>)}
+        </ol>
+      </aside>
+    </div>
+  </section>;
 };
-
 export default Lesson;

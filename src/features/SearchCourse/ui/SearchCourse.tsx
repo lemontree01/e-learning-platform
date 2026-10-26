@@ -1,50 +1,49 @@
-import { useState } from 'react';
-import { Input } from '~/shared/ui/Input';
-import { useNavigate } from 'react-router-dom';
-import { Icon } from '~/shared/ui/Icon';
+import { type FormEvent, Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
+import { Input } from '~/shared/ui/Input';
+import { Icon } from '~/shared/ui/Icon';
 import { Button } from '~/shared/ui/Button';
 import styles from './SearchCourse.module.scss';
-import { useTranslation } from 'react-i18next';
-import { fetchCoursesByQuery }
-  from '~/entities/Course/model/services/fetchCoursesByQuery';
-import { useAppDispatch } from '~/app/providers/StoreProvider';
 
-export const SearchCourse = () => {
-  const navigate = useNavigate();
-  const [query, setQuery] = useState('');
-  const dispatch = useAppDispatch();
+const SearchCourseForm = () => {
+  const router = useRouter();
+  const params = useSearchParams();
+  const currentQuery = params.get('search') ?? '';
+  const [query, setQuery] = useState(currentQuery);
+  const { t, } = useTranslation();
 
-  const { t, i18n, } = useTranslation();
+  useEffect(() => { setQuery(currentQuery); }, [currentQuery]);
 
-  const lang = i18n.language as 'rus' | 'eng';
-
-  const clickHandler = () => {
-    dispatch(fetchCoursesByQuery({ query, lang, }));
-    navigate('/courses');
+  const submitSearch = (event: FormEvent) => {
+    event.preventDefault();
+    const value = query.trim();
+    const search = value ? `?${new URLSearchParams({ search: value, }).toString()}` : '';
+    router.push(`/courses${search}`);
   };
 
   return (
-    <div className={styles.wrapper}>
+    <form role='search' className={styles.wrapper} onSubmit={submitSearch}>
       <Input
-        type="text"
-        name="search_box"
-        required
+        type='text'
+        name='search_box'
+        aria-label={t('search-courses') ?? 'Search courses'}
         placeholder={t('search-placeholder') ?? ''}
-        maxLength={25}
+        maxLength={200}
         value={query}
-        onChange={(value: string) => {
-          setQuery(value);
-        }}
+        onChange={setQuery}
         addonRight={
-          <Button
-          variant="clear"
-          onClick={clickHandler}
-        >
-          <Icon icon={<SearchIcon />} />
-        </Button>
+          <Button type='submit' variant='clear'
+            aria-label={t('search-courses') ?? 'Search courses'}>
+            <Icon icon={<SearchIcon />} />
+          </Button>
         }
       />
-    </div>
+    </form>
   );
 };
+
+export const SearchCourse = () => (
+  <Suspense fallback={null}><SearchCourseForm /></Suspense>
+);

@@ -15,14 +15,14 @@
 }
 
 .form-container form h3 {
-  font-size: 2.5rem;
+  font-size: var(--text-title);
   text-transform: capitalize;
   color: var(--black);
   text-align: center;
 }
 
 .form-container form p {
-  font-size: 1.7rem;
+  font-size: var(--text-body);
   color: var(--light-color);
   padding-top: 1rem;
 }
@@ -32,7 +32,7 @@
 }
 
 .form-container form .box {
-  font-size: 1.8rem;
+  font-size: var(--text-ui);
   color: var(--black);
   border-radius: 0.5rem;
   padding: 1.4rem;

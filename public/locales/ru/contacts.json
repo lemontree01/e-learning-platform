@@ -1,11 +1,16 @@
 {
-  "get in touch": "связаться",
-  "enter your name": "ввести имя",
-  "enter your email": "ввести почту",
-  "enter your number": "ввести номер",
-  "enter your message": "ввести сообщения",
-  "phone number": "номер телефона",
-  "email address": "адрес почты",
-  "office address": "адрес офиса",
-  "send message": "отправить почту"
+  "get in touch": "Связаться с нами",
+  "enter your name": "Имя",
+  "enter your email": "Электронная почта",
+  "enter your number": "Номер телефона",
+  "enter your message": "Сообщение",
+  "phone number": "Номер телефона",
+  "email address": "Электронная почта",
+  "office address": "Адрес офиса",
+  "send message": "Отправить сообщение",
+  "label": "КОНТАКТЫ",
+  "intro": "Эта форма показывает, как в будущем можно будет связаться с командой платформы. Отправка сообщений пока не подключена.",
+  "preview-label": "ДЕМОНСТРАЦИОННАЯ ФОРМА",
+  "form-preview": "Форма сообщения",
+  "browse-courses": "Перейти к каталогу курсов"
 }

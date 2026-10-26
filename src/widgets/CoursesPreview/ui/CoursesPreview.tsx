@@ -1,73 +1,112 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import {
-  type Course,
-  getCourses,
-  getStatus,
-  courseActions
-} from '~/entities/Course';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
+import { type Course, getCourses, getStatus } from '~/entities/Course';
 import { fetchCourses } from '~/entities/Course/model/services/fetchCourses';
+import { fetchCoursesByQuery } from '~/entities/Course/model/services/fetchCoursesByQuery';
+import { getCourseImage } from '~/shared/api/instance';
 import { avatars } from '~/shared/assets/avatars';
 import { Response } from '~/shared/types/Response';
-import { Avatar } from '~/shared/ui/Avatar';
-import styles from './CoursesPreview.module.scss';
-import { useTranslation } from 'react-i18next';
-import { Text } from '~/shared/ui/Text';
-import { Divider } from '~/shared/ui/Divider';
-import CourseLoading from '~/shared/ui/CourseLoading/CourseLoading';
 import { useAppDispatch } from '~/app/providers/StoreProvider';
+import styles from './CoursesPreview.module.scss';
 
-export const CoursesPreview = () => {
+const CoursesPreviewContent = ({ featured = false, }: { featured?: boolean }) => {
   const dispatch = useAppDispatch();
   const { t, i18n, } = useTranslation();
-
-  useEffect(() => {
-    dispatch(fetchCourses(i18n.language));
-  }, [dispatch, i18n.language]);
-
+  const params = useSearchParams();
+  const [retry, setRetry] = useState(0);
+  const query = (params.get('search') ?? '').trim();
+  const language = i18n.resolvedLanguage ?? i18n.language;
   const courses = useSelector(getCourses);
   const status = useSelector(getStatus);
 
-  return (<section className="courses courses-preview">
-    <Text size="xl" bold>{t('our-courses')}</Text>
-    <Divider />
-    <div className={styles['box-container']}>
-    {status === Response.ERROR &&
-    <Text size='l' bold={true} variant='accent'>{t('server error')}</Text>}
-    {status === Response.LOADING && [...Array(6)].map((_, index) => (
-              <div className={styles.box} key={index}><CourseLoading /></div>
-    ))}
-    {status === Response.OK && courses.map((course: Course) => (
-              <div className={styles.box} key={course.id}>
-                <div className={styles.tutor}>
-                  <Avatar src={avatars[course.id % 9]} alt="" />
-                  <div className="info">
-                    <Text size='m' bold>{course.author}</Text>
-                    <Text size='s'>{course.date}</Text>
-                  </div>
-                </div>
-                <div className={styles.thumb}>
-                  <img
-                    src={
-                      (process.env.SERVER_URL ??
-    'https://sleepy-jay-bracelet.cyclic.app') + '/course-' + course.id + '.jpg'
-                    }
-                    alt=""
-                  />
-                  <span>{course.numberOfLessons} videos</span>
-                </div>
-                <Text size='m' bold>{course.name}</Text>
-                <Link
-                  to={'../course/' + course.id}
-                  onClick={() =>
-                    dispatch(courseActions.setCurrentCourse(course))}
-                  className={`${styles.link} inline-btn`}
-                >
-                  view playlist
-                </Link>
-              </div>
-    ))}
+  useEffect(() => {
+    const request = query
+      ? dispatch(fetchCoursesByQuery({ query, lang: language, }))
+      : dispatch(fetchCourses(language));
+    return () => { request.abort(); };
+  }, [dispatch, language, query, retry]);
+
+  const visibleCourses = featured ? courses.slice(0, 3) : courses;
+  const CardHeading = featured ? 'h3' : 'h2';
+  return <section className={styles.library} aria-labelledby='library-title'>
+    <div className='section-head'>
+      <div>
+        <p className='eyebrow'>{t('library-eyebrow')}</p>
+        {featured
+          ? <h2 id='library-title'>{t('featured-title')}</h2>
+          : <h1 id='library-title'>
+            {query ? t('search-title', { query, }) : t('library-title')}
+          </h1>}
+        {!featured && <p className={styles.description}>{t('library-description')}</p>}
+      </div>
+      {featured
+        ? <Link href='/courses' className='text-link'>
+        {t('all-courses')}<ArrowForwardIcon />
+      </Link>
+        : status === Response.OK && <span className='eyebrow'>
+        {t('course-count', { count: courses.length, })}
+      </span>}
     </div>
-  </section>);
+    {!featured && <nav className={styles.topics} aria-label={t('course-topics')}>
+      <Link href='/courses' aria-current={!query ? 'page' : undefined}>{t('all-topics')}</Link>
+      {['JavaScript', 'TypeScript', 'React', 'Python'].map((topic) =>
+        <Link key={topic} href={`/courses?search=${encodeURIComponent(topic)}`}
+          aria-current={query.toLowerCase() === topic.toLowerCase() ? 'page' : undefined}>
+          {topic}
+        </Link>)}
+    </nav>}
+    {status === Response.ERROR && <div className='state-panel' role='alert'>
+      <h2>{t('catalog-error')}</h2><p>{t('try-again-description')}</p>
+      <button className='action' onClick={() => { setRetry(retry + 1); }}>{t('try-again')}</button>
+    </div>}
+    {status === Response.OK && courses.length === 0 && <div className='state-panel'>
+      <p role='status'>{t('no-courses-found')}</p>
+      <Link href='/courses' className='action action-secondary'>{t('all-courses')}</Link>
+    </div>}
+    <div className={styles.grid} aria-busy={status === Response.LOADING}>
+      {status === Response.LOADING && [0, 1, 2].map((index) =>
+        <div className={styles.skeleton} key={index} aria-label={t('loading')} role='status'>
+          <div /><span /><span />
+        </div>)}
+      {status === Response.OK && visibleCourses.map((course: Course, index) =>
+        <article className={styles.card} key={course.id}>
+          <Link className={styles.cover} href={`/course/${course.id}`}
+            tabIndex={-1} aria-hidden='true'>
+            <img src={getCourseImage(course.id)} alt='' loading='lazy' />
+            <span className={styles.number}>
+              {String(index + 1).padStart(2, '0')} / {t('course')}
+            </span>
+          </Link>
+          <div className={styles.content}>
+            <div className={styles.metadata}>
+              <span><AutoStoriesOutlinedIcon />
+                {t('lesson-count', { count: course.numberOfLessons, })}</span>
+              <span>{t('demo-course')}</span>
+            </div>
+            <CardHeading><Link href={`/course/${course.id}`}>{course.name}</Link></CardHeading>
+            <div className={styles.author}>
+              <img src={avatars[course.id % avatars.length]} alt='' />
+              <span>{course.author}</span>
+            </div>
+            <Link className={styles.open} href={`/course/${course.id}`}
+              aria-label={`${t('view-course')}: ${course.name}`}>
+              {t('view-course')}<ArrowForwardIcon />
+            </Link>
+          </div>
+        </article>)}
+    </div>
+    {featured && <div className={styles['catalog-note']}>
+      <span className='eyebrow'>{t('learn-your-way')}</span>
+      <p>{t('catalog-note')}</p>
+    </div>}
+  </section>;
 };
+
+export const CoursesPreview = ({ featured = false, }: { featured?: boolean }) => (
+  <Suspense fallback={null}><CoursesPreviewContent featured={featured} /></Suspense>
+);

@@ -1,11 +1,14 @@
 
 import { avatars } from '~/shared/assets/avatars';
 import './lessonComments.scss';
+import { useTranslation } from 'react-i18next';
 
 const LessonComments = () => {
+  const { t, } = useTranslation();
   return (
     <section className="comments">
-      <h1 className="heading">2 comments</h1>
+      <h2 className="heading">{t('sample-comments')}</h2>
+      <p role='status'>{t('comments-unavailable')}</p>
 
       <form action="" className="add-comment">
         <h3>add comments</h3>
@@ -16,12 +19,9 @@ const LessonComments = () => {
           maxLength={1000}
           cols={30}
           rows={10}
+          disabled
         ></textarea>
-        <input
-          value="add comment"
-          className="inline-btn"
-          name="add_comment"
-        />
+        <button type='button' className='inline-btn' disabled>add comment</button>
       </form>
 
       <h1 className="heading">user comments</h1>

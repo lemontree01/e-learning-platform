@@ -1,5 +1,4 @@
 .reviews {
-
   .box-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
@@ -26,20 +25,21 @@
         }
 
         h3 {
-          font-size: 2rem;
+          font-size: var(--text-heading);
           color: var(--black);
           margin-bottom: 0.3rem;
         }
         
         .stars {
-          font-size: 1.5rem;
+          font-size: var(--text-small);
           color: var(--orange);
         }
       }
     }
+
     p {
       line-height: 1.7;
-      font-size: 1.7rem;
+      font-size: var(--text-body);
       color: var(--light-color);
     }
   }

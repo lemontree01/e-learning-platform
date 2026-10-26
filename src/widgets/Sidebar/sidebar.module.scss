@@ -1,82 +1,70 @@
-.side-bar {
+.drawer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 30rem;
-  background-color: var(--white);
-  height: 100vh;
-  border-right: var(--border);
-  z-index: 1200;
+  inset: 0 0 0 auto;
+  margin: 0;
+  width: min(38rem, 100%);
+  max-width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 3.2rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 0;
+  border-left: var(--border);
 
-  #close-btn {
-    text-align: right;
-    padding: 2rem;
-    display: none;
-
-    i {
-      text-align: right;
-      font-size: 2.5rem;
-      background: var(--red);
-      border-radius: 0.5rem;
-      color: var(--white);
-      cursor: pointer;
-      height: 4.5rem;
-      width: 4.5rem;
-      line-height: 4.5rem;
-      text-align: center;
-    }
-
-    i:hover {
-      background-color: var(--black);
-    }
+  &::backdrop {
+    background: var(--overlay);
+    backdrop-filter: blur(4px);
   }
 
-  .profile {
-    padding: 3rem 2rem;
-    text-align: center;
-    border-radius: 50%;
-    .image {
-      height: 10rem;
-      width: 10rem;
-      border-radius: 50%;
-      object-fit: contain;
-      margin-bottom: 1rem;
-    }
-
-    .name {
-      font-size: 2rem;
-      color: var(--black);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .role {
-      font-size: 1.8rem;
-      color: var(--light-color);
-    }
+  aside {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  &.active {
-    left: -30rem;
+  nav {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 2.4rem;
+  }
+
+  nav a {
+    font-size: var(--text-heading);
+    padding: 1rem 0;
+    border-bottom: var(--border);
+  }
+
+  nav a:hover, nav a[aria-current='page'] {
+    color: var(--accent);
   }
 }
 
-// body {
-//   padding-left: 0;
-// }
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 6.4rem;
 
-// .side-bar {
-//   left: -30rem;
-//   transition: 0.2s linear;
-// }
+  button {
+    display: grid;
+    place-items: center;
+    background: var(--raised);
+    color: var(--ink);
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+  }
+}
 
-// .side-bar #close-btn {
-//   display: block;
-// }
+.note {
+  margin-top: auto;
+  padding-top: 6.4rem;
+}
 
-// // .side-bar:not(.active) {
-// //   left: 0;
-// //   box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.8);
-// //   border-right: 0;
-// // }
+.note p {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: var(--text-small);
+}

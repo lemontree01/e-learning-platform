@@ -4,6 +4,26 @@ declare module '*.scss' {
   export = classNames
 }
 
+declare module '*.jpg' {
+  const src: string;
+  export default src;
+}
+
+declare module '*.jpeg' {
+  const src: string;
+  export default src;
+}
+
+declare module '*.png' {
+  const src: string;
+  export default src;
+}
+
+declare module '*.webp' {
+  const src: string;
+  export default src;
+}
+
 // declare module '*.png';
 // declare module '*.jpg';
 // declare module '*.jpeg';
@@ -11,5 +31,3 @@ declare module '*.scss' {
 //   const SVG: React.FC<React.SVGProps<SVGSVGElement>>;
 //   export default SVG;
 // }
-
-declare const IS_DEV: boolean;

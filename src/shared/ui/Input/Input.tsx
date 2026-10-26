@@ -2,7 +2,6 @@ import {
   memo,
   type InputHTMLAttributes,
   useRef,
-  useState,
   useEffect,
   type ReactNode
 } from 'react';
@@ -30,37 +29,31 @@ export const Input = memo((props: InputProps) => {
     ...otherProps
   } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    if (autofocus) {
-      setIsFocused(true);
-      ref.current?.focus();
-    }
+    if (autofocus) ref.current?.focus();
   }, [autofocus]);
 
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.(e.target.value);
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(event.target.value);
   };
 
-  const onBlur = () => {
-    setIsFocused(false);
-  };
-
-  const onFocus = () => {
-    setIsFocused(true);
+  const focusFromField = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.closest('input, textarea, select, button, a')) return;
+    event.preventDefault();
+    ref.current?.focus();
   };
 
   return (
-    <div className={`${styles.input} ${isFocused && styles.focused}`}>
+    <div className={styles.input} onMouseDown={focusFromField}>
       {addonLeft}
       <input
         ref={ref}
         value={value}
         onChange={onChangeHandler}
         className={className}
-        onFocus={onFocus}
-        onBlur={onBlur}
         placeholder={placeholder}
         {...otherProps}
       />

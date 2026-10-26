@@ -1,0 +1,103 @@
+.account-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 48rem);
+  align-items: start;
+  gap: 6.4rem;
+  padding-top: 6.4rem;
+  padding-bottom: 6.4rem;
+}
+
+.account-intro {
+  h1 {
+    margin: 2.4rem 0;
+  }
+
+  > p:last-child {
+    max-width: 46rem;
+    color: var(--muted);
+  }
+}
+
+.account-panel {
+  min-width: 0;
+  padding: 3.2rem;
+  border: var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+
+  form {
+    display: grid;
+    gap: 1.6rem;
+  }
+
+  h2 {
+    margin-bottom: 1.6rem;
+  }
+
+  label {
+    display: grid;
+    gap: 0.8rem;
+    font-size: var(--text-ui);
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    min-height: 4.8rem;
+    background: var(--page);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+  }
+
+  p[class], dd {
+    overflow-wrap: anywhere;
+  }
+
+  p > a {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+
+  [role='alert'] {
+    border-left: 2px solid var(--accent);
+    padding-left: 1.2rem;
+  }
+
+  dl {
+    margin-bottom: 2.4rem;
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: var(--text-ui);
+  }
+
+  dd {
+    margin-bottom: 1.6rem;
+  }
+}
+
+.account-hint {
+  font-size: var(--text-small);
+  color: var(--muted);
+}
+
+.account-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  margin-top: 2.4rem;
+}
+
+@media (width <= 768px) {
+  .account-page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3.2rem;
+    padding-top: 3.2rem;
+  }
+
+  .account-panel {
+    padding: 2.4rem;
+  }
+}

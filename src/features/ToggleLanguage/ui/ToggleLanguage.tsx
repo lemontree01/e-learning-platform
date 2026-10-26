@@ -1,15 +1,18 @@
 import TranslateIcon from '@mui/icons-material/Translate';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '~/shared/ui/IconButton';
+import { normalizeLanguage, persistLanguage } from '~/shared/config/language';
 
 export const ToggleLanguage = () => {
-  const { i18n, } = useTranslation();
+  const { t, i18n, } = useTranslation();
 
-  const toggle = async () => {
-    i18n.changeLanguage(i18n.language === 'ru' ? 'en' : 'ru');
+  const toggle = () => {
+    const next = normalizeLanguage(i18n.resolvedLanguage) === 'ru' ? 'en' : 'ru';
+    persistLanguage(next);
+    void i18n.changeLanguage(next);
   };
   return (
-      <IconButton onClick={toggle}>
+      <IconButton onClick={toggle} aria-label={t('switch-language')} title={t('switch-language')}>
         <TranslateIcon />
       </IconButton>
   );

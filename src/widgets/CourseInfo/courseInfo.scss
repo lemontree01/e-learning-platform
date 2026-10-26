@@ -1,152 +1,184 @@
-$color_1: var(--black);
-$color_2: var(--light-color);
-$color_3: var(--white);
-$color_4: #fff;
-$color_5: var(--main-color);
-$background-color_1: var(--white);
-$background-color_2: var(--light-bg);
-$background-color_3: var(--black);
-$background-color_4: rgba(0, 0, 0, 0.3);
-
 .playlist-details {
-	.row {
-		display: flex;
-		align-items: flex-end;
-		gap: 3rem;
-		flex-wrap: wrap;
-		background-color: $background-color_1;
-		padding: 2rem;
-		.column {
-			flex: 1 1 40rem;
-			.save-playlist {
-				margin-bottom: 1.5rem;
-				button {
-					border-radius: 0.5rem;
-					background-color: $background-color_2;
-					padding: 1rem 1.5rem;
-					cursor: pointer;
-					i {
-						font-size: 2rem;
-						color: $color_1;
-						margin-right: 0.8rem;
-					}
-					span {
-						font-size: 1.8rem;
-						color: $color_2;
-					}
-					&:hover {
-						background-color: $background-color_3;
-						i {
-							color: $color_3;
-						}
-						span {
-							color: $color_3;
-						}
-					}
-				}
-			}
-			.thumb {
-				position: relative;
-				span {
-					font-size: 1.8rem;
-					color: $color_4;
-					background-color: $background-color_4;
-					border-radius: 0.5rem;
-					position: absolute;
-					top: 1rem;
-					left: 1rem;
-					padding: 0.5rem 1.5rem;
-				}
-				img {
-					height: 30rem;
-					width: 100%;
-					object-fit: cover;
-					border-radius: 0.5rem;
-				}
-			}
-			.tutor {
-				display: flex;
-				align-items: center;
-				gap: 2rem;
-				margin-bottom: 2rem;
-				// img {
-				// 	height: 7rem;
-				// 	width: 7rem;
-				// 	border-radius: 50%;
-				// 	object-fit: cover;
-				// }
-				h3 {
-					font-size: 2rem;
-					color: $color_1;
-					margin-bottom: 0.2rem;
-				}
-				span {
-					font-size: 1.5rem;
-					color: $color_2;
-				}
-			}
-			.details {
-				h3 {
-					font-size: 2rem;
-					color: $color_1;
-					text-transform: capitalize;
-				}
-				p {
-					padding: 1rem 0;
-					line-height: 2;
-					font-size: 1.8rem;
-					color: $color_2;
-				}
-			}
-		}
-	}
+  padding-top: 3.2rem;
 }
+
+.course-overview-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 6.4rem;
+  align-items: start;
+}
+
+.course-description {
+  color: var(--muted);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  max-width: 48rem;
+}
+
+.course-facts {
+  display: flex;
+  gap: 2.4rem;
+  color: var(--muted);
+  font-size: var(--text-small);
+  margin: 2.4rem 0 3.2rem;
+}
+
+.course-facts span {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.course-facts svg {
+  width: var(--icon-inline);
+  height: var(--icon-inline);
+}
+
+.course-cover {
+  border: var(--border);
+  background: var(--surface);
+  padding: 1.2rem;
+  border-radius: var(--radius-card);
+  margin-top: 1rem;
+}
+
+.course-cover img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.course-cover > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.6rem 0.4rem 0.4rem;
+}
+
+.course-cover .eyebrow {
+  font-size: var(--text-label);
+}
+
 .playlist-videos {
-	.box-container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-		gap: 1.5rem;
-		justify-content: center;
-		align-items: flex-start;
-		.box {
-			background-color: $background-color_1;
-			border-radius: 0.5rem;
-			padding: 2rem;
-			position: relative;
-			i {
-				position: absolute;
-				top: 2rem;
-				left: 2rem;
-				right: 2rem;
-				height: 20rem;
-				border-radius: 0.5rem;
-				background-color: $background-color_4;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 5rem;
-				color: $color_4;
-				display: none;
-			}
-			&:hover {
-				i {
-					display: flex;
-				}
-				h3 {
-					color: $color_5;
-				}
-			}
-			img {
-				width: 100%;
-				height: 20rem;
-				object-fit: cover;
-				border-radius: 0.5rem;
-			}
-			h3 {
-				margin-top: 1.5rem;
-				font-size: 1.8rem;
-				color: $color_1;
-			}
-		}
-	}
+  padding-top: 4.8rem;
+}
+
+.lesson-list {
+  list-style: none;
+  border-top: var(--border);
+
+  a {
+    display: flex;
+    gap: 2.4rem;
+    align-items: center;
+    padding: 2.4rem 1.6rem;
+    border-bottom: var(--border);
+    transition: background 160ms;
+  }
+
+  a:hover {
+    background: var(--surface);
+  }
+
+  h3 {
+    font-weight: var(--weight-medium);
+    font-size: var(--text-body);
+    line-height: var(--leading-tight);
+  }
+
+  p {
+    color: var(--muted);
+    font-size: var(--text-label);
+    margin-top: 0.6rem;
+  }
+
+  svg {
+    width: var(--icon-inline);
+    height: var(--icon-inline);
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+}
+
+.lesson-number {
+  color: var(--accent);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.course-introduction {
+  h1 {
+    font-size: var(--text-display);
+    line-height: var(--leading-tight);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-tight);
+    margin: 1.6rem 0 2.4rem;
+  }
+
+  .action svg {
+    width: var(--icon-inline);
+    height: var(--icon-inline);
+  }
+
+  .tutor {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    border-top: var(--border);
+    padding-top: 2.4rem;
+    margin-top: 3.2rem;
+  }
+
+  .tutor img {
+    width: var(--icon-control);
+    height: var(--icon-control);
+    border-radius: 50%;
+  }
+
+  .tutor p {
+    font-size: var(--text-small);
+    margin-top: 0.4rem;
+  }
+
+  .tutor .eyebrow {
+    font-size: var(--text-label);
+  }
+}
+
+@media (width <= 800px) {
+  .course-overview-grid {
+    grid-template-columns: 1fr;
+    gap: 3.2rem;
+  }
+
+  .course-breadcrumb {
+    margin-bottom: 3.2rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .course-cover {
+    max-width: 54rem;
+  }
+
+  .course-cover img {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (width <= 400px) {
+  .lesson-list a {
+    padding: 2rem 0;
+    gap: 1.2rem;
+  }
+
+  .course-facts {
+    gap: 1.6rem;
+    flex-wrap: wrap;
+  }
 }

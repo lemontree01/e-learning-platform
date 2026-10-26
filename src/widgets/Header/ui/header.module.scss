@@ -1,74 +1,88 @@
 .header {
   position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  background-color: var(--white);
-  z-index: 1000;
+  z-index: 100;
+  background: var(--page);
   border-bottom: var(--border);
+}
 
-  section {
-    display: flex;
+.inner {
+  max-width: 144rem;
+  padding: 1.6rem 3.2rem;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+}
+
+.navigation {
+  display: flex;
+  gap: 2.4rem;
+  margin-left: auto;
+  font-size: var(--text-ui);
+  color: var(--muted);
+
+  a {
+    display: inline-flex;
     align-items: center;
+    min-height: var(--icon-control);
+    padding: 0;
+  }
+
+  a:hover, a[aria-current='page'] {
+    color: var(--ink);
+  }
+
+  a[aria-current='page'] {
+    box-shadow: 0 1px var(--accent);
+  }
+}
+
+.search {
+  width: 28rem;
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.account {
+  display: grid;
+  place-items: center;
+  width: var(--icon-control);
+  height: var(--icon-control);
+  border: var(--border);
+  border-radius: var(--radius);
+
+  svg {
+    width: var(--icon);
+    height: var(--icon);
+  }
+}
+
+@media (width <= 1100px) {
+  .navigation {
+    display: none;
+  }
+
+  .search {
+    margin-left: auto;
+  }
+}
+
+@media (width <= 600px) {
+  .inner {
+    flex-wrap: wrap;
+    padding: 1.2rem 1.6rem;
+    gap: 1.2rem;
     justify-content: space-between;
-    position: relative;
-    padding: 1.5rem 2rem;
-
-    .logo {
-      font-size: 2.5rem;
-      color: var(--black);
-    }
-
-    .search-form {
-      width: 50rem;
-      border-radius: 0.5rem;
-      background-color: var(--light-bg);
-      padding: 0 2rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
-    }
-
-    .icons {
-      display: flex;
-      flex-direction: row;
-    }
-
-  }
-}
-
-.icon-mui {
-  font-size: 2.5rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-@media (max-width: 768px) {
-  section {
-    flex-direction: column;
-  }
-  .header section .search-form {
-    position: absolute;
-    top: 99%;
-    left: 0;
-    right: 0;
-    border-top: var(--border);
-    border-bottom: var(--border);
-    background-color: var(--white);
-    border-radius: 0;
-    width: auto;
-    padding: 2rem;
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-    transition: 0.2s linear;
   }
 
-  .icons {
+  .search {
+    order: 3;
     width: 100%;
-    flex-direction: row;
-    margin-top: 20px;
-    justify-content: flex-end;
   }
 }
-

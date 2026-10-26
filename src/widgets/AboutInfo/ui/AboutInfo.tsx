@@ -1,61 +1,31 @@
-import styles from './aboutInfo.module.scss';
-import Background from '~/shared/assets/avatars/images/about.png';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import styles from './AboutInfo.module.scss';
+import { features } from '~/shared/config/features';
 
 export const AboutInfo = () => {
   const { t, } = useTranslation('about');
-  return (
-    <section className={styles.about}>
-      <div className={styles.row}>
-        <div className={styles.image}>
-          <img src={Background} alt="" />
-        </div>
-
-        <div className={styles.content}>
-          <h3>{t('why-choose-us')}</h3>
-          <p>
-          {t('description')}
-          </p>
-          <Link to="../courses" className="inline-btn">
-            {t('our-courses')}
-          </Link>
-        </div>
-      </div>
-
-      <div className={styles['box-container']}>
-        <div className={styles['inner-box']}>
-          <i className="fas fa-graduation-cap"></i>
-          <div>
-            <h3>20+</h3>
-            <p>{t('online-courses')}</p>
-          </div>
-        </div>
-
-        <div className={styles['inner-box']}>
-          <i className="fas fa-user-graduate"></i>
-          <div>
-            <h3>200+</h3>
-            <p>{t('users')}</p>
-          </div>
-        </div>
-
-        <div className={styles['inner-box']}>
-          <i className="fas fa-chalkboard-user"></i>
-          <div>
-            <h3>200+</h3>
-            <p>{t('lessons')}</p>
-          </div>
-        </div>
-
-        <div className={styles['inner-box']}>
-          <i className="fas fa-briefcase"></i>
-          <div>
-            <h3>100% {t('free')}</h3>
-            <p>{t('lessons')}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  return <section className={styles.about}>
+    <p className='eyebrow'>{t('brand-name', { ns: 'translation', })} / {t('label')}</p>
+    <h1>{t('title')}</h1>
+    <div className={styles.introduction}>
+      <h2>{t('why-choose-us')}</h2>
+      <p className={styles.copy}>{t('intro')}</p>
+    </div>
+    <div className={styles.principles}>
+      {['observe', 'interact', 'understand'].map((step, index) =>
+        <article key={step}><span className='eyebrow'>0{index + 1}</span>
+          <h2>{t(step + '-title')}</h2>
+          <p className={styles.copy}>{t(step + '-description')}</p>
+        </article>)}
+    </div>
+    <div className={styles.note}>
+      <div><p className='eyebrow'>{t('demo-label')}</p><h2>{t('demo-title')}</h2>
+        <p className={styles.copy}>{t('demo-description')}</p></div>
+      <Link href={features.playground ? '/home#observatory' : '/courses'} className='action'>
+        {t(features.playground ? 'try-demo' : 'browse-courses')}<ArrowForwardIcon />
+      </Link>
+    </div>
+  </section>;
 };

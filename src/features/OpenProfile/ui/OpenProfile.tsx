@@ -13,7 +13,7 @@ export const OpenProfile = () => {
   };
 
   return (
-    <IconButton onClick={toggleProfile}>
+    <IconButton onClick={toggleProfile} aria-label='Open profile' aria-expanded={isUserShown}>
       <PersonIcon />
     </IconButton>
   );

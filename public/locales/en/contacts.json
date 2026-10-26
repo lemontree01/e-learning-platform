@@ -7,5 +7,10 @@
   "phone number": "phone number",
   "email address": "email address",
   "office address": "office address",
-  "send message": "send message"
+  "send message": "send message",
+  "label": "CONTACT",
+  "intro": "The message form below previews a future way to contact the learning platform. Sending messages is not connected yet.",
+  "preview-label": "A PREVIEW, FOR NOW",
+  "form-preview": "Message form preview",
+  "browse-courses": "Explore the course library"
 }

@@ -1,5 +1,12 @@
+.icon {
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+
 .icon > * {
-  font-size: 2.5rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  width: var(--icon);
+  height: var(--icon);
+  margin: 0;
+  padding: 0;
 }

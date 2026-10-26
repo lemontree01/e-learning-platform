@@ -27,7 +27,7 @@ export const Text = memo((props: TextProps) => {
 
   return (
     <div className={`${styles[size]} ${styles[variant]} 
-    ${bold && styles.bold} ${className}`}>
+    ${bold ? styles.bold : ''} ${className ?? ''}`}>
       {children}
     </div>
   );

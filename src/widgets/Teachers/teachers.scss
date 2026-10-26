@@ -1,97 +1,85 @@
 .teachers {
-  .search-tutor {
-    margin-bottom: 2rem;
-    border-radius: 0.5rem;
-    background-color: var(--white);
-    padding: 1.5rem 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
+  padding-top: 4.8rem;
+}
 
-    input {
-      width: 100%;
-      background: none;
-      font-size: 1.8rem;
-      color: var(--black);
-    }
+.teachers > h1 {
+  font-size: var(--text-display);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  margin: 1.6rem 0;
+}
 
-    button {
-      font-size: 2rem;
-      color: var(--black);
-      cursor: pointer;
-      background: none;
+.teachers-description {
+  color: var(--muted);
+  max-width: 62rem;
+  margin-bottom: 3.2rem;
+}
 
-      &:hover {
-        color: var(--main-color);
-      }
-    }
+.teacher-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2.4rem;
+}
+
+.teacher-grid article {
+  background: var(--surface);
+  border: var(--border);
+  border-radius: 0.6rem;
+  padding: 2.4rem;
+}
+
+.teacher-grid img {
+  width: 6.4rem;
+  height: 6.4rem;
+  border-radius: 50%;
+  margin-bottom: 2.4rem;
+}
+
+.teacher-grid .eyebrow {
+  font-size: var(--text-label);
+}
+
+.teacher-grid h2 {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-medium);
+  margin-top: 0.8rem;
+}
+
+.teacher-grid p {
+  color: var(--muted);
+  font-size: var(--text-small);
+}
+
+.teacher-grid a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.4rem;
+  padding-top: 1.6rem;
+  border-top: var(--border);
+  font-size: var(--text-small);
+  color: var(--accent);
+}
+
+.teacher-grid svg {
+  width: var(--icon-inline);
+  height: var(--icon-inline);
+}
+
+@media (width <= 1000px) {
+  .teacher-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
 
-  .box-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    gap: 1.5rem;
-    justify-content: center;
-    align-items: flex-start;
+@media (width <= 768px) {
+  .teacher-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
-    .box {
-      background-color: var(--white);
-      border-radius: 0.5rem;
-      padding: 2rem;
-    }
-
-    .offer {
-      text-align: center;
-      min-height: 260px;
-      h3 {
-        font-size: 2.5rem;
-        color: var(--black);
-        text-transform: capitalize;
-        padding-bottom: 0.5rem;
-      }
-
-      p {
-        line-height: 1.7;
-        padding: 0.5rem 0;
-        color: var(--light-color);
-        font-size: 1.7rem;
-      }
-    }
-
-    .box {
-      .tutor {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-        margin-bottom: 1.5rem;
-
-        img {
-          height: 5rem;
-          width: 5rem;
-          border-radius: 50%;
-        }
-
-        h3 {
-          font-size: 2rem;
-          color: var(--black);
-          margin-bottom: 0.2rem;
-        }
-
-        span {
-          font-size: 1.6rem;
-          color: var(--light-color);
-        }
-      }
-
-      p {
-        padding: 0.5rem 0;
-        font-size: 1.7rem;
-        color: var(--light-color);
-
-        span {
-          color: var(--main-color);
-        }
-      }
-    }
+@media (width <= 420px) {
+  .teacher-grid {
+    grid-template-columns: 1fr;
   }
 }

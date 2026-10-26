@@ -1,10 +1,24 @@
 {
-  "why-choose-us": "why choose us?",
+  "why-choose-us": "Choose a topic. Follow your own pace.",
   "description": "Discover the opportunities of E-learning platform, your ultimate destination for programming and web development education. Unleash your coding potential with professional instructors, interactive lessons, and a supportive community. Start your journey today!",
   "our-courses": "our courses",
   "online-courses": "online courses",
   "users": "users",
   "lessons": "lessons",
   "free": "free",
-  "reviews": "Student's reviews"
+  "reviews": "Student's reviews",
+  "label": "ABOUT THE PLATFORM",
+  "title": "A clear place to start learning.",
+  "intro": "The learning platform brings programming courses and lesson outlines into one simple catalog. Explore a topic, see what a course covers, and choose where to begin.",
+  "observe-title": "Choose your topic.",
+  "observe-description": "Search the catalog or browse programming topics to find a course that interests you.",
+  "interact-title": "Explore the outline.",
+  "interact-description": "Open a course to see its lesson sequence and move between lesson previews.",
+  "understand-title": "Learn at your pace.",
+  "understand-description": "Browse freely in English or Russian, with a black or white interface and no account required.",
+  "demo-label": "CURRENT VERSION",
+  "demo-title": "The course catalog is ready to explore.",
+  "demo-description": "Explore the course catalog, create a learner account, and study the complete JavaScript Fundamentals course with examples, exercises, and a final project. Other courses contain sample outlines. Saved learning progress is still being developed.",
+  "try-demo": "Try the experiment",
+  "browse-courses": "Browse courses"
 }

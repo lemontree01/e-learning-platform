@@ -1,109 +1,253 @@
-.watch-video .video-container {
-  background-color: var(--white);
-  border-radius: 0.5rem;
-  padding: 2rem;
+.watch-video {
+  padding-top: 3.2rem;
+}
 
-  .video {
-    position: relative;
-    margin-bottom: 1.5rem;
+.lesson-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30rem;
+  gap: 4.8rem;
+  align-items: start;
+}
 
-    video {
-      border-radius: 0.5rem;
-      width: 100%;
-      object-fit: contain;
-      background-color: #000;
-    }
-  }
-
+.video-container {
   .title {
-    font-size: 2rem;
-    color: var(--black);
-  }
-
-  .info {
-    display: flex;
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
-    border-bottom: var(--border);
-    padding-bottom: 1.5rem;
-    gap: 2.5rem;
-    align-items: center;
-
-    p {
-      font-size: 1.6rem;
-
-      span {
-        color: var(--light-color);
-      }
-    }
-
-    i {
-      margin-right: 1rem;
-      color: var(--main-color);
-    }
+    font-size: var(--text-display);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    margin: 1.6rem 0 2.4rem;
   }
 
   .tutor {
     display: flex;
+    gap: 1.2rem;
     align-items: center;
-    gap: 2rem;
-    margin-bottom: 1rem;
-
-    img {
-      border-radius: 50%;
-      height: 5rem;
-      width: 5rem;
-      object-fit: cover;
-    }
-
-    h3 {
-      font-size: 2rem;
-      color: var(--black);
-      margin-bottom: 0.2rem;
-    }
-
-    span {
-      font-size: 1.5rem;
-      color: var(--light-color);
-    }
+    font-size: var(--text-small);
+    margin-bottom: 3.2rem;
   }
 
-  .flex {
+  .tutor img {
+    width: var(--icon-control);
+    height: var(--icon-control);
+    border-radius: 50%;
+  }
+
+  .tutor span {
+    color: var(--muted);
+    font-size: var(--text-label);
+  }
+}
+
+.lesson-placeholder {
+  min-height: 36rem;
+  padding: 4.8rem;
+  background: var(--surface);
+  border: var(--border);
+  border-radius: var(--radius-card);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+
+  h2 {
+    font-size: var(--text-title);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin: 2rem 0 1.2rem;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    max-width: 48rem;
+    margin-bottom: 2.4rem;
+  }
+
+  svg {
+    width: var(--icon-inline);
+    height: var(--icon-inline);
+  }
+}
+
+.placeholder-symbol {
+  color: var(--accent);
+  border: var(--border);
+  width: 4.8rem;
+  height: 4.8rem;
+  font-size: var(--text-title);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  border-radius: var(--radius-card);
+  text-align: center;
+}
+
+.lesson-blocks {
+  display: grid;
+  gap: 2.4rem;
+}
+
+.lesson-text h2,
+.lesson-video h2 {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin: 0.8rem 0 1.2rem;
+}
+
+.lesson-text p,
+.lesson-video figcaption p:last-child {
+  color: var(--muted);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+.lesson-video,
+.lesson-picture,
+.lesson-code,
+.lesson-console {
+  background: var(--surface);
+  border: var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.lesson-blocks .lesson-video img,
+.lesson-blocks .lesson-picture img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.lesson-video figcaption,
+.lesson-code figcaption,
+.lesson-console {
+  padding: 2rem 2.4rem;
+}
+
+.lesson-code pre,
+.lesson-console pre {
+  margin: 0;
+  padding: 2rem 2.4rem;
+  overflow-x: auto;
+  font-size: var(--text-small);
+  line-height: 1.6;
+}
+
+.lesson-code figcaption {
+  padding-bottom: 0;
+}
+
+.lesson-console pre {
+  padding: 0;
+}
+
+.lesson-console button {
+  margin-top: 1.6rem;
+}
+
+.lesson-console-output {
+  margin-top: 1.6rem;
+  color: var(--positive);
+}
+
+.lesson-pagination {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  padding-top: 2.4rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--accent);
+    font-size: var(--text-small);
+  }
+
+  svg {
+    width: var(--icon-inline);
+    height: var(--icon-inline);
+  }
+}
+
+.lesson-outline {
+  background: var(--surface);
+  border: var(--border);
+  padding: 2.4rem;
+  border-radius: var(--radius-card);
+  position: sticky;
+  top: 11rem;
+
+  h2 {
+    font-size: var(--text-heading);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+    margin: 1rem 0 2.4rem;
+  }
+
+  ol {
+    list-style: none;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  a {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-
-    button {
-      border-radius: 0.5rem;
-      padding: 1rem 1.5rem;
-      font-size: 1.8rem;
-      cursor: pointer;
-      background-color: var(--light-bg);
-
-      i {
-        margin-right: 1rem;
-        color: var(--black);
-      }
-
-      span {
-        color: var(--light-color);
-      }
-
-      &:hover {
-        background-color: var(--black);
-
-        i, span {
-          color: var(--white);
-        }
-      }
-    }
+    gap: 1.2rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    font-size: var(--text-small);
+    color: var(--muted);
   }
 
-  .description {
-    line-height: 1.5;
-    font-size: 1.7rem;
-    color: var(--light-color);
-    margin-top: 2rem;
+  a > span:first-child {
+    font-size: var(--text-label);
+    line-height: 1.4;
+  }
+
+  a:hover {
+    color: var(--ink);
+    background: var(--raised);
+  }
+
+  a[aria-current='page'] {
+    color: var(--accent);
+    border-color: var(--line);
+    background: var(--raised);
+  }
+}
+
+.current-lesson-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-left: auto;
+}
+
+@media (width <= 1000px) {
+  .lesson-layout {
+    grid-template-columns: minmax(0, 1fr) 25rem;
+    gap: 2.4rem;
+  }
+}
+
+@media (width <= 768px) {
+  .lesson-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .lesson-outline {
+    position: static;
+  }
+
+  .lesson-placeholder {
+    padding: 2.4rem;
   }
 }

@@ -1,0 +1,20 @@
+.intro {
+  padding-top: 3.2rem;
+  padding-bottom: 3.2rem;
+}
+
+.intro h1 {
+  font-size: var(--text-display);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin: 1.6rem 0;
+}
+
+.description {
+  max-width: 64rem;
+  color: var(--muted);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  margin-bottom: 2.4rem;
+}

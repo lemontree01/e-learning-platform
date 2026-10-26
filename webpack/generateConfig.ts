@@ -14,6 +14,7 @@ export function generateConfig (options: BuildOptions): webpack.Configuration {
     output: {
       filename: '[name].[contenthash].js',
       path: paths.output,
+      publicPath: '/',
       clean: true,
     },
     plugins: generatePlugins(options),
@@ -21,6 +22,7 @@ export function generateConfig (options: BuildOptions): webpack.Configuration {
       rules: generateLoaders(options),
     },
     resolve: generateResolvers(options),
+    stats: 'errors-warnings',
     devtool: isDev ? 'inline-source-map' : undefined,
     devServer: isDev ? generateDevServer(options) : undefined,
   };

@@ -15,7 +15,7 @@ export const Card = memo((props: CardProps) => {
     ...otherProps
   } = props;
   return (
-    <div className={`${styles.card} ${className}`} {...otherProps}>
+    <div className={`${styles.card} ${className ?? ''}`} {...otherProps}>
       {children}
     </div>
   );

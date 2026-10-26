@@ -1,26 +1,22 @@
-.icon > * {
-  font-size: 2.5rem !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
 .icon {
-  font-size: 2rem;
-  color: var(--black);
-  background-color: var(--light-bg);
-  border-radius: 0.5rem;
-  height: 4.5rem;
-  width: 4.5rem;
-  line-height: 4.5rem;
-  cursor: pointer;
-  text-align: center;
-  margin-left: 0.7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  display: grid;
+  place-items: center;
+  width: var(--icon-control);
+  height: var(--icon-control);
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
 
-.icon:hover {
-  background-color: var(--black);
-  color: var(--white);
+  &:hover {
+    background: var(--raised);
+    color: var(--ink);
+  }
+
+  > svg {
+    width: var(--icon);
+    height: var(--icon);
+    display: block;
+  }
 }
