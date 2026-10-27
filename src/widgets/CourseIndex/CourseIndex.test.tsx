@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { CourseIndex } from './CourseIndex';
 
 const course = {
@@ -13,8 +13,8 @@ const course = {
   ],
 };
 
-test('chapter links keep their destinations when switching to list view', () => {
-  render(<CourseIndex course={course} />);
+test('chapter links keep their destinations when switching to list view', async () => {
+  await act(async () => { render(<CourseIndex course={course} />); });
   expect(
     screen.getByRole('link', { name: /01 Your first JavaScript program/i, })
   ).toHaveAttribute('href', '/course/0/lesson/0');
@@ -28,8 +28,8 @@ test('chapter links keep their destinations when switching to list view', () => 
   ).toHaveAttribute('href', '/course/0/lesson/1');
 });
 
-test('missing lesson metadata keeps a useful route and human lesson number', () => {
-  render(<CourseIndex course={{ ...course, lessons: undefined, }} />);
+test('missing lesson metadata keeps a useful route and human lesson number', async () => {
+  await act(async () => { render(<CourseIndex course={{ ...course, lessons: undefined, }} />); });
   expect(screen.getByRole('link', { name: /01 Lesson 1/i, })).toHaveAttribute(
     'href',
     '/course/0/lesson/0'

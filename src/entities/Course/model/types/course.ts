@@ -25,6 +25,8 @@ export interface CourseSchema {
   courses: Course[];
   searchedCourses: Course[];
   status: Response;
+  catalogKey?: string;
+  catalogRequestId?: string;
   isSearched: boolean;
   currentCourse?: Course;
   details?: Record<string, Course>;

@@ -1,6 +1,4 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import { createInstance } from 'i18next';
 import enTranslation from '../../../public/locales/en/translation.json';
 import enAbout from '../../../public/locales/en/about.json';
 import enContacts from '../../../public/locales/en/contacts.json';
@@ -11,25 +9,21 @@ import ruAbout from '../../../public/locales/ru/about.json';
 import ruContacts from '../../../public/locales/ru/contacts.json';
 import ruTeachers from '../../../public/locales/ru/teachers.json';
 import ruObservatory from '../../../public/locales/ru/observatory.json';
-import { LANGUAGE_COOKIE } from './language';
+import { type AppLanguage } from './language';
 
 const namespaces = ['translation', 'about', 'contacts', 'teachers', 'observatory'];
 
-i18n.use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
+// Each rendered app owns its language. A module singleton can leak language
+// changes between concurrent server requests.
+export function createAppI18n (language: AppLanguage) {
+  const instance = createInstance();
+  void instance.init({
+    lng: language,
     initImmediate: false,
     fallbackLng: 'en',
     supportedLngs: ['en', 'ru'],
     nonExplicitSupportedLngs: true,
     load: 'languageOnly',
-    detection: {
-      order: ['cookie'],
-      caches: ['cookie'],
-      lookupCookie: LANGUAGE_COOKIE,
-      cookieMinutes: 525600,
-      cookieOptions: { path: '/', sameSite: 'lax', },
-    },
     ns: namespaces,
     defaultNS: 'translation',
     resources: {
@@ -49,10 +43,10 @@ i18n.use(LanguageDetector)
       },
     },
     react: { useSuspense: false, },
-    debug: process.env.NODE_ENV !== 'production',
+    debug: false,
     interpolation: {
       escapeValue: false,
     },
   });
-
-export default i18n;
+  return instance;
+}

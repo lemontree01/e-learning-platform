@@ -1,3 +1,4 @@
+import { PersonOutlineIcon } from '~/shared/ui/SvgIcon/SvgIcon';
 import { RouteLink } from '~/shared/ui/RouteLink/RouteLink';
 import { useTranslation } from 'react-i18next';
 import { Brand } from '~/shared/ui/Brand/Brand';
@@ -8,7 +9,6 @@ import { ToggleLanguage } from '~/features/ToggleLanguage';
 import styles from './header.module.scss';
 import { useAccount } from '~/entities/Account/AccountProvider';
 import Link from 'next/link';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 export const Header = () => {
   const { t, } = useTranslation();

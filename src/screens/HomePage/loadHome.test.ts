@@ -22,7 +22,7 @@ test('reads the catalog and featured course in one server pass', async () => {
     json: async () => String(url).includes('/courses/0')
       ? course
       : [other, { bad: true, }, course],
-  })) as typeof fetch;
+  })) as unknown as typeof fetch;
 
   await expect(loadHome('en')).resolves.toEqual({
     language: 'eng',
@@ -35,9 +35,19 @@ test('reads the catalog and featured course in one server pass', async () => {
 test('lets the browser load the page when the API is down', async () => {
   global.fetch = jest.fn(async () => {
     throw new Error('down');
-  }) as typeof fetch;
+  }) as unknown as typeof fetch;
 
   await expect(loadHome('ru')).resolves.toEqual({
     language: 'rus', courses: null, course: null,
+  });
+});
+
+test('preserves the successful catalog when the featured request fails', async () => {
+  global.fetch = jest.fn(async (url: string) => {
+    if (String(url).includes('/courses/0')) throw new Error('offline');
+    return { ok: true, json: async () => [other], };
+  }) as unknown as typeof fetch;
+  await expect(loadHome('en')).resolves.toEqual({
+    language: 'eng', courses: [other], course: null,
   });
 });

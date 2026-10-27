@@ -1,5 +1,6 @@
 import {
   createSlice,
+  isAnyOf,
   type PayloadAction
 } from '@reduxjs/toolkit';
 import { type Course, type CourseLesson, type CourseSchema } from '../types/course';
@@ -7,6 +8,7 @@ import { Response } from '~/shared/types/Response';
 import { fetchCourses } from '../services/fetchCourses';
 import { fetchShortCourses } from '../services/fetchShortCourses';
 import { fetchCoursesByQuery } from '../services/fetchCoursesByQuery';
+import { getCatalogKey } from '../catalogKey';
 
 const initialState: CourseSchema = {
   courses: [],
@@ -36,47 +38,35 @@ export const courseSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(
-        fetchCourses.fulfilled,
-        (state: CourseSchema, action: PayloadAction<Course[]>) => {
+      .addMatcher(
+        isAnyOf(fetchCourses.pending, fetchCoursesByQuery.pending, fetchShortCourses.pending),
+        (state, action) => {
+          state.catalogKey = fetchCoursesByQuery.pending.match(action)
+            ? getCatalogKey(action.meta.arg.lang, action.meta.arg.query)
+            : fetchCourses.pending.match(action)
+              ? getCatalogKey(action.meta.arg)
+              : 'short:eng';
+          state.catalogRequestId = action.meta.requestId;
+          state.status = Response.LOADING;
+        }
+      )
+      .addMatcher(
+        isAnyOf(fetchCourses.fulfilled, fetchCoursesByQuery.fulfilled, fetchShortCourses.fulfilled),
+        (state, action) => {
+          if (state.catalogRequestId !== action.meta.requestId) return;
+          state.catalogRequestId = undefined;
           state.status = Response.OK;
           state.courses = action.payload;
         }
       )
-      .addCase(fetchCourses.pending, (state: CourseSchema) => {
-        if (state.courses.length === 0) state.status = Response.LOADING;
-      })
-      .addCase(fetchCourses.rejected, (state: CourseSchema, action) => {
-        if (!action.meta.aborted) state.status = Response.ERROR;
-      })
-      .addCase(
-        fetchShortCourses.fulfilled,
-        (state: CourseSchema, action: PayloadAction<Course[]>) => {
-          state.status = Response.OK;
-          state.courses = action.payload;
+      .addMatcher(
+        isAnyOf(fetchCourses.rejected, fetchCoursesByQuery.rejected, fetchShortCourses.rejected),
+        (state, action) => {
+          if (state.catalogRequestId !== action.meta.requestId) return;
+          state.catalogRequestId = undefined;
+          if (!action.meta.aborted) state.status = Response.ERROR;
         }
-      )
-      .addCase(fetchShortCourses.pending, (state: CourseSchema) => {
-        if (state.courses.length === 0) state.status = Response.LOADING;
-      })
-      .addCase(fetchShortCourses.rejected, (state: CourseSchema) => {
-        state.status = Response.ERROR;
-      })
-      .addCase(
-        fetchCoursesByQuery.pending, (state: CourseSchema) => {
-          if (state.courses.length === 0) state.status = Response.LOADING;
-        }
-      )
-      .addCase(
-        fetchCoursesByQuery.fulfilled,
-        (state: CourseSchema, action: PayloadAction<Course[]>) => {
-          state.status = Response.OK;
-          state.courses = action.payload;
-        }
-      )
-      .addCase(fetchCoursesByQuery.rejected, (state: CourseSchema, action) => {
-        if (!action.meta.aborted) state.status = Response.ERROR;
-      });
+      );
   },
 });
 

@@ -1,9 +1,9 @@
+import {
+  ArrowForwardIcon, ArrowBackIcon, AutoStoriesOutlinedIcon
+} from '~/shared/ui/SvgIcon/SvgIcon';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import { useCourse } from '~/entities/Course/model/services/useCourse';
 import { CourseFeedback } from '~/entities/Course/ui/CourseFeedback';
 import { avatars } from '~/shared/assets/avatars';

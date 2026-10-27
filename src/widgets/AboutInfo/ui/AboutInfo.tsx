@@ -1,6 +1,6 @@
+import { ArrowForwardIcon } from '~/shared/ui/SvgIcon/SvgIcon';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import styles from './AboutInfo.module.scss';
 import { features } from '~/shared/config/features';
 

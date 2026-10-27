@@ -47,8 +47,9 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias['~'] = path.join(__dirname, 'src');
     config.module.rules.push({
-      test: /\.(png|jpe?g|gif|webp|svg)$/i,
+      test: /\.(png|jpe?g|gif|webp|svg|woff2)$/i,
       type: 'asset/resource',
+      generator: { filename: 'static/media/[name].[contenthash:8][ext]', },
     });
     return config;
   },

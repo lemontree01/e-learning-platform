@@ -1,5 +1,5 @@
+import { PersonIcon } from '~/shared/ui/SvgIcon/SvgIcon';
 import { IconButton } from '~/shared/ui/IconButton';
-import PersonIcon from '@mui/icons-material/Person';
 import { useSelector } from 'react-redux';
 import { getIsUserShown, themeActions } from '~/entities/Theme';
 import { useAppDispatch } from '~/app/providers/StoreProvider';

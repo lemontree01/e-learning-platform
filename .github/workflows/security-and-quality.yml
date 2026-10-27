@@ -41,6 +41,8 @@ jobs:
         run: npm run unit -- --runInBand
       - name: Production build
         run: npm run build
+      - name: Homepage JavaScript budget
+        run: npm run check:bundle
 
   deploy:
     name: Release frontend

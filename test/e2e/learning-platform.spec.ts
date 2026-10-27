@@ -18,14 +18,14 @@ test('the home page focuses on learning and leaves the playground unloaded', asy
 test('Russian translates the platform, controls, and learning navigation', async ({ page, }) => {
   await page.goto('/home');
   await page.getByRole('button', { name: 'Switch language', }).click();
-  await expect(page.getByRole('heading', { name: 'Заложите основы программирования.', exact: true, }))
+  await expect(page.getByRole('heading', { name: 'Своя основа в программировании.', exact: true, }))
     .toBeVisible();
   await expect(page).toHaveTitle('Учебная платформа — Курсы программирования');
   await expect(page.getByRole('button', { name: 'Сменить тему', })).toBeVisible();
   await page.getByRole('button', { name: 'Открыть меню', }).click();
   await expect(page.getByRole('complementary', { name: 'Основная навигация', })).toBeVisible();
   await page.getByRole('button', { name: 'Закрыть меню', }).click();
-  await page.getByRole('link', { name: 'Выбрать курс', exact: true, }).click();
+  await page.getByRole('link', { name: 'Открыть каталог', exact: true, }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Каталог курсов', })).toBeVisible();
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
@@ -34,7 +34,7 @@ test('Russian translates the platform, controls, and learning navigation', async
     .toHaveAttribute('href', '/course/12');
   await expect(page.locator('a[href*="#observatory"]')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Шаг 1', })).toBeVisible();
-  await page.getByRole('button', { name: 'Показать ожидаемый вывод', }).click();
+  await page.locator('.playground-expected summary').click();
   await expect(page.getByText('Веб-скрапинг с помощью Python — шаг 1')).toBeVisible();
   await page.goto('/teachers/1');
   await expect(page.getByRole('heading', { name: 'Эмма Джонсон', exact: true, })).toBeVisible();

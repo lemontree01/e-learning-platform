@@ -89,7 +89,8 @@
     "test:e2e": "playwright test",
     "lint:ts": "eslint \"**/*.{ts,tsx}\"",
     "lint:scss": "stylelint \"**/*.scss\"",
-    "unit": "jest --config ./test/jest/jest.config.ts"
+    "unit": "jest --config ./test/jest/jest.config.ts",
+    "check:bundle": "node scripts/check-home-bundle.cjs"
   },
   "overrides": {
     "next": {

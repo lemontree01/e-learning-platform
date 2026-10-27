@@ -22,6 +22,8 @@ async function readJson (url: string): Promise<unknown> {
   try {
     const response = await fetch(url, { signal: controller.signal, });
     return response.ok ? await response.json() : null;
+  } catch {
+    return null;
   } finally {
     clearTimeout(timer);
   }

@@ -24,6 +24,11 @@ declare module '*.webp' {
   export default src;
 }
 
+declare module '*.woff2' {
+  const src: string;
+  export default src;
+}
+
 // declare module '*.png';
 // declare module '*.jpg';
 // declare module '*.jpeg';

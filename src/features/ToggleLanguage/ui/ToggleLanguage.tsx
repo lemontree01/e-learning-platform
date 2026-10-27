@@ -1,4 +1,4 @@
-import TranslateIcon from '@mui/icons-material/Translate';
+import { TranslateIcon } from '~/shared/ui/SvgIcon/SvgIcon';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '~/shared/ui/IconButton';
 import { normalizeLanguage, persistLanguage } from '~/shared/config/language';

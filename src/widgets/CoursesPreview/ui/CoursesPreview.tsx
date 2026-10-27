@@ -3,18 +3,19 @@ import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'motion/react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
-import { type Course, getCourses, getStatus } from '~/entities/Course';
+import * as m from 'motion/react-m';
+import { MotionFeatures } from '~/shared/ui/MotionFeatures/MotionFeatures';
+import { ArrowForwardIcon, AutoStoriesOutlinedIcon } from '~/shared/ui/SvgIcon/SvgIcon';
+import { type Course } from '~/entities/Course';
 import { getApiLanguage, type ApiLanguage } from '~/entities/Course/api/getApiLanguage';
 import { fetchCourses } from '~/entities/Course/model/services/fetchCourses';
 import { fetchCoursesByQuery } from '~/entities/Course/model/services/fetchCoursesByQuery';
+import { getCatalogKey } from '~/entities/Course/model/catalogKey';
 import { CourseArtwork } from '~/shared/ui/CourseArtwork/CourseArtwork';
 import { isCompleteCourse } from '~/entities/Course/model/presentation';
 import { avatars } from '~/shared/assets/avatars';
 import { Response } from '~/shared/types/Response';
-import { useAppDispatch } from '~/app/providers/StoreProvider';
+import { useAppDispatch, type StateSchema } from '~/app/providers/StoreProvider';
 import styles from './CoursesPreview.module.scss';
 
 const CoursesPreviewContent = ({
@@ -29,8 +30,8 @@ const CoursesPreviewContent = ({
   const [retry, setRetry] = useState(0);
   const query = (params.get('search') ?? '').trim();
   const language = i18n.resolvedLanguage ?? i18n.language;
-  const coursesFromStore = useSelector(getCourses);
-  const requestStatus = useSelector(getStatus);
+  const catalog = useSelector((state: StateSchema) => state.course);
+  const matchesRequest = catalog.catalogKey === getCatalogKey(language, query);
   const seededCourses = !query && seed?.language === getApiLanguage(language)
     ? seed.courses
     : undefined;
@@ -45,8 +46,10 @@ const CoursesPreviewContent = ({
     };
   }, [dispatch, language, query, retry, seededCourses]);
 
-  const courses = coursesFromStore.length > 0 ? coursesFromStore : (seededCourses ?? []);
-  const status = seededCourses && coursesFromStore.length === 0 ? Response.OK : requestStatus;
+  const courses = seededCourses ?? (matchesRequest ? catalog.courses : []);
+  const status = seededCourses
+    ? Response.OK
+    : matchesRequest ? catalog.status : Response.LOADING;
 
   const visibleCourses = featured
     ? courses.filter((course) => !isCompleteCourse(course)).slice(0, 3)
@@ -83,7 +86,7 @@ const CoursesPreviewContent = ({
         <nav className={styles.topics} aria-label={t('course-topics')}>
           <Link href="/courses" aria-current={!query ? 'page' : undefined}>
             {!query && (
-              <motion.span
+              <m.span
                 className={styles['topic-indicator']}
                 layoutId="course-topic"
                 transition={{ duration: 0.28, }}
@@ -98,7 +101,7 @@ const CoursesPreviewContent = ({
               aria-current={query.toLowerCase() === topic.toLowerCase() ? 'page' : undefined}
             >
               {query.toLowerCase() === topic.toLowerCase() && (
-                <motion.span
+                <m.span
                   className={styles['topic-indicator']}
                   layoutId="course-topic"
                   transition={{ duration: 0.28, }}
@@ -131,7 +134,7 @@ const CoursesPreviewContent = ({
           </Link>
         </div>
       )}
-      <motion.div
+      <m.div
         layout
         className={`${styles.grid} ${featured ? styles.compact : ''}`}
         aria-busy={status === Response.LOADING}
@@ -146,7 +149,7 @@ const CoursesPreviewContent = ({
           ))}
         {status === Response.OK &&
           visibleCourses.map((course: Course) => (
-            <motion.article
+            <m.article
               layout
               className={styles.card}
               key={course.id}
@@ -173,10 +176,11 @@ const CoursesPreviewContent = ({
                 <CardHeading>
                   <Link href={`/course/${course.id}`}>{course.name}</Link>
                 </CardHeading>
-                <div className={styles.author}>
-                  <img src={avatars[course.id % avatars.length]} alt="" />
+                {!featured && <div className={styles.author}>
+                  <img src={avatars[course.id % avatars.length]} alt="" width={28} height={28}
+                    loading="lazy" decoding="async" />
                   <span>{course.author}</span>
-                </div>
+                </div>}
                 <Link
                   className={styles.open}
                   href={`/course/${course.id}`}
@@ -186,9 +190,9 @@ const CoursesPreviewContent = ({
                   <ArrowForwardIcon />
                 </Link>
               </div>
-            </motion.article>
+            </m.article>
           ))}
-      </motion.div>
+      </m.div>
       {featured && (
         <div className={styles['catalog-note']}>
           <span className="eyebrow">{t('learn-your-way')}</span>
@@ -205,7 +209,7 @@ export const CoursesPreview = ({
   featured?: boolean;
   seed?: { language: ApiLanguage; courses: Course[] };
 }) => (
-  <Suspense fallback={null}>
+  <MotionFeatures><Suspense fallback={null}>
     <CoursesPreviewContent featured={featured} seed={seed} />
-  </Suspense>
+  </Suspense></MotionFeatures>
 );

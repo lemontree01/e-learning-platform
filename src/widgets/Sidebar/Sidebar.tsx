@@ -1,8 +1,8 @@
+import { CloseIcon } from '~/shared/ui/SvgIcon/SvgIcon';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import CloseIcon from '@mui/icons-material/Close';
 import { Brand } from '~/shared/ui/Brand/Brand';
 import { Drawer } from '~/shared/ui/Drawer/Drawer';
 import { getIsSidebarShown, themeActions } from '~/entities/Theme';

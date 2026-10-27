@@ -1,7 +1,7 @@
+import { SearchIcon } from '~/shared/ui/SvgIcon/SvgIcon';
 import { type FormEvent, Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import SearchIcon from '@mui/icons-material/Search';
 import { Input } from '~/shared/ui/Input';
 import { Icon } from '~/shared/ui/Icon';
 import { Button } from '~/shared/ui/Button';

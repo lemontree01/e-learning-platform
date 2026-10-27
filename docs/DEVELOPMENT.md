@@ -6,6 +6,8 @@ An English/Russian Next.js learning platform with minimal black and white themes
 
 The current homepage, minimal chapter grid, motion, and React compatibility decisions are in [PORTFOLIO.md](PORTFOLIO.md). [MODERNIZATION.md](MODERNIZATION.md) records the historical staged roadmap; its Observatory direction is superseded by the current course-focused design.
 
+See [FRONTEND_QUALITY.md](FRONTEND_QUALITY.md) for the mobile/desktop performance measurements, frontend regression coverage, and release limitations.
+
 The Observatory implementation and translations remain in the repository, but the current homepage does not mount its widget. Keep `features.playground` in [src/shared/config/features.ts](../src/shared/config/features.ts) set to `false` so legacy recovery links lead to courses. Russian interface copy lives in `public/locales/ru/`.
 
 ## Run locally
@@ -46,6 +48,7 @@ Theme colors live in [src/shared/config/themes.ts](../src/shared/config/themes.t
 npm run typecheck
 npm run unit -- --runInBand
 npm run build
+npm run check:bundle
 npm run security:audit
 npm run security:secrets
 ```

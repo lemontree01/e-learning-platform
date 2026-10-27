@@ -1,8 +1,7 @@
+import { ArrowForwardIcon, ArrowBackIcon } from '~/shared/ui/SvgIcon/SvgIcon';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useCourse } from '~/entities/Course/model/services/useCourse';
 import { useLesson } from '~/entities/Course/model/services/useLesson';
 import { CourseFeedback } from '~/entities/Course/ui/CourseFeedback';

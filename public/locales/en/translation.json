@@ -146,6 +146,8 @@
   "main-navigation": "Main navigation",
   "lesson-count_one": "{{count}} lesson",
   "lesson-count_other": "{{count}} lessons",
+  "page-not-found": "Page not found",
+  "page-not-found-description": "This link does not lead to a page. Browse the courses to find your next lesson.",
   "unexpected-error": "Something went wrong",
   "unexpected-error-description": "The page could not be displayed. Please return to the home page and try again.",
   "home-title": "Build your programming foundations.",
