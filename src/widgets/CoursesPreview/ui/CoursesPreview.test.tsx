@@ -12,7 +12,6 @@ jest.mock('next/navigation', () => ({
 }));
 jest.mock('~/shared/api/instance', () => ({ $api: { get: jest.fn(), }, }));
 
-// Coming soon (no lessons), like every course the home page's "coming next" row lists.
 const course: Course = {
   id: 1, name: 'HTML foundations', author: 'Example Author', date: '2026-10-26', numberOfLessons: 0,
 };
@@ -38,6 +37,17 @@ test('returning home uses its complete server catalog after a filtered search', 
   expect(screen.getByRole('heading', { name: course.name, })).toBeVisible();
   expect(screen.getByRole('heading', { name: result.name, })).toBeVisible();
   expect($api.get).toHaveBeenCalledTimes(1);
+});
+
+test('the home row shows three courses after the featured one, with or without lessons', () => {
+  const catalog = [0, 1, 2, 3, 4].map((id) => ({
+    ...course, id, name: `Course ${id}`, numberOfLessons: id % 2 ? 0 : 8,
+  }));
+  render(<Provider store={createReduxStore()}>
+    <CoursesPreview featured seed={{ language: 'eng', courses: catalog, }} />
+  </Provider>);
+  expect(screen.getAllByRole('heading', { level: 3, }).map((heading) => heading.textContent))
+    .toEqual(['Course 1', 'Course 2', 'Course 3']);
 });
 
 test('language changes hide old cards and restore the correct seed', async () => {

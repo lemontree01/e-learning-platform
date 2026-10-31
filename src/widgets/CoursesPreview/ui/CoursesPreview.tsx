@@ -55,8 +55,9 @@ const CoursesPreviewContent = ({
     ? Response.OK
     : matchesRequest ? catalog.status : Response.LOADING;
 
+  // Home already shows course 0 in full above this row.
   const visibleCourses = featured
-    ? courses.filter(isComingSoon).slice(0, 3)
+    ? courses.filter((course) => course.id !== 0).slice(0, 3)
     : courses;
   const CardHeading = featured ? 'h3' : 'h2';
   return (
