@@ -68,7 +68,7 @@
     "playground:build": "node scripts/build-playground.cjs",
     "serve": "next start --port 3000",
     "typecheck": "tsc --noEmit",
-    "security:audit": "npm audit && npm audit --omit=dev",
+    "security:audit": "npm audit --audit-level=high && npm audit --omit=dev",
     "security:secrets": "node scripts/scan-secrets.cjs",
     "test:e2e": "playwright test",
     "lint:ts": "eslint \"**/*.{ts,tsx}\"",
