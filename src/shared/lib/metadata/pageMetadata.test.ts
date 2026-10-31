@@ -1,8 +1,11 @@
 import { getPageMetadata } from './pageMetadata';
-import en from '../../../../public/locales/en/translation.json';
-import ru from '../../../../public/locales/ru/translation.json';
+import enMessages from '../../../../public/locales/en.json';
+import ruMessages from '../../../../public/locales/ru.json';
 
-const translate = (copy: typeof en) => (key: string) => copy[key as keyof typeof copy];
+const en = enMessages.translation;
+const ru = ruMessages.translation;
+
+const translate = (copy: typeof en) => (key: string) => copy[key as keyof typeof copy] as string;
 
 test('page titles identify the active route instead of repeating the homepage title', () => {
   const home = getPageMetadata('/home', translate(en));
@@ -20,17 +23,14 @@ test('account descriptions and missing-page titles follow the selected language'
   expect(getPageMetadata('/not-a-page', translate(en)).title).toContain('Page not found');
 });
 
-test('nested course and teacher links retain the correct page identity', () => {
+test('nested course links retain the correct page identity', () => {
   expect(getPageMetadata('/course/0/lesson/2', translate(en)).title).toBe(
     `${en.lesson} — ${en['brand-name']}`
-  );
-  expect(getPageMetadata('/teachers/0', translate(en)).title).toBe(
-    `${en.teachers} — ${en['brand-name']}`
   );
 });
 
 test.each(['en', 'ru'])('all route metadata is translated in %s', (language) => {
-  for (const route of ['/home', '/courses', '/about', '/teachers', '/contacts',
+  for (const route of ['/home', '/courses', '/about', '/contacts',
     '/login', '/register', '/profile', '/course/0', '/course/0/lesson/0', '/missing']) {
     const metadata = getPageMetadata(route, translate(language === 'ru' ? ru : en));
     expect(metadata.title).not.toContain('undefined');

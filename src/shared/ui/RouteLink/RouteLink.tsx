@@ -10,7 +10,7 @@ export function RouteLink ({
   const pathname = usePathname();
   const current = pathname === href;
   return (
-    <Link href={href} prefetch={false} aria-current={current ? 'page' : undefined} {...props}>
+    <Link href={href} aria-current={current ? 'page' : undefined} {...props}>
       {children}
     </Link>
   );

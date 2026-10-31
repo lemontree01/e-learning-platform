@@ -49,7 +49,7 @@ export default function CodePlayground ({ initialLanguage, initialCode, starters
     setStatus('loading');
     const handle = startRun(language, code, input, () => {
       if (version.current === current) setStatus('running');
-    });
+    }, t('code-sandbox-title'));
     run.current = handle;
     void handle.result.then(result => {
       if (version.current !== current) return;
@@ -64,14 +64,20 @@ export default function CodePlayground ({ initialLanguage, initialCode, starters
         <span>{t('code-example')}</span>
       </div>
       <div className="playground-tools">
-        <select aria-label={t('code-language')} value={language}
-          onChange={event => { reset(event.target.value as Language); }}>
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-        </select>
-        <button type="button" className="playground-quiet" onClick={copy}>
+        <span className="playground-language">
+          <select aria-label={t('code-language')} value={language}
+            onChange={event => { reset(event.target.value as Language); }}>
+            <option value="javascript">{t('language-javascript')}</option>
+            <option value="python">{t('language-python')}</option>
+          </select>
+          <PlaygroundIcon name="chevron" />
+        </span>
+        <button type="button" className="playground-quiet" onClick={copy}
+          title={t(copyState === 'copied' ? 'copied' : 'copy-code')}>
           <PlaygroundIcon name="copy" />
-          {t(copyState === 'copied' ? 'copied' : 'copy-code')}
+          <span key={copyState} className="playground-copy-label">
+            {t(copyState === 'copied' ? 'copied' : 'copy-code')}
+          </span>
         </button>
       </div>
     </div>
@@ -90,7 +96,8 @@ export default function CodePlayground ({ initialLanguage, initialCode, starters
           <button type="button" className="action" onClick={execute} disabled={busy}>
             <PlaygroundIcon name="play" />{t('code-run')}
           </button>
-          {busy && <button type="button" className="playground-quiet" onClick={stop}>
+          {busy && <button type="button" className="playground-quiet playground-stop"
+            onClick={stop}>
             <PlaygroundIcon name="stop" />{t('code-stop')}
           </button>}
           <button type="button" className="playground-quiet" onClick={() => { reset(); }}>
@@ -105,13 +112,15 @@ export default function CodePlayground ({ initialLanguage, initialCode, starters
             {t(`code-status-${status}`)}
           </span>
         </div>
-        <div className={`playground-output${!output ? ' playground-output-empty' : ''}`}>
+        <div key={output ? 'output' : 'empty'}
+          className={`playground-output${!output ? ' playground-output-empty' : ''}`}>
           {!output && <PlaygroundIcon name="terminal" />}
           <pre tabIndex={0} aria-label={t('code-output')} data-testid="code-output">
             {output || t(status === 'completed' ? 'code-no-output' : 'code-output-placeholder')}
           </pre>
         </div>
-        {expected && <details className="playground-expected">
+        {/* The reference output belongs to the original example, not another language. */}
+        {expected && language === initialLanguage && <details className="playground-expected">
           <summary>{t('expected-output')}<span>{t('code-compare')}</span></summary>
           <p>{t('code-reference-note')}</p>
           <code className="reference-command">$ {expected.command}</code>

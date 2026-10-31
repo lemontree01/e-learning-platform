@@ -5,7 +5,7 @@ import i18n from 'i18next';
 import { createReduxStore } from '~/app/providers/StoreProvider/config/store';
 import { $api } from '~/shared/api/instance';
 import { type Course } from '../types/course';
-import { useCourse } from './useCourse';
+import { useCourse, usePrefetchCourse } from './useCourse';
 
 jest.mock('~/shared/api/instance', () => ({ $api: { get: jest.fn(), }, }));
 
@@ -39,6 +39,20 @@ test('reuses a loaded course immediately when a lesson or page remounts', async 
 
   const next = renderHook(() => useCourse('12'), { wrapper, });
   expect(next.result.current).toEqual({ course, status: 'ready', });
+  expect($api.get).toHaveBeenCalledTimes(1);
+});
+
+test('prefetches a course once so its page renders without waiting', async () => {
+  jest.mocked($api.get).mockResolvedValue({ data: course, });
+  const wrapper = createWrapper();
+  const prefetch = renderHook(() => usePrefetchCourse(), { wrapper, }).result.current;
+  prefetch(12);
+  prefetch(12);
+  await act(async () => { await new Promise(resolve => setTimeout(resolve, 0)); });
+  prefetch(12);
+
+  const page = renderHook(() => useCourse('12'), { wrapper, });
+  expect(page.result.current).toEqual({ course, status: 'ready', });
   expect($api.get).toHaveBeenCalledTimes(1);
 });
 

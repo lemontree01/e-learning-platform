@@ -21,7 +21,8 @@ test('runs edited code and input and renders output as text', async () => {
   fireEvent.change(screen.getByLabelText('Input (one line per prompt)'), { target: { value: '42', }, });
   fireEvent.click(screen.getByRole('button', { name: 'Run code', }));
   expect(await screen.findByText('<script>text only</script>')).toBeVisible();
-  expect(startRun).toHaveBeenCalledWith('javascript', 'console.log(prompt())', '42', expect.any(Function));
+  expect(startRun).toHaveBeenCalledWith('javascript', 'console.log(prompt())', '42',
+    expect.any(Function), 'Code execution sandbox');
 });
 
 test('stop cancels an active run and reset restores the lesson example', () => {

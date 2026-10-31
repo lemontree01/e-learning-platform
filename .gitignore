@@ -38,3 +38,8 @@ out/
 *.keystore
 .pgpass
 .npmrc.local
+
+# AI working notes
+docs/CODE_SCULPTURE.md
+docs/CODE_SCULPTURE_VERIFICATION.md
+docs/LIVE_FRONTEND_REVIEW.md

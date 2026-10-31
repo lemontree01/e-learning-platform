@@ -9,7 +9,6 @@ export function getPageMetadata (pathname: string, t: (key: string) => string) {
     case 'course': titleKey = pathname.includes('/lesson/') ? 'lesson' : 'course'; break;
     case 'lesson': titleKey = 'lesson'; break;
     case 'about': titleKey = 'about'; break;
-    case 'teachers': titleKey = 'teachers'; break;
     case 'contacts': titleKey = 'contact-us'; break;
     case 'login': titleKey = 'account-sign-in'; descriptionKey = 'account-login-intro'; break;
     case 'register': titleKey = 'account-create'; descriptionKey = 'account-register-intro'; break;

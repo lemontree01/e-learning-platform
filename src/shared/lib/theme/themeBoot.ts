@@ -1,4 +1,5 @@
 import { DEFAULT_THEME, themes } from '../../config/themes';
+import { Color } from '../../types/Color';
 import { THEME_STORAGE_KEY } from './themeStorage';
 
 const initialTheme = themes[DEFAULT_THEME];
@@ -16,7 +17,9 @@ export function initialThemeStyle (): Record<string, string> {
 
 export function themeBootScript (): string {
   return `(function(){try{var themes=${JSON.stringify(themes)};` +
-    `var color=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});` +
+    // No saved choice: follow the system setting, like readStoredTheme.
+    `var color=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)})||` +
+    `(matchMedia('(prefers-color-scheme: light)').matches?${JSON.stringify(Color.LIGHT)}:'');` +
     'var theme=themes[color];if(!theme)return;var root=document.documentElement;' +
     'for(var token in theme.colors){if(Object.prototype.hasOwnProperty.call(theme.colors,token))' +
     "root.style.setProperty('--'+token,theme.colors[token]);}" +

@@ -10,9 +10,11 @@ import { type Course } from '~/entities/Course';
 import { getApiLanguage, type ApiLanguage } from '~/entities/Course/api/getApiLanguage';
 import { fetchCourses } from '~/entities/Course/model/services/fetchCourses';
 import { fetchCoursesByQuery } from '~/entities/Course/model/services/fetchCoursesByQuery';
+import { usePrefetchCourse } from '~/entities/Course/model/services/useCourse';
 import { getCatalogKey } from '~/entities/Course/model/catalogKey';
 import { CourseArtwork } from '~/shared/ui/CourseArtwork/CourseArtwork';
-import { isCompleteCourse } from '~/entities/Course/model/presentation';
+import { useArtworkMorph } from '~/shared/ui/CourseArtwork/useArtworkMorph';
+import { isComingSoon } from '~/entities/Course/model/presentation';
 import { avatars } from '~/shared/assets/avatars';
 import { Response } from '~/shared/types/Response';
 import { useAppDispatch, type StateSchema } from '~/app/providers/StoreProvider';
@@ -28,6 +30,8 @@ const CoursesPreviewContent = ({
   const { t, i18n, } = useTranslation();
   const params = useSearchParams();
   const [retry, setRetry] = useState(0);
+  const prefetch = usePrefetchCourse();
+  const morph = useArtworkMorph();
   const query = (params.get('search') ?? '').trim();
   const language = i18n.resolvedLanguage ?? i18n.language;
   const catalog = useSelector((state: StateSchema) => state.course);
@@ -52,7 +56,7 @@ const CoursesPreviewContent = ({
     : matchesRequest ? catalog.status : Response.LOADING;
 
   const visibleCourses = featured
-    ? courses.filter((course) => !isCompleteCourse(course)).slice(0, 3)
+    ? courses.filter(isComingSoon).slice(0, 3)
     : courses;
   const CardHeading = featured ? 'h3' : 'h2';
   return (
@@ -148,7 +152,7 @@ const CoursesPreviewContent = ({
             </div>
           ))}
         {status === Response.OK &&
-          visibleCourses.map((course: Course) => (
+          visibleCourses.map((course: Course, index) => (
             <m.article
               layout
               className={styles.card}
@@ -156,6 +160,9 @@ const CoursesPreviewContent = ({
               initial={false}
               animate={{ opacity: 1, y: 0, }}
               transition={{ duration: 0.28, }}
+              onPointerEnter={() => { prefetch(course.id); }}
+              onFocus={() => { prefetch(course.id); }}
+              onClickCapture={(event) => { morph(event, course.id); }}
             >
               <Link
                 className={styles.cover}
@@ -163,15 +170,15 @@ const CoursesPreviewContent = ({
                 tabIndex={-1}
                 aria-hidden="true"
               >
-                <CourseArtwork id={course.id} />
+                <CourseArtwork id={course.id} eager={!featured && index < 3} />
               </Link>
               <div className={styles.content}>
                 <div className={styles.metadata}>
-                  <span>
+                  {!isComingSoon(course) && <span>
                     <AutoStoriesOutlinedIcon />
                     {t('lesson-count', { count: course.numberOfLessons, })}
-                  </span>
-                  <span>{t(isCompleteCourse(course) ? 'complete-course' : 'demo-course')}</span>
+                  </span>}
+                  <span>{t(isComingSoon(course) ? 'coming-soon' : 'complete-course')}</span>
                 </div>
                 <CardHeading>
                   <Link href={`/course/${course.id}`}>{course.name}</Link>
@@ -181,10 +188,12 @@ const CoursesPreviewContent = ({
                     loading="lazy" decoding="async" />
                   <span>{course.author}</span>
                 </div>}
+                {/* The title link is the card's one tab stop; this repeats it for pointers. */}
                 <Link
                   className={styles.open}
                   href={`/course/${course.id}`}
-                  aria-label={`${t('view-course')}: ${course.name}`}
+                  tabIndex={-1}
+                  aria-hidden="true"
                 >
                   {t('view-course')}
                   <ArrowForwardIcon />

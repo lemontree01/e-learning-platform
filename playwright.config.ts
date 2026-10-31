@@ -6,6 +6,8 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:3000',
     locale: 'en-US',
+    // The site follows the system theme until a visitor picks one; tests start from dark.
+    colorScheme: 'dark',
     channel: process.env.PLAYWRIGHT_CHANNEL,
     screenshot: 'only-on-failure',
   },

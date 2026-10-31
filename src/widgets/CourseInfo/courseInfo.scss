@@ -58,41 +58,19 @@
   padding-top: 4.8rem;
 }
 
+// Planned topics of a coming-soon course: plain rows, nothing to open yet.
 .lesson-list {
   list-style: none;
   border-top: var(--border);
 
-  a {
+  li {
     display: flex;
     gap: 2.4rem;
     align-items: center;
     padding: 2.4rem 1.6rem;
     border-bottom: var(--border);
-    transition: background 160ms;
-  }
-
-  a:hover {
-    background: var(--surface);
-  }
-
-  h3 {
     font-weight: var(--weight-medium);
-    font-size: var(--text-body);
     line-height: var(--leading-tight);
-  }
-
-  p {
-    color: var(--muted);
-    font-size: var(--text-label);
-    margin-top: 0.6rem;
-  }
-
-  svg {
-    width: var(--icon-inline);
-    height: var(--icon-inline);
-    margin-left: auto;
-    flex-shrink: 0;
-    color: var(--accent);
   }
 }
 
@@ -162,7 +140,7 @@
 }
 
 @media (width <= 400px) {
-  .lesson-list a {
+  .lesson-list li {
     padding: 2rem 0;
     gap: 1.2rem;
   }

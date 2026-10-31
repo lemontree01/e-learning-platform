@@ -9,16 +9,20 @@ import { CourseFeedback } from '~/entities/Course/ui/CourseFeedback';
 import { avatars } from '~/shared/assets/avatars';
 import { CourseArtwork } from '~/shared/ui/CourseArtwork/CourseArtwork';
 import { CourseIndex } from '~/widgets/CourseIndex/CourseIndex';
-import { getRouteLesson } from '~/shared/routes/routes';
-import { isCompleteCourse, lessonTitle } from '~/entities/Course/model/presentation';
+import { getRouteCourse, getRouteLesson } from '~/shared/routes/routes';
+import { isComingSoon } from '~/entities/Course/model/presentation';
+import { type ApiLanguage } from '~/entities/Course/api/getApiLanguage';
+import { type Course } from '~/entities/Course/model/types/course';
 import './courseInfo.scss';
 
-const CourseInfo = () => {
+const CourseInfo = ({ seed, }: { seed?: { language: ApiLanguage; course: Course } }) => {
   const params = useParams();
   const id = typeof params.id === 'string' ? params.id : undefined;
-  const { course, status, } = useCourse(id);
+  const { course, status, } = useCourse(id, seed);
   const { t, } = useTranslation();
   if (!course || status !== 'ready') return <CourseFeedback status={status} />;
+  const comingSoon = isComingSoon(course);
+  const plan: unknown = t(`course-plan.${course.id}`, { returnObjects: true, });
 
   return (
     <>
@@ -38,21 +42,23 @@ const CourseInfo = () => {
             </p>
             <h1>{course.name}</h1>
             <p className="course-description">
-              {t(isCompleteCourse(course) ? 'course-full-description' : 'course-demo-description')}
+              {t(comingSoon ? 'course-coming-soon-description' : 'course-full-description')}
             </p>
             <div className="course-facts">
-              <span>
+              {!comingSoon && <span>
                 <AutoStoriesOutlinedIcon />
                 {t('lesson-count', { count: course.numberOfLessons, })}
-              </span>
-              <span>{t(isCompleteCourse(course) ? 'complete-course' : 'demo-course')}</span>
+              </span>}
+              <span>{t(comingSoon ? 'coming-soon' : 'complete-course')}</span>
             </div>
-            <Link href={getRouteLesson(String(course.id), '0')} className="action">
-              {t('open-first-lesson')}
+            <Link className="action" href={comingSoon
+              ? getRouteCourse('0')
+              : getRouteLesson(String(course.id), '0')}>
+              {t(comingSoon ? 'coming-soon-action' : 'open-first-lesson')}
               <ArrowForwardIcon />
             </Link>
             <div className="tutor">
-              <img src={avatars[course.id % avatars.length]} alt="" />
+              <img src={avatars[course.id % avatars.length]} alt="" width={40} height={40} />
               <div>
                 <span className="eyebrow">{t('course-author')}</span>
                 <p>{course.author}</p>
@@ -60,7 +66,7 @@ const CourseInfo = () => {
             </div>
           </div>
           <div className="course-cover">
-            <CourseArtwork id={course.id} />
+            <CourseArtwork id={course.id} eager />
             <div>
               <span className="eyebrow">{t('brand-name')}</span>
               <span className="eyebrow">{course.date}</span>
@@ -70,34 +76,22 @@ const CourseInfo = () => {
       </section>
       <section className="playlist-videos">
         <div className="section-head">
-          <div>
-            <p className="eyebrow">{t('course-outline')}</p>
-            <h2>{t('course-lessons')}</h2>
-          </div>
-          <p className="demo-note">{t('outline-description')}</p>
+          <h2>{t(comingSoon ? 'course-plan-title' : 'course-lessons')}</h2>
+          {!comingSoon && <p className="demo-note">{t('outline-description')}</p>}
         </div>
-        {isCompleteCourse(course)
-          ? (
-          <CourseIndex course={course} />
-            )
-          : (
+        {comingSoon
+          ? Array.isArray(plan) && (
           <ol className="lesson-list">
-            {Array.from({ length: course.numberOfLessons, }, (_, index) => {
-              const name = lessonTitle(course, index, `${course.name} (${t('part')} ${index + 1})`);
-              return (
-                <li key={index}>
-                  <Link href={getRouteLesson(String(course.id), String(index))}>
-                    <span className="lesson-number">{String(index + 1).padStart(2, '0')}</span>
-                    <div>
-                      <h3>{name}</h3>
-                      <p>{t('lesson-preview')}</p>
-                    </div>
-                    <ArrowForwardIcon />
-                  </Link>
-                </li>
-              );
-            })}
+            {plan.map((topic: string, index) => (
+              <li key={index}>
+                <span className="lesson-number">{String(index + 1).padStart(2, '0')}</span>
+                {topic}
+              </li>
+            ))}
           </ol>
+          )
+          : (
+          <CourseIndex course={course} />
             )}
       </section>
     </>

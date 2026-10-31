@@ -19,7 +19,7 @@ function assetInfo (manifest: unknown, name: string): Asset {
 }
 
 export function startRun (
-  language: Language, source: string, input: string, onStarted: () => void
+  language: Language, source: string, input: string, onStarted: () => void, sandboxTitle: string
 ): RunHandle {
   active?.stop();
   const controller = new AbortController();
@@ -70,7 +70,7 @@ export function startRun (
       port = channel.port1;
       frame = document.createElement('iframe');
       frame.hidden = true;
-      frame.title = 'Code execution sandbox';
+      frame.title = sandboxTitle;
       frame.setAttribute('sandbox', 'allow-scripts');
       frame.referrerPolicy = 'no-referrer';
       frame.setAttribute('allow', "camera 'none'; microphone 'none'; geolocation 'none'");

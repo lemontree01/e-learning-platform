@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
@@ -29,6 +30,10 @@ const highlighting = HighlightStyle.define([
 export function CodeEditor ({ value, language, label, onChange, }: {
   value: string; language: Language; label: string; onChange: (value: string) => void;
 }) {
+  const { t, } = useTranslation('editor');
+  const phrases = useMemo(
+    () => t('phrases', { returnObjects: true, }) as Record<string, string>, [t]
+  );
   const container = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const initial = useRef(value);
@@ -41,6 +46,7 @@ export function CodeEditor ({ value, language, label, onChange, }: {
         doc: initial.current,
         extensions: [
           basicSetup,
+          EditorState.phrases.of(phrases),
           language === 'python' ? python() : javascript(),
           syntaxHighlighting(highlighting),
           EditorView.lineWrapping,
@@ -73,7 +79,7 @@ export function CodeEditor ({ value, language, label, onChange, }: {
     });
     view.current = editor;
     return () => { view.current = null; editor.destroy(); };
-  }, [language, label, onChange]);
+  }, [language, label, onChange, phrases]);
   useEffect(() => {
     const editor = view.current;
     if (editor && editor.state.doc.toString() !== value) {

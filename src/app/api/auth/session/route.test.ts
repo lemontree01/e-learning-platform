@@ -64,6 +64,13 @@ test('network failures remain visible without exposing internal error details', 
   expect(await response.json()).toEqual({ error: 'Unable to load your account.', });
 });
 
+test('session errors follow the interface language cookie', async () => {
+  jest.spyOn(global, 'fetch').mockRejectedValue(new Error('private connection details'));
+  const response = await GET(request(`learning_session=${session}; lang=ru`));
+  expect(response.status).toBe(502);
+  expect(await response.json()).toEqual({ error: 'Не удалось загрузить аккаунт.', });
+});
+
 test('malformed account responses stay errors', async () => {
   jest.spyOn(global, 'fetch').mockResolvedValue(Response.json({ user: { id: 'incomplete', }, }));
   expect((await GET(request(`learning_session=${session}`))).status).toBe(502);

@@ -1,4 +1,7 @@
 import type { NextRequest } from 'next/server';
+import { LANGUAGE_COOKIE, normalizeLanguage } from '~/shared/config/language';
+import en from '../../../../../public/locales/en.json';
+import ru from '../../../../../public/locales/ru.json';
 
 export const dynamic = 'force-dynamic';
 const headers = { 'Cache-Control': 'private, no-store', Vary: 'Cookie', };
@@ -33,6 +36,9 @@ export async function GET (request: NextRequest) {
     const account = { id: user.id, name: user.name, email: user.email, };
     return Response.json({ user: account, }, { headers, });
   } catch {
-    return Response.json({ error: 'Unable to load your account.', }, { status: 502, headers, });
+    const language = normalizeLanguage(request.cookies.get(LANGUAGE_COOKIE)?.value);
+    const messages = language === 'ru' ? ru : en;
+    return Response.json({ error: messages.translation['account-session-error'], },
+      { status: 502, headers, });
   }
 }

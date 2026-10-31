@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { renderToString } from 'react-dom/server.node';
 import { StoreProvider } from './StoreProvider/ui/StoreProvider';
 import { ThemeProvider } from './ThemeProvider';
@@ -18,6 +18,34 @@ test('the selected palette survives parent rerenders', () => {
   expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe(Color.LIGHT);
   view.rerender(tree());
   expect(document.documentElement.style.getPropertyValue('--page')).toBe('#ffffff');
+});
+
+test('the palette is revealed by a circular view transition where supported', async () => {
+  const root = document.documentElement;
+  const animate = jest.fn();
+  const original = { animate: root.animate, matchMedia: window.matchMedia, };
+  root.animate = animate;
+  window.matchMedia = jest.fn(() => ({ matches: false, })) as unknown as typeof matchMedia;
+  Object.assign(document, {
+    startViewTransition (update: () => void) {
+      update();
+      return { ready: Promise.resolve(), finished: Promise.resolve(), };
+    },
+  });
+  try {
+    render(tree());
+    fireEvent.click(screen.getByRole('button', { name: 'Toggle theme', }));
+    expect(root.style.getPropertyValue('--page')).toBe('#ffffff');
+    await waitFor(() => { expect(root).not.toHaveClass('theme-wipe'); });
+    expect(animate).toHaveBeenCalledWith(
+      { clipPath: expect.any(Array), },
+      expect.objectContaining({ pseudoElement: '::view-transition-new(root)', })
+    );
+  } finally {
+    delete (document as { startViewTransition?: unknown }).startViewTransition;
+    Object.assign(root, { animate: original.animate, });
+    window.matchMedia = original.matchMedia;
+  }
 });
 
 test('a saved palette is restored on the next visit', () => {

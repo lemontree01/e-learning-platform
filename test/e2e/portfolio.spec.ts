@@ -98,7 +98,7 @@ test('Russian homepage fits narrow phone screens', async ({ page, }) => {
     await expect(
       page.getByRole('heading', {
         level: 1,
-        name: 'Своя основа в программировании.',
+        name: 'Освойте программирование с азов.',
       })
     ).toBeVisible();
     expect(
@@ -131,7 +131,7 @@ test('the course index remains localized, responsive and readable in both themes
   }
   await page.getByRole('button', { name: 'Switch language', }).click();
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Своя основа в программировании.', })
+    page.getByRole('heading', { level: 1, name: 'Освойте программирование с азов.', })
   ).toBeVisible();
   await expect(
     page.locator('[data-course-index]').getByRole('link').first()

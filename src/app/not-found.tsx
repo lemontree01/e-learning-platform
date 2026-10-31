@@ -1,18 +1,8 @@
-'use client';
+import NotFoundPage from '~/screens/NotFoundPage/NotFoundPage';
+import { routeMetadata } from '~/shared/lib/metadata/routeMetadata';
 
-import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
+export const generateMetadata = async () => await routeMetadata('/_not-found', { missing: true, });
 
 export default function NotFound () {
-  const { t, } = useTranslation();
-  return (
-    <section>
-      <div className='state-panel'>
-        <p className='eyebrow'>404</p>
-        <h1>{t('page-not-found')}</h1>
-        <p>{t('page-not-found-description')}</p>
-        <Link href='/courses' className='action'>{t('back-to-courses')}</Link>
-      </div>
-    </section>
-  );
+  return <NotFoundPage />;
 }

@@ -9,9 +9,9 @@ const config: Config = {
   setupFilesAfterEnv: ['<rootDir>/test/jest/setup.ts'],
   globals: { IS_DEV: true, },
   moduleNameMapper: {
-    '^~/(.*)$': '<rootDir>/src/$1',
     '\\.(scss|css)$': 'identity-obj-proxy',
     '\\.(png|jpe?g|svg)$': '<rootDir>/test/jest/fileMock.cjs',
+    '^~/(.*)$': '<rootDir>/src/$1',
   },
   transform: {
     '^.+\\.tsx?$': ['ts-jest', {

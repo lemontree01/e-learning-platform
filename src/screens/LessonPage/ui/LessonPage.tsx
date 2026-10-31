@@ -1,9 +1,11 @@
-import Lesson from '~/widgets/Lesson/Lesson';
+'use client';
 
-const LessonPage = () => {
+import Lesson, { type LessonSeed } from '~/widgets/Lesson/Lesson';
+
+const LessonPage = ({ seed, }: { seed?: LessonSeed }) => {
   return (
     <>
-      <Lesson />
+      <Lesson seed={seed} />
     </>
   );
 };

@@ -8,11 +8,20 @@ import { CourseFeedback } from '~/entities/Course/ui/CourseFeedback';
 import { avatars } from '~/shared/assets/avatars';
 import { getRouteLesson } from '~/shared/routes/routes';
 import { lessonTitle } from '~/entities/Course/model/presentation';
+import { type ApiLanguage } from '~/entities/Course/api/getApiLanguage';
+import { type Course, type CourseLesson } from '~/entities/Course/model/types/course';
 import { LessonBlocks } from './ui/LessonBlocks';
 import { LessonNavigation } from './ui/LessonNavigation';
 import './lesson.scss';
 
-const Lesson = () => {
+export interface LessonSeed {
+  language: ApiLanguage;
+  course: Course;
+  lessonId: string;
+  lesson?: CourseLesson;
+}
+
+const Lesson = ({ seed, }: { seed?: LessonSeed }) => {
   const params = useParams();
   const lessonId = typeof params.lessonId === 'string' ? params.lessonId : undefined;
   const courseId =
@@ -21,12 +30,12 @@ const Lesson = () => {
       : lessonId !== undefined && typeof params.id === 'string'
         ? params.id
         : undefined;
-  const { course, status, } = useCourse(courseId);
+  const { course, status, } = useCourse(courseId, seed);
   const index = Number(lessonId);
   const validLesson = course !== undefined && lessonId !== undefined &&
     /^\d+$/.test(lessonId) && Number.isSafeInteger(index) && index < course.numberOfLessons;
   const { lesson, status: lessonStatus, retry, } = useLesson(
-    validLesson ? courseId : undefined, validLesson ? lessonId : undefined
+    validLesson ? courseId : undefined, validLesson ? lessonId : undefined, seed
   );
   const { t, i18n, } = useTranslation();
   if (!courseId) {
@@ -56,6 +65,7 @@ const Lesson = () => {
   }
   return (
     <section className="watch-video">
+      <span className="reading-progress" aria-hidden="true" />
       <nav className="course-breadcrumb" aria-label={t('breadcrumb-label')}>
         <Link href={`/course/${course.id}`}>
           <ArrowBackIcon />
@@ -75,7 +85,7 @@ const Lesson = () => {
             {lessonTitle(course, index, `${course.name}. ${t('lesson')} ${index + 1}`)}
           </h1>
           <div className="tutor">
-            <img src={avatars[course.id % avatars.length]} alt="" />
+            <img src={avatars[course.id % avatars.length]} alt="" width={40} height={40} />
             <div>
               <p>{course.author}</p>
               <span>{course.date}</span>

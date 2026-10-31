@@ -7,11 +7,14 @@ import { type Course } from '~/entities/Course';
 import { CoursesPreview } from './CoursesPreview';
 
 let mockSearchParams = new URLSearchParams();
-jest.mock('next/navigation', () => ({ useSearchParams: () => mockSearchParams, }));
+jest.mock('next/navigation', () => ({
+  useSearchParams: () => mockSearchParams, useRouter: () => ({ push: jest.fn(), }),
+}));
 jest.mock('~/shared/api/instance', () => ({ $api: { get: jest.fn(), }, }));
 
+// Coming soon (no lessons), like every course the home page's "coming next" row lists.
 const course: Course = {
-  id: 1, name: 'HTML foundations', author: 'Example Author', date: '2026-10-26', numberOfLessons: 2,
+  id: 1, name: 'HTML foundations', author: 'Example Author', date: '2026-10-26', numberOfLessons: 0,
 };
 const result: Course = { ...course, id: 2, name: 'TypeScript foundations', };
 

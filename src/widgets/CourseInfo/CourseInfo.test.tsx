@@ -8,8 +8,9 @@ const params: { id?: string } = {};
 
 jest.mock('next/link', () => ({
   __esModule: true,
-  default: ({ href, children, ...props }: { href: string; children: ReactNode }) =>
-    <a href={href} {...props}>{children}</a>,
+  default: ({ href, children, prefetch: _prefetch, ...props }: {
+    href: string; children: ReactNode; prefetch?: boolean;
+  }) => <a href={href} {...props}>{children}</a>,
 }));
 
 jest.mock('next/navigation', () => ({
@@ -46,8 +47,19 @@ test('loads the course from the URL instead of an unrelated cached course', asyn
   openCourse();
   expect(await screen.findByText(course.name)).toBeInTheDocument();
   expect(screen.queryByText('Unrelated cached course')).not.toBeInTheDocument();
-  const lessonLink = screen.getByRole('link', { name: /part 1/i, });
+  const lessonLink = screen.getByRole('link', { name: /^01/, });
   expect(lessonLink).toHaveAttribute('href', '/course/12/lesson/0');
+});
+
+test('a course without lessons is announced as coming soon with its planned topics', async () => {
+  jest.mocked($api.get).mockResolvedValue({ data: { ...course, id: 3, numberOfLessons: 0, }, });
+  openCourse('/course/3');
+  expect(await screen.findByRole('heading', { name: 'What this course will cover', }))
+    .toBeInTheDocument();
+  expect(screen.getByText('Media and container queries')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Start JavaScript Fundamentals', }))
+    .toHaveAttribute('href', '/course/0');
+  expect(screen.queryByRole('link', { name: /lesson/i, })).not.toBeInTheDocument();
 });
 
 test('a fresh direct visit works even with corrupt legacy storage', async () => {

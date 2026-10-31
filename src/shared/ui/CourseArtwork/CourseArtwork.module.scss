@@ -13,31 +13,45 @@
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: contain;
   transition: transform 220ms ease-out;
   transform: rotateX(var(--art-x, 0deg)) rotateY(var(--art-y, 0deg));
+}
+
+// The live icon starts in the poster's pose, so swapping them needs no fade.
+.live {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+
+.art[data-live] .live {
+  visibility: visible;
+}
+
+.art[data-live] .object {
+  visibility: hidden;
+}
+
+// Renders are light ceramic on transparency; the white theme shows them as dark ceramic.
+html[data-theme='light'] :is(.object, .live) {
+  filter: invert(1);
 }
 
 .art:hover .object {
   transform: translateY(-0.4rem) rotateX(var(--art-x, 0deg)) rotateY(var(--art-y, 0deg));
 }
 
-.index,
-.coordinate {
+.index {
   position: absolute;
+  top: 1.6rem;
+  left: 1.6rem;
   font-family: var(--font-mono);
   font-size: var(--text-label);
   color: var(--muted);
   z-index: 1;
-}
-
-.index {
-  top: 1.6rem;
-  left: 1.6rem;
-}
-
-.coordinate {
-  bottom: 1.6rem;
-  right: 1.6rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

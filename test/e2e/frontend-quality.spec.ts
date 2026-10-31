@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
-import en from '../../public/locales/en/translation.json';
-import ru from '../../public/locales/ru/translation.json';
+import enMessages from '../../public/locales/en.json';
+import ruMessages from '../../public/locales/ru.json';
+
+const en = enMessages.translation;
+const ru = ruMessages.translation;
 
 test('returning home from a filtered catalog restores the featured courses', async ({ page, }) => {
   await page.goto('/courses?search=TypeScript');

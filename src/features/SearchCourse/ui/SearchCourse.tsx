@@ -16,26 +16,28 @@ const SearchCourseForm = () => {
 
   useEffect(() => { setQuery(currentQuery); }, [currentQuery]);
 
-  const submitSearch = (event: FormEvent) => {
+  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const value = query.trim();
+    // Read the field itself: text typed before hydration never reached `query`.
+    const value = String(new FormData(event.currentTarget).get('search') ?? '').trim();
     const search = value ? `?${new URLSearchParams({ search: value, }).toString()}` : '';
     router.push(`/courses${search}`);
   };
 
   return (
-    <form role='search' className={styles.wrapper} onSubmit={submitSearch}>
+    // action and name make a submit before hydration land on the same filtered catalog.
+    <form role='search' className={styles.wrapper} onSubmit={submitSearch} action='/courses'>
       <Input
         type='text'
-        name='search_box'
-        aria-label={t('search-courses') ?? 'Search courses'}
-        placeholder={t('search-placeholder') ?? ''}
+        name='search'
+        aria-label={t('search-courses')}
+        placeholder={t('search-placeholder')}
         maxLength={200}
         value={query}
         onChange={setQuery}
         addonRight={
           <Button type='submit' variant='clear'
-            aria-label={t('search-courses') ?? 'Search courses'}>
+            aria-label={t('search-courses')}>
             <Icon icon={<SearchIcon />} />
           </Button>
         }

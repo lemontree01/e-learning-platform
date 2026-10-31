@@ -25,50 +25,24 @@
   border-top: var(--border);
 }
 
-.notice p {
-  margin: 1.6rem 0;
-  font-size: var(--text-small);
-  color: var(--muted);
-}
-
-.contact form {
+.card {
+  display: grid;
+  justify-items: start;
+  gap: 2rem;
+  align-self: start;
   background: var(--surface);
   border: var(--border);
   padding: 3.2rem;
-  border-radius: 0.6rem;
+  border-radius: var(--radius-card);
 }
 
-.contact h2 {
+.card h2 {
   font-size: var(--text-heading);
   font-weight: var(--weight-medium);
-  margin-bottom: 2.4rem;
 }
 
-.contact fieldset {
-  border: 0;
-}
-
-.contact label {
-  display: grid;
-  gap: 0.8rem;
-  font-size: var(--text-small);
+.card p {
   color: var(--muted);
-  margin-bottom: 2rem;
-}
-
-.contact input, .contact textarea {
-  width: 100%;
-  min-height: 4.4rem;
-  border: var(--border);
-  padding: 1.2rem;
-  background: var(--page);
-  color: var(--ink);
-  border-radius: 0.3rem;
-  resize: vertical;
-}
-
-.contact button:disabled {
-  opacity: 0.5;
 }
 
 @media (width <= 768px) {
@@ -78,7 +52,7 @@
     padding-top: 3.2rem;
   }
 
-  .contact form {
+  .card {
     padding: 2.4rem;
   }
 }

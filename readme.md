@@ -16,7 +16,7 @@ A personal portfolio project that helps people explore programming courses and l
 
 Registration, sign-in, learner profiles, and a complete ten-lesson JavaScript course are implemented and tested locally. The course includes examples, exercises, solutions, and a final project. These additions still need to be deployed to the live demo.
 
-Other courses contain sample lesson outlines. Saved learning progress and password recovery are planned.
+The other 19 courses are marked as coming soon and list their planned topics. Course and lesson pages are rendered on the server, with their own titles and real 404s. Saved learning progress and password recovery are planned.
 
 ## For developers
 

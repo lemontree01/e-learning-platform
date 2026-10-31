@@ -18,20 +18,42 @@ async function execute (page: Page, source: string, language = 'javascript') {
   return playground(page).getByTestId('code-output');
 }
 
-test('lesson API owns alternate language starters and reset restores them', async ({ page, }) => {
-  await page.route('**/api/courses/0/lessons/0?*', async route => {
-    const response = await route.fetch();
-    const lesson = await response.json();
-    lesson.blocks[1].starters = { python: 'print("Starter from backend")\n', };
-    await route.fulfill({ response, json: lesson, });
+test('editor search, replacement, and folding controls follow the interface language',
+  async ({ page, }) => {
+    await openEditor(page);
+    await page.getByRole('button', { name: 'Switch language', }).click();
+    const editor = playground(page).getByRole('textbox', { name: 'Редактор кода', });
+    await expect(editor).toBeVisible();
+    await editor.fill('function demo() {\n  return 42;\n}\ndemo();');
+    await editor.press('ControlOrMeta+f');
+    await expect(playground(page).getByRole('textbox', { name: 'Найти', exact: true, }))
+      .toBeVisible();
+    await expect(playground(page).getByRole('textbox', { name: 'Заменить', exact: true, }))
+      .toBeVisible();
+    await expect(playground(page).getByRole('button', { name: 'заменить все', exact: true, }))
+      .toBeVisible();
+    await playground(page).getByRole('button', { name: 'закрыть', exact: true, }).click();
+    await playground(page).getByTitle('Свернуть строку', { exact: true, }).first().click();
+    await expect(playground(page).getByLabel('свёрнутый код', { exact: true, }))
+      .toBeVisible();
+
+    await page.getByRole('button', { name: 'Сменить язык', }).click();
+    const englishEditor = playground(page).getByRole('textbox', { name: 'Code editor', });
+    await expect(englishEditor).toBeVisible();
+    await englishEditor.press('ControlOrMeta+f');
+    await expect(playground(page).getByRole('textbox', { name: 'Find', exact: true, }))
+      .toBeVisible();
   });
+
+// The lesson is server-rendered from the API, so this checks the starter the backend seeds.
+test('lesson API owns alternate language starters and reset restores them', async ({ page, }) => {
   await openEditor(page);
   const editor = playground(page).getByRole('textbox', { name: 'Code editor', });
   await playground(page).getByRole('combobox', { name: 'Language', }).selectOption('python');
-  await expect(editor.locator('.cm-line').first()).toHaveText('print("Starter from backend")');
+  await expect(editor.locator('.cm-line').first()).toHaveText('print("Hello, learner!")');
   await editor.fill('print("Edited")');
   await playground(page).getByRole('button', { name: 'Reset code', }).click();
-  await expect(editor.locator('.cm-line').first()).toHaveText('print("Starter from backend")');
+  await expect(editor.locator('.cm-line').first()).toHaveText('print("Hello, learner!")');
 });
 
 test('JavaScript and Python execute edited code and input with a clean browser console', async ({ page, }) => {

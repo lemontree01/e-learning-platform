@@ -100,11 +100,11 @@ export function LessonNavigation ({ course, index, }: { course: Course; index: n
         <button
           type="button"
           className="lesson-drawer-close"
+          aria-label={t('close-lessons')}
           onClick={() => {
             setOpen(false);
           }}
         >
-          {t('close-lessons')}
           <span aria-hidden="true">×</span>
         </button>
         <div className="lesson-outline">

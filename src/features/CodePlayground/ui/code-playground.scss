@@ -1,4 +1,6 @@
 .code-playground {
+  --playground-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
   min-width: 0;
   color: var(--ink);
   container-type: inline-size;
@@ -24,30 +26,62 @@
 .playground-toolbar {
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 1.2rem 1.6rem;
+  gap: 1.2rem 2rem;
+  padding: 1.2rem 2rem;
   border-bottom: var(--border);
   background: var(--raised);
 }
 
 .playground-heading {
+  gap: 1.2rem;
   font-size: var(--text-ui);
   font-weight: var(--weight-strong);
+  line-height: 1.4;
+}
+
+.playground-heading > svg {
+  width: var(--icon);
+  height: var(--icon);
 }
 
 .playground-tools {
   margin-left: auto;
-  flex-wrap: wrap;
+  gap: 1.2rem;
 }
 
-.playground-tools select {
-  min-height: 3.6rem;
+.playground-language {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.playground-language select {
+  appearance: none;
+  min-height: var(--icon-control);
+  width: 13.6rem;
   max-width: 100%;
-  padding: 0.4rem 0.8rem;
-  border: var(--border);
+  padding: 0.8rem 3.6rem 0.8rem 1.2rem;
+  border: 1px solid var(--control-line);
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--ink);
   font-size: var(--text-small);
+  line-height: 1.4;
+  cursor: pointer;
+  transition: border-color 160ms;
+}
+
+.playground-language select:hover {
+  border-color: var(--ink);
+}
+
+.playground-language > svg {
+  position: absolute;
+  inset-inline-end: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
 }
 
 .code-playground .playground-quiet {
@@ -61,11 +95,25 @@
   background: transparent;
   color: var(--muted);
   font-size: var(--text-small);
+  transition: background-color 160ms, color 160ms, transform 160ms;
+}
+
+.code-playground button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.playground-tools .playground-quiet {
+  padding-inline: 1.2rem;
+  white-space: nowrap;
 }
 
 .code-playground .playground-quiet:hover {
   background: var(--raised);
   color: var(--ink);
+}
+
+.playground-tools .playground-quiet:hover {
+  background: var(--surface);
 }
 
 .playground-workspace {
@@ -90,7 +138,6 @@
 }
 
 .playground-editor {
-  flex: 1;
   padding-block: 0.8rem;
   font-size: var(--text-ui);
   line-height: 1.8;
@@ -141,6 +188,7 @@
   border-right: 1px solid currentcolor;
   border-bottom: 1px solid currentcolor;
   transform: rotate(-45deg);
+  transition: transform 240ms var(--playground-ease);
 }
 
 .code-playground details[open] > summary::before {
@@ -174,8 +222,13 @@
   font-size: var(--text-small);
 }
 
+// Takes any spare height when the results column is taller. Were it the editor, opening
+// Program input would first shrink the editor (growing upward), then grow the row downward.
 .playground-actions {
+  flex: 1;
   flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
   padding: 1.2rem 1.6rem;
   border-top: var(--border);
 }
@@ -220,10 +273,35 @@
   background: currentcolor;
 }
 
+.playground-status:is([data-status='loading'], [data-status='running'])::before {
+  animation: playground-pulse 700ms ease-in-out infinite alternate;
+}
+
+// Remounted (keyed) whenever output appears or clears, so each run reveals its result.
 .playground-output {
   flex: 1;
   min-height: 10rem;
   padding: 1.6rem;
+  animation: playground-reveal 280ms var(--playground-ease);
+}
+
+.playground-stop,
+.playground-copy-label {
+  animation: playground-reveal 200ms var(--playground-ease);
+}
+
+@keyframes playground-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+}
+
+@keyframes playground-pulse {
+  to {
+    opacity: 0.35;
+    transform: scale(0.6);
+  }
 }
 
 .code-playground .playground-output pre,
@@ -315,6 +393,72 @@
 
 .playground-copy-status:empty {
   display: none;
+}
+
+// Panels slide open where the browser can animate to `auto` height; elsewhere they still
+// open at once. Outside the global reduced-motion rule, which `*` does not reach here.
+@media (prefers-reduced-motion: no-preference) {
+  .code-playground {
+    interpolate-size: allow-keywords;
+  }
+
+  // flow-root keeps the last child's margin inside, so the height does not jump once it
+  // returns to `auto`. An even curve: a front-loaded one crawls through the last pixels.
+  .code-playground details::details-content {
+    display: flow-root;
+    block-size: 0;
+    overflow: clip;
+    overflow-clip-margin: 0.4rem;
+    opacity: 0;
+    transition:
+      block-size 260ms cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 200ms ease-out,
+      content-visibility 260ms allow-discrete;
+  }
+
+  .code-playground details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+
+@container (width <= 480px) {
+  .playground-toolbar {
+    padding: 1.2rem 1.6rem;
+  }
+
+  .playground-tools {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  .playground-language select,
+  .playground-tools .playground-quiet {
+    min-height: 4.4rem;
+  }
+}
+
+@container (width <= 360px) {
+  .playground-language {
+    flex: 1;
+  }
+
+  .playground-language select {
+    width: 100%;
+  }
+
+  .playground-tools .playground-quiet {
+    min-width: 4.4rem;
+  }
+
+  .playground-copy-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
 }
 
 @container (width >= 640px) {

@@ -8,7 +8,15 @@ The current homepage, minimal chapter grid, motion, and React compatibility deci
 
 See [FRONTEND_QUALITY.md](FRONTEND_QUALITY.md) for the mobile/desktop performance measurements, frontend regression coverage, and release limitations.
 
-The Observatory implementation and translations remain in the repository, but the current homepage does not mount its widget. Keep `features.playground` in [src/shared/config/features.ts](../src/shared/config/features.ts) set to `false` so legacy recovery links lead to courses. Russian interface copy lives in `public/locales/ru/`.
+The Observatory implementation and translations remain in the repository, but the current homepage does not mount its widget. Keep `features.playground` in [src/shared/config/features.ts](../src/shared/config/features.ts) set to `false` so legacy recovery links lead to courses. `features.sculpture` also remains `false`.
+
+## Translations
+
+All frontend-owned copy lives in two files: [English](../public/locales/en.json) and [Russian](../public/locales/ru.json). Each file groups existing i18next namespaces (`translation`, `about`, `contacts`, `teachers`, `observatory`, and `editor`). Common UI and SEO copy uses `translation`; CodeMirror's built-in controls use `editor.phrases`. Sample profile names, comments, reviews, and artwork labels are included. Add or edit both language files together; do not add another locale file or an English fallback in a component.
+
+Use `useTranslation()` for common strings and `useTranslation('about')` (or another namespace) for page copy. Keep interpolation placeholders identical in both languages. English plurals use `_one` and `_other`; Russian additionally uses `_few` and `_many`. Editor phrases use CodeMirror's `$` placeholders. `translations.test.ts` checks the two-file contract, key parity, nonempty strings, placeholders, and plurals.
+
+`createAppI18n` bundles both files without separate translation requests and creates an isolated instance per app render. Server metadata reads the same files. The `lang` cookie preserves the selected language across navigation and reloads. Course/lesson records and starter programs remain in the API, requested with the selected language; user-generated content and program output are not translated by the interface.
 
 ## Run locally
 
@@ -35,6 +43,10 @@ npm start
 Open http://localhost:3000. The API defaults to http://localhost:3001.
 
 To use a different API origin, copy `.env.example` to `.env`, update `SERVER_URL` (without `/api`), and restart/rebuild the frontend. Next.js proxies `/api/*` and course thumbnail requests to that origin; browser requests stay on the frontend origin. Vercel builds require a public HTTPS `SERVER_URL` and reject missing values, localhost, credentials, and extra paths. Never add database credentials to the frontend.
+
+`SITE_URL` is the stable public frontend HTTPS origin used for canonical links, Open Graph URLs, and the sitemap. It defaults to `https://learning-platform-gray-mu.vercel.app`; set it explicitly when moving to a custom domain, then rebuild. Do not use a temporary preview URL. `/robots.txt` advertises `/sitemap.xml`, which refreshes hourly and lists public navigation, course overviews, and lesson URLs. During a catalog API outage it retains the static navigation URLs; it never invents last-modified dates or includes account/API routes. Languages currently share URLs and use a cookie, so no separate language URLs or `hreflang` alternatives are claimed.
+
+Next.js owns page titles, descriptions, canonical URLs, and social metadata. Changing language refreshes the server metadata while retaining client state. The 404 metadata is emitted by the server, localized, and automatically marked `noindex` by Next.js; login, registration, profile, and legacy lesson recovery routes are also excluded from indexing. Missing pages have no canonical link. Regression coverage is in `test/e2e/seo.spec.ts`.
 
 The frontend handles `GET /api/auth/session` before the general API rewrite. It returns `200 { user: null }` for guests and expired/revoked sessions, or `200 { user: { id, name, email } }` for a valid session. This optional lookup keeps ordinary signed-out page loads free of failed HTTP requests. Responses are private and never cached; only the HttpOnly session cookie is forwarded to the configured backend. Upstream failures remain `502` errors with a generic message. Protected `/api/auth/me` and authentication operations retain the backend's status codes. This change needs only a frontend deployment.
 
@@ -85,7 +97,7 @@ Non-mutating lint commands are `npm run lint:ts` and `npm run lint:scss`. Fronte
 
 ## What is still unfinished
 
-Comment posting, contact delivery, saved courses, likes, learning progress, email verification, password recovery, and actual video files remain unfinished. Courses other than JavaScript Fundamentals retain sample lesson outlines. The contact form is an explicitly disabled preview; teacher profiles are labelled as samples. Invented usage statistics, testimonials, and comments are not presented as real activity.
+Comment posting, contact delivery, saved courses, likes, learning progress, email verification, password recovery, and actual video files remain unfinished. Courses other than JavaScript Fundamentals are marked as coming soon, with their planned topics. Contact goes through GitHub issues; there are no teacher profiles. Invented usage statistics, testimonials, and comments are not presented as real activity.
 
 Before deploying the account UI, apply the backend accounts migration and runtime grants described in the [API README](../../e-learning-platform-server/README.md#learner-accounts), then deploy the backend. Run its seed explicitly to upgrade unchanged JavaScript outlines to full content. The existing automatic migration guard intentionally requires a manual release for the account schema.
 

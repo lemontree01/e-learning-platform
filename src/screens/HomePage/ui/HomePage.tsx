@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useCourse } from '~/entities/Course/model/services/useCourse';
 import { CourseIndex } from '~/widgets/CourseIndex/CourseIndex';
 import { CoursesPreview } from '~/widgets/CoursesPreview';
+import { CodeSculpture } from '~/widgets/CodeSculpture/CodeSculpture';
+import { features } from '~/shared/config/features';
 import { type HomeSeed } from '../loadHome';
 import styles from './HomePage.module.scss';
 
@@ -16,7 +18,8 @@ const HomePage = ({ seed, }: { seed?: HomeSeed }) => {
   );
   return (
     <>
-      <section className={styles.hero}>
+      <section className={`${styles.hero} ${features.sculpture ? styles.sculpture : ''}`}>
+        <div className={features.sculpture ? styles.copy : styles['legacy-copy']}>
         <div className={styles.heading}>
           <p className="eyebrow">
             <span className={styles.rule} />
@@ -26,7 +29,7 @@ const HomePage = ({ seed, }: { seed?: HomeSeed }) => {
         </div>
         <div className={styles.intro}>
           <span className={styles.edition} aria-hidden="true">
-            JS / 001
+            {t('home-edition')}
           </span>
           <p>{t('home-description')}</p>
           <div className={styles.actions}>
@@ -40,12 +43,14 @@ const HomePage = ({ seed, }: { seed?: HomeSeed }) => {
             </Link>
           </div>
         </div>
+        </div>
+        {features.sculpture && <CodeSculpture />}
       </section>
       <section className={styles.featured} aria-labelledby="featured-course-title">
         <div className={styles['featured-head']}>
           <div>
             <p className="eyebrow">{t('featured-path')}</p>
-            <h2 id="featured-course-title">{course?.name ?? 'JavaScript'}</h2>
+            <h2 id="featured-course-title">{course?.name ?? t('language-javascript')}</h2>
           </div>
           <div className={styles.caption}>
             <p>{t('featured-caption')}</p>

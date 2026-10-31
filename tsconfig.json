@@ -36,7 +36,6 @@
     "src",
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    "webpack",
     "test",
     "playwright.config.ts"
   ],

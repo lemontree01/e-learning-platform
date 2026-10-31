@@ -1,10 +1,8 @@
 import { type ReactNode } from 'react';
-import { type Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { App } from './App';
 import { LANGUAGE_COOKIE, normalizeLanguage } from '~/shared/config/language';
-import enTranslation from '../../public/locales/en/translation.json';
-import ruTranslation from '../../public/locales/ru/translation.json';
+import { routeMetadata } from '~/shared/lib/metadata/routeMetadata';
 import {
   initialThemeColor, initialThemeStyle, themeBootScript
 } from '~/shared/lib/theme/themeBoot';
@@ -16,12 +14,9 @@ import sansCyrillic from '@fontsource-variable/manrope/files/manrope-cyrillic-wg
 import monoLatin from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2';
 import monoCyrillic from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-cyrillic-400-normal.woff2';
 
-export async function generateMetadata (): Promise<Metadata> {
-  const saved = (await cookies()).get(LANGUAGE_COOKIE)?.value;
-  const copy = normalizeLanguage(saved) === 'ru' ? ruTranslation : enTranslation;
+export async function generateMetadata () {
   return {
-    title: copy['app-title'],
-    description: copy['app-description'],
+    ...await routeMetadata('/home'),
     icons: { icon: '/favicon.svg', },
   };
 }

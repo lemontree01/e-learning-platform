@@ -47,10 +47,11 @@ test('monochrome palettes stay consistent across language changes', async ({ pag
 });
 
 test('the catalog can recover from a failed request', async ({ page, }) => {
-  await page.route((url) => url.pathname === '/api/courses', async (route) => {
+  // The full catalog arrives with the page; search results load in the browser and can fail.
+  await page.route((url) => url.pathname === '/api/courses/search', async (route) => {
     await route.fulfill({ status: 500, contentType: 'application/json', body: '{}', });
   }, { times: 1, });
-  await page.goto('/courses');
+  await page.goto('/courses?search=JavaScript');
   await expect(page.getByRole('main').getByRole('alert')).toContainText('The courses couldn’t load.');
   await page.getByRole('button', { name: 'Try again', }).click();
   await expect(page.getByRole('heading', { name: 'JavaScript Fundamentals', })).toBeVisible();
@@ -88,12 +89,12 @@ test('the navigation drawer contains focus and Escape restores it', async ({ pag
 });
 
 test('lesson pagination and topic links keep URL navigation meaningful', async ({ page, }) => {
-  await page.goto('/course/12/lesson/0');
+  await page.goto('/course/0/lesson/0');
   await expect(page.getByRole('link', { name: 'Previous lesson', })).toHaveCount(0);
   await page.getByRole('link', { name: 'Next lesson', }).click();
-  await expect(page).toHaveURL(/\/course\/12\/lesson\/1$/);
+  await expect(page).toHaveURL(/\/course\/0\/lesson\/1$/);
   await page.getByRole('link', { name: 'Previous lesson', }).click();
-  await expect(page).toHaveURL(/\/course\/12\/lesson\/0$/);
+  await expect(page).toHaveURL(/\/course\/0\/lesson\/0$/);
   await page.goto('/courses');
   await page.getByRole('navigation', { name: 'Course topics', })
     .getByRole('link', { name: 'TypeScript', exact: true, }).click();
@@ -104,15 +105,16 @@ test('lesson pagination and topic links keep URL navigation meaningful', async (
 test('direct course and lesson links survive refresh', async ({ page, }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/course/12');
+  await page.goto('/course/0');
   await expect(page.getByRole('heading', {
-    name: 'Python Web Scraping', exact: true,
+    name: 'JavaScript Fundamentals', exact: true,
   })).toBeVisible();
-  await page.getByRole('link', { name: '01 Lesson 1. Python Web Scraping Preview lesson', }).click();
-  await expect(page).toHaveURL(/\/course\/12\/lesson\/0$/);
-  await expect(page.getByRole('heading', { name: 'Lesson 1. Python Web Scraping', })).toBeVisible();
+  await page.getByRole('link', { name: /01 Your first JavaScript program/, }).click();
+  await expect(page).toHaveURL(/\/course\/0\/lesson\/0$/);
+  const title = page.getByRole('heading', { level: 1, name: 'Your first JavaScript program', });
+  await expect(title).toBeVisible();
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'Lesson 1. Python Web Scraping', })).toBeVisible();
+  await expect(title).toBeVisible();
   await expect(page.locator('.tutor img')).toBeVisible();
   await expect.poll(async () => await page.locator('.tutor img').evaluate(
     (image: HTMLImageElement) => image.complete && image.naturalWidth > 0
@@ -190,15 +192,15 @@ test('language and theme controls work with localized course data', async ({ pag
     if (language === 'en') await page.getByRole('button', { name: 'Сменить язык', }).click();
     for (const [route, namespace, key] of [
       ['/about', 'about', 'why-choose-us'],
-      ['/teachers', 'teachers', 'our-teachers'],
-      ['/contacts', 'contacts', 'get in touch']
+      ['/contacts', 'contacts', 'title']
     ]) {
       await page.goto(route);
       // Next.js bundles the translations; verify the public copy and the rendered content directly.
-      const response = await page.request.get(`/locales/${language}/${namespace}.json`);
+      const response = await page.request.get(`/locales/${language}.json`);
       expect(response.status()).toBe(200);
-      const messages: Record<string, string> = await response.json();
-      await expect(page.locator('main').getByText(messages[key], { exact: true, })).toBeVisible();
+      const messages: Record<string, Record<string, string>> = await response.json();
+      await expect(page.locator('main').getByText(messages[namespace][key], { exact: true, }))
+        .toBeVisible();
     }
   }
 });

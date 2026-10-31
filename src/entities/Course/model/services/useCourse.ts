@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 import { isAxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, type StateSchema } from '~/app/providers/StoreProvider';
@@ -54,4 +54,24 @@ export function useCourse (
     ? 'not-found'
     : course ? 'ready' : failure?.key === key ? failure.status : 'loading';
   return { course, status, };
+}
+
+const prefetching = new Set<string>();
+
+// Warms the cache on card hover or focus, so the course page (and its artwork morph) can
+// render within the navigation itself. On a miss the page fetches and reports errors as usual.
+export function usePrefetchCourse () {
+  const { i18n, } = useTranslation();
+  const store = useStore<StateSchema>();
+  const dispatch = useAppDispatch();
+  const language = getApiLanguage(i18n.resolvedLanguage ?? i18n.language);
+  return (id: number) => {
+    const key = `${language}:${id}`;
+    if (store.getState().course.details?.[key] || prefetching.has(key)) return;
+    prefetching.add(key);
+    AppService.getCourse(String(id), language)
+      .then(({ data, }) => { dispatch(courseActions.cacheCourse({ key, course: data, })); })
+      .catch(() => undefined)
+      .finally(() => { prefetching.delete(key); });
+  };
 }

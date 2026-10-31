@@ -7,8 +7,7 @@ export const Navbar = () => {
     <RouteLink href='/home'>{t('home')}</RouteLink>
     <RouteLink href='/courses'>{t('courses')}</RouteLink>
     <RouteLink href='/about'>{t('about')}</RouteLink>
-    <RouteLink href='/teachers'>{t('teachers')}</RouteLink>
     <RouteLink href='/contacts'>{t('contact-us')}</RouteLink>
-    <RouteLink href='/profile'>{t('sample-profile')}</RouteLink>
+    <RouteLink href='/profile'>{t('account-view')}</RouteLink>
   </nav>;
 };

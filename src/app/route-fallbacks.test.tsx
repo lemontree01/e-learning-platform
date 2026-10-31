@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import RouteError from './error';
-import NotFound from './not-found';
+import NotFound from '~/screens/NotFoundPage/NotFoundPage';
 
 test('route failures offer recovery without exposing error details', () => {
   const reset = jest.fn();

@@ -10,7 +10,14 @@ export function readStoredTheme (): Color {
   } catch {
     // localStorage throws in private mode and some embedded browsers.
   }
-  return DEFAULT_THEME;
+  return systemTheme();
+}
+
+// Used until the visitor picks a theme; must agree with the boot script in themeBoot.ts.
+export function systemTheme (): Color {
+  return typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: light)').matches
+    ? Color.LIGHT
+    : DEFAULT_THEME;
 }
 
 export function writeStoredTheme (color: Color) {

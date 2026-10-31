@@ -255,3 +255,22 @@
     padding: 0.6rem 1.2rem;
   }
 }
+
+// Cards settle in as they scroll into view; cards already on screen render finished.
+// No opacity: text keeps full contrast (axe) and images stay valid paint candidates.
+// Uses `scale`: hover owns `translate`, and Motion's layout animation owns `transform`.
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .card {
+      animation: card-reveal ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+}
+
+@keyframes card-reveal {
+  from {
+    scale: 0.9;
+  }
+}
